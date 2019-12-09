@@ -1,5 +1,5 @@
 /*
- *	PIDController.cpp - Library header for PID controller.
+ *	PIDController.h - Library header for PID controller.
  *	Created by Rahul Goyal, July 1 2019.
  *	Released to Cal Poly Baja SAE. ;)
  */

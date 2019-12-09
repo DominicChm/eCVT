@@ -126,6 +126,7 @@ void loop() {
 /* **TASKS** */
 
 void eCVT() {
+	// Debugging
 	#ifdef DEBUG
 	Serial.print("eState: ");
 	Serial.println(eState);
@@ -195,6 +196,7 @@ void eCVT() {
 
 
 void primary() {
+	// Debugging
 	#ifdef DEBUG
 	Serial.print("pState: ");
 	Serial.println(pState);
@@ -259,11 +261,12 @@ void primary() {
 }
 
 void secondary() {
-	// #ifdef DEBUG
+	// Debugging
+	#ifdef DEBUG
 	Serial.print("sState: ");
 	Serial.println(sState);
 	Serial.println(sEnc.read());
-	// #endif
+	#endif
 	
 	switch (sState) {
 		// INITIALIZE
