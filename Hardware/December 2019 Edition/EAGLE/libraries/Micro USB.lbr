@@ -147,14 +147,14 @@
 </connects>
 <technologies>
 <technology name="">
-<attribute name="Digi-Key_Part_Number" value="609-4616-1-ND"/>
+<attribute name="Package" value="None"/>
 <attribute name="MF" value="Amphenol ICC"/>
-<attribute name="MP" value="10118193-0001LF"/>
-<attribute name="Digi-Key_Purchase_URL" value="https://www.digikey.com/product-detail/en/amphenol-icc-fci/10118193-0001LF/609-4616-1-ND/2785380?utm_source=snapeda&amp;utm_medium=aggregator&amp;utm_campaign=symbol"/>
+<attribute name="Digi-Key_Part_Number" value="609-4616-1-ND"/>
 <attribute name="Description" value="
 Conn Micro USB Type B RCP 5 POS 0.65mm Solder RA SMD 5 Terminal 1 Port T/R
 "/>
-<attribute name="Package" value="None"/>
+<attribute name="MP" value="10118193-0001LF"/>
+<attribute name="Digi-Key_Purchase_URL" value="https://www.digikey.com/product-detail/en/amphenol-icc-fci/10118193-0001LF/609-4616-1-ND/2785380?utm_source=snapeda&amp;utm_medium=aggregator&amp;utm_campaign=symbol"/>
 </technology>
 </technologies>
 </device>
