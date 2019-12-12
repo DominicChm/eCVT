@@ -3,7 +3,7 @@
 <eagle version="9.5.0">
 <drawing>
 <settings>
-<setting alwaysvectorfont="no"/>
+<setting alwaysvectorfont="yes"/>
 <setting verticaltext="up"/>
 </settings>
 <grid distance="0.05" unitdist="inch" unit="inch" style="lines" multiple="1" display="yes" altdistance="5" altunitdist="mil" altunit="mil"/>
@@ -32,8 +32,8 @@
 <layer number="22" name="bPlace" color="7" fill="1" visible="yes" active="yes"/>
 <layer number="23" name="tOrigins" color="15" fill="1" visible="yes" active="yes"/>
 <layer number="24" name="bOrigins" color="15" fill="1" visible="yes" active="yes"/>
-<layer number="25" name="tNames" color="7" fill="1" visible="no" active="yes"/>
-<layer number="26" name="bNames" color="7" fill="1" visible="no" active="yes"/>
+<layer number="25" name="tNames" color="7" fill="1" visible="yes" active="yes"/>
+<layer number="26" name="bNames" color="7" fill="1" visible="yes" active="yes"/>
 <layer number="27" name="tValues" color="7" fill="1" visible="no" active="yes"/>
 <layer number="28" name="bValues" color="7" fill="1" visible="no" active="yes"/>
 <layer number="29" name="tStop" color="7" fill="3" visible="no" active="yes"/>
@@ -52,7 +52,7 @@
 <layer number="42" name="bRestrict" color="1" fill="10" visible="yes" active="yes"/>
 <layer number="43" name="vRestrict" color="2" fill="10" visible="yes" active="yes"/>
 <layer number="44" name="Drills" color="7" fill="1" visible="no" active="yes"/>
-<layer number="45" name="Holes" color="7" fill="1" visible="no" active="yes"/>
+<layer number="45" name="Holes" color="7" fill="1" visible="yes" active="yes"/>
 <layer number="46" name="Milling" color="3" fill="1" visible="no" active="yes"/>
 <layer number="47" name="Measures" color="7" fill="1" visible="no" active="yes"/>
 <layer number="48" name="Document" color="7" fill="1" visible="yes" active="yes"/>
@@ -156,11 +156,89 @@
 <layer number="255" name="routoute" color="7" fill="1" visible="yes" active="yes"/>
 </layers>
 <board>
+<fusionsync huburn="a.YnVzaW5lc3M6Y2FscG9seTEwNg" projecturn="a.YnVzaW5lc3M6Y2FscG9seTEwNiMyMDE5MDkxNzIxNTk5MDAyNg" f3durn="urn:adsk.wipprod:dm.lineage:QE2A1TAXTRev-S1K7r39Hg" pcbguid="1e4c1c3f-5e14-425b-994a-c04f08186946" lastpulledtime="" lastsyncedchangeguid="6393bbb1-9043-2c6b-b787-b4d988115ba7"/>
 <plain>
 <wire x1="0" y1="0" x2="88.88" y2="0" width="0" layer="20"/>
 <wire x1="88.88" y1="0" x2="88.9" y2="139.7" width="0" layer="20"/>
 <wire x1="88.9" y1="139.7" x2="0" y2="139.7" width="0" layer="20"/>
 <wire x1="0" y1="139.7" x2="0" y2="0" width="0" layer="20"/>
+<hole x="25.4" y="12.7" drill="4.318"/>
+<hole x="63.5" y="12.7" drill="4.318"/>
+<hole x="12.7" y="100.33" drill="4.318"/>
+<hole x="68.58" y="133.35" drill="4.318"/>
+<text x="25.4" y="40.005" size="1.6764" layer="26" font="vector" ratio="25" rot="MR0" align="bottom-right">+5V IN/OUT
+
++12V OUT
+
+FBRAKE IN
+
+RBRAKE IN
+
+GND
+
+GND</text>
+<text x="25.4" y="5.715" size="1.6764" layer="26" font="vector" ratio="25" rot="MR0" align="bottom-right">+5V IN/OUT
+
+ENGINE IN
+
+RWHEELS IN
+
+FLWHEEL IN
+
+FRWHEEL IN
+
+GND</text>
+<text x="63.5" y="3.175" size="1.6764" layer="26" font="vector" ratio="25" rot="MR0">GND
+
+LOG STATUS LED OUT
+
+MARKER BUTTON IN
+
+LOGGER BUTTON IN
+
++12V OUT
+
++5V IN/OUT</text>
+<text x="63.5" y="37.465" size="1.6764" layer="26" font="vector" ratio="25" rot="MR0">GND
+
+BKSHIFT LED OUT
+
+UPSHIFT LED OUT
+
+LCHCTRL BUT IN
+
++12V OUT
+
++5V IN/OUT</text>
+<text x="69.85" y="74.295" size="1.6764" layer="26" font="vector" ratio="25" rot="MR0">GND
+
+DAQ A19 PWM SDA
+
+DAQ A18 PWM SCL
+
+DAQ A17 PWM
+
+DAQ A16 PWM
+
++3V3 IN/OUT</text>
+<text x="25.4" y="114.3" size="2.54" layer="26" font="vector" ratio="25" rot="MR0" align="bottom-center">DESIGNED BY
+RAHUL GOYAL
+DEC 2019</text>
+<text x="25.4" y="114.3" size="1.905" layer="25" font="vector" ratio="25" align="bottom-center">DESIGNED BY
+RAHUL GOYAL
+DEC 2019</text>
+<text x="70.485" y="108.585" size="1.6764" layer="26" font="vector" ratio="25" rot="MR0">GND
+
+ECVT A22 DAC1
+
+ECVT A21 DAC0
+
+DAQ A22 DAC1
+
+DAQ A21 DAC0
+
++3V3 IN/OUT</text>
+<text x="69.85" y="105.41" size="2.54" layer="25" font="vector" ratio="15" rot="R90" align="bottom-center">SEE BOTTOM FOR PORT LABELS</text>
 </plain>
 <libraries>
 <library name="rcl" urn="urn:adsk.eagle:library:334">
@@ -2427,44 +2505,44 @@ Note, that not all DRC settings must be set by the manufacturer. Several can be 
 <attribute name="SPICEPREFIX" value="C" x="-118.11" y="52.07" size="1.778" layer="27" rot="R270" display="off"/>
 <attribute name="VALUE" x="31.75" y="132.08" size="1.27" layer="27" rot="R270"/>
 </element>
-<element name="CR1" library="Voltage Regulator 3.3V" package="TO-220" value="LD1117V33" x="29.21" y="135.89" smashed="yes" rot="R180">
+<element name="VOLT_REG" library="Voltage Regulator 3.3V" package="TO-220" value="LD1117V33" x="29.21" y="135.89" smashed="yes" rot="R180">
 <attribute name="BUILT_BY" value="EMA_UL_Team" x="-57.15" y="288.29" size="1.778" layer="27" rot="R180" display="off"/>
 <attribute name="MANUFACTURER_PART_NUMBER" value="LD1117V33" x="-57.15" y="288.29" size="1.778" layer="27" rot="R180" display="off"/>
 <attribute name="NAME" x="35.0266" y="137.287" size="1.27" layer="25" ratio="6" rot="SR180"/>
 <attribute name="VALUE" x="33.4772" y="137.287" size="1.27" layer="21" ratio="6" rot="SR180"/>
 <attribute name="VENDOR" value="STMicroelectronics" x="-57.15" y="288.29" size="1.778" layer="27" rot="R180" display="off"/>
 </element>
-<element name="J2" library="Screwless Terminal 6-Pole" package="CUI_TBL004-508-06BE-2GY" value="TBL004-508-06BE-2GY" x="12.7" y="31.75" smashed="yes" rot="R270">
+<element name="WHEEL_SPEED" library="Screwless Terminal 6-Pole" package="CUI_TBL004-508-06BE-2GY" value="TBL004-508-06BE-2GY" x="12.7" y="31.75" smashed="yes" rot="R270">
 <attribute name="MANUFACTURER" value="CUI" x="-69.85" y="-12.7" size="1.778" layer="27" rot="R270" display="off"/>
 <attribute name="NAME" x="15.55" y="35.35" size="1.778" layer="25" rot="R270"/>
 <attribute name="STANDARD" value="Manufacturer Recommendations" x="-69.85" y="-12.7" size="1.778" layer="27" rot="R270" display="off"/>
 <attribute name="VALUE" x="-1.75" y="35.35" size="1.778" layer="27" rot="R270"/>
 </element>
-<element name="J3" library="Screwless Terminal 6-Pole" package="CUI_TBL004-508-06BE-2GY" value="TBL004-508-06BE-2GY" x="12.7" y="66.04" smashed="yes" rot="R270">
+<element name="BRAKE_PRESSURE" library="Screwless Terminal 6-Pole" package="CUI_TBL004-508-06BE-2GY" value="TBL004-508-06BE-2GY" x="12.7" y="66.04" smashed="yes" rot="R270">
 <attribute name="MANUFACTURER" value="CUI" x="-69.85" y="-13.97" size="1.778" layer="27" rot="R270" display="off"/>
 <attribute name="NAME" x="15.55" y="69.64" size="1.778" layer="25" rot="R270"/>
 <attribute name="STANDARD" value="Manufacturer Recommendations" x="-69.85" y="-13.97" size="1.778" layer="27" rot="R270" display="off"/>
 <attribute name="VALUE" x="-1.75" y="69.64" size="1.778" layer="27" rot="R270"/>
 </element>
-<element name="J4" library="Screwless Terminal 6-Pole" package="CUI_TBL004-508-06BE-2GY" value="TBL004-508-06BE-2GY" x="76.2" y="3.81" smashed="yes" rot="R90">
+<element name="DAQ_BUTTONS_LEDS" library="Screwless Terminal 6-Pole" package="CUI_TBL004-508-06BE-2GY" value="TBL004-508-06BE-2GY" x="76.2" y="3.81" smashed="yes" rot="R90">
 <attribute name="MANUFACTURER" value="CUI" x="158.75" y="119.38" size="1.778" layer="27" rot="R90" display="off"/>
 <attribute name="NAME" x="73.35" y="0.21" size="1.778" layer="25" rot="R90"/>
 <attribute name="STANDARD" value="Manufacturer Recommendations" x="158.75" y="119.38" size="1.778" layer="27" rot="R90" display="off"/>
 <attribute name="VALUE" x="90.65" y="0.21" size="1.778" layer="27" rot="R90"/>
 </element>
-<element name="J5" library="Screwless Terminal 6-Pole" package="CUI_TBL004-508-06BE-2GY" value="TBL004-508-06BE-2GY" x="76.2" y="38.1" smashed="yes" rot="R90">
+<element name="ECVT_BUTTONS_LEDS" library="Screwless Terminal 6-Pole" package="CUI_TBL004-508-06BE-2GY" value="TBL004-508-06BE-2GY" x="76.2" y="38.1" smashed="yes" rot="R90">
 <attribute name="MANUFACTURER" value="CUI" x="180.34" y="82.55" size="1.778" layer="27" rot="R90" display="off"/>
 <attribute name="NAME" x="73.35" y="34.5" size="1.778" layer="25" rot="R90"/>
 <attribute name="STANDARD" value="Manufacturer Recommendations" x="180.34" y="82.55" size="1.778" layer="27" rot="R90" display="off"/>
 <attribute name="VALUE" x="90.65" y="34.5" size="1.778" layer="27" rot="R90"/>
 </element>
-<element name="J6" library="Screwless Terminal 6-Pole" package="CUI_TBL004-508-06BE-2GY" value="TBL004-508-06BE-2GY" x="76.2" y="74.93" smashed="yes" rot="R90">
+<element name="SPARE_ANALOG_PWM_I2C" library="Screwless Terminal 6-Pole" package="CUI_TBL004-508-06BE-2GY" value="TBL004-508-06BE-2GY" x="76.2" y="74.93" smashed="yes" rot="R90">
 <attribute name="MANUFACTURER" value="CUI" x="180.34" y="154.94" size="1.778" layer="27" rot="R90" display="off"/>
 <attribute name="NAME" x="73.35" y="71.33" size="1.778" layer="25" rot="R90"/>
 <attribute name="STANDARD" value="Manufacturer Recommendations" x="180.34" y="154.94" size="1.778" layer="27" rot="R90" display="off"/>
 <attribute name="VALUE" x="90.65" y="71.33" size="1.778" layer="27" rot="R90"/>
 </element>
-<element name="J7" library="Screwless Terminal 6-Pole" package="CUI_TBL004-508-06BE-2GY" value="TBL004-508-06BE-2GY" x="76.2" y="109.22" smashed="yes" rot="R90">
+<element name="SPARE_ANALOG_DAC" library="Screwless Terminal 6-Pole" package="CUI_TBL004-508-06BE-2GY" value="TBL004-508-06BE-2GY" x="76.2" y="109.22" smashed="yes" rot="R90">
 <attribute name="MANUFACTURER" value="CUI" x="180.34" y="224.79" size="1.778" layer="27" rot="R90" display="off"/>
 <attribute name="NAME" x="73.35" y="105.62" size="1.778" layer="25" rot="R90"/>
 <attribute name="STANDARD" value="Manufacturer Recommendations" x="180.34" y="224.79" size="1.778" layer="27" rot="R90" display="off"/>
@@ -2482,10 +2560,10 @@ Note, that not all DRC settings must be set by the manufacturer. Several can be 
 <attribute name="SPICEPREFIX" value="R" x="168.91" y="-106.68" size="1.778" layer="27" display="off"/>
 <attribute name="VALUE" x="55.5244" y="42.6974" size="0.9906" layer="27" ratio="10"/>
 </element>
-<element name="U$1" library="Teensy" package="TEENSY_3.5" value="TEENSY_3.5" x="1.27" y="91.44" smashed="yes"/>
-<element name="U$2" library="Teensy" package="TEENSY_3.5" value="TEENSY_3.5" x="1.27" y="72.39" smashed="yes"/>
-<element name="U$32" library="Pololo Dual VNH5019" package="POLOLU_DUAL_VNH5019" value="POLOLU_DUAL_VNH5019" x="19.05" y="1.27" smashed="yes"/>
-<element name="U$57" library="Male Header 2x5 0.05in" package="SHF-105-01-X-D-TH" value="SHF-105-01-X-D-TH" x="3.81" y="132.08" smashed="yes" rot="R270">
+<element name="DAQ" library="Teensy" package="TEENSY_3.5" value="TEENSY_3.5" x="1.27" y="91.44" smashed="yes"/>
+<element name="ECVT" library="Teensy" package="TEENSY_3.5" value="TEENSY_3.5" x="1.27" y="72.39" smashed="yes"/>
+<element name="MOTOR_DRIVER" library="Pololo Dual VNH5019" package="POLOLU_DUAL_VNH5019" value="POLOLU_DUAL_VNH5019" x="19.05" y="1.27" smashed="yes"/>
+<element name="PENC" library="Male Header 2x5 0.05in" package="SHF-105-01-X-D-TH" value="SHF-105-01-X-D-TH" x="3.81" y="132.08" smashed="yes" rot="R270">
 <attribute name="DESCRIPTION" value=" SHF Series .050 Shrouded Terminal Strip For FFSD " x="-132.08" y="22.86" size="1.778" layer="27" rot="R270" display="off"/>
 <attribute name="DIGI-KEY_PART_NUMBER" value="SAM10711-ND" x="-132.08" y="22.86" size="1.778" layer="27" rot="R270" display="off"/>
 <attribute name="DIGI-KEY_PURCHASE_URL" value="https://www.digikey.com/product-detail/en/samtec-inc/SHF-105-01-L-D-TH/SAM10711-ND/6561671?utm_source=snapeda&amp;utm_medium=aggregator&amp;utm_campaign=symbol" x="-132.08" y="22.86" size="1.778" layer="27" rot="R270" display="off"/>
@@ -2495,7 +2573,7 @@ Note, that not all DRC settings must be set by the manufacturer. Several can be 
 <attribute name="PACKAGE" value="None" x="-132.08" y="22.86" size="1.778" layer="27" rot="R270" display="off"/>
 <attribute name="VALUE" x="-0.765209375" y="134.62178125" size="1.270890625" layer="27" rot="R270"/>
 </element>
-<element name="U$58" library="Male Header 2x5 0.05in" package="SHF-105-01-X-D-TH" value="SHF-105-01-X-D-TH" x="3.81" y="116.84" smashed="yes" rot="R270">
+<element name="SENC" library="Male Header 2x5 0.05in" package="SHF-105-01-X-D-TH" value="SHF-105-01-X-D-TH" x="3.81" y="116.84" smashed="yes" rot="R270">
 <attribute name="DESCRIPTION" value=" SHF Series .050 Shrouded Terminal Strip For FFSD " x="-151.13" y="88.9" size="1.778" layer="27" rot="R270" display="off"/>
 <attribute name="DIGI-KEY_PART_NUMBER" value="SAM10711-ND" x="-151.13" y="88.9" size="1.778" layer="27" rot="R270" display="off"/>
 <attribute name="DIGI-KEY_PURCHASE_URL" value="https://www.digikey.com/product-detail/en/samtec-inc/SHF-105-01-L-D-TH/SAM10711-ND/6561671?utm_source=snapeda&amp;utm_medium=aggregator&amp;utm_campaign=symbol" x="-151.13" y="88.9" size="1.778" layer="27" rot="R270" display="off"/>
@@ -2505,7 +2583,7 @@ Note, that not all DRC settings must be set by the manufacturer. Several can be 
 <attribute name="PACKAGE" value="None" x="-151.13" y="88.9" size="1.778" layer="27" rot="R270" display="off"/>
 <attribute name="VALUE" x="-0.765209375" y="119.38178125" size="1.270890625" layer="27" rot="R270"/>
 </element>
-<element name="U1" library="Quad. Diff. Line Receiver" package="D16" value="AM26LS32ACDR" x="12.7" y="125.73" smashed="yes">
+<element name="DIFF_LINE_REC" library="Quad. Diff. Line Receiver" package="D16" value="AM26LS32ACDR" x="12.7" y="125.73" smashed="yes">
 <attribute name="BUILT_BY" value="EMA_UL_Team" x="60.96" y="-29.21" size="1.778" layer="27" display="off"/>
 <attribute name="MANUFACTURER" value="Texas Instruments" x="60.96" y="-29.21" size="1.778" layer="27" display="off"/>
 <attribute name="MANUFACTURER_PART_NUMBER" value="AM26LS32ACDR" x="60.96" y="-29.21" size="1.778" layer="27" display="off"/>
@@ -2513,7 +2591,7 @@ Note, that not all DRC settings must be set by the manufacturer. Several can be 
 <attribute name="VALUE" x="10.9728" y="125.095" size="1.27" layer="21" ratio="6" rot="SR0"/>
 <attribute name="VENDOR" value="Texas Instruments" x="60.96" y="-29.21" size="1.778" layer="27" display="off"/>
 </element>
-<element name="U2" library="Quad. Level Shifter" package="NS16" value="CD40109BNSR" x="31.75" y="38.1" smashed="yes">
+<element name="LEVEL_SHIFT" library="Quad. Level Shifter" package="NS16" value="CD40109BNSR" x="31.75" y="38.1" smashed="yes">
 <attribute name="BUILT_BY" value="EMA_UL_Team" x="120.65" y="-97.79" size="1.778" layer="27" display="off"/>
 <attribute name="MANUFACTURER" value="Texas Instruments" x="120.65" y="-97.79" size="1.778" layer="27" display="off"/>
 <attribute name="MANUFACTURER_PART_NUMBER" value="CD40109BNSR" x="120.65" y="-97.79" size="1.778" layer="27" display="off"/>
@@ -2521,7 +2599,7 @@ Note, that not all DRC settings must be set by the manufacturer. Several can be 
 <attribute name="VALUE" x="30.0228" y="37.465" size="1.27" layer="21" ratio="6" rot="SR0"/>
 <attribute name="VENDOR" value="Texas Instruments" x="120.65" y="-97.79" size="1.778" layer="27" display="off"/>
 </element>
-<element name="XB1" library="Xbee" package="XBEE" value="XBEE" x="50.8" y="124.46" smashed="yes">
+<element name="XBEE" library="Xbee" package="XBEE" value="XBEE" x="50.8" y="124.46" smashed="yes">
 <attribute name="MF" value="" x="129.54" y="109.22" size="1.778" layer="27" display="off"/>
 <attribute name="MPN" value="XBP24-Z7UIT-004" x="129.54" y="109.22" size="1.778" layer="27" display="off"/>
 <attribute name="NAME" x="39.37" y="138.43" size="1.27" layer="25"/>
@@ -2529,7 +2607,7 @@ Note, that not all DRC settings must be set by the manufacturer. Several can be 
 <attribute name="OC_NEWARK" value="34R5507" x="129.54" y="109.22" size="1.778" layer="27" display="off"/>
 <attribute name="VALUE" x="39.37" y="110.49" size="1.27" layer="27"/>
 </element>
-<element name="J1" library="Micro USB" package="CUI_UJ2-MIBH2-4-SMT-TR" value="UJ2-MIBH2-4-SMT-TR" x="19.05" y="137.16" smashed="yes" rot="R180">
+<element name="USB" library="Micro USB" package="CUI_UJ2-MIBH2-4-SMT-TR" value="UJ2-MIBH2-4-SMT-TR" x="19.05" y="137.16" smashed="yes" rot="R180">
 <attribute name="CUI_PURCHASE_URL" value="https://www.cuidevices.com/product/interconnect/connectors/usb-connectors/uj2-mibh2-4-smt?utm_source=snapeda.com&amp;utm_medium=referral&amp;utm_campaign=snapedaBOM" x="19.05" y="137.16" size="1.778" layer="27" rot="R180" display="off"/>
 <attribute name="DESCRIPTION" value="Micro B, USB 2.0, 1.8 A, Right Angle, Surface Mount _SMT_, USB Receptacle" x="19.05" y="137.16" size="1.778" layer="27" rot="R180" display="off"/>
 <attribute name="DIGI-KEY_PART_NUMBER" value="102-4007-1-ND" x="19.05" y="137.16" size="1.778" layer="27" rot="R180" display="off"/>
@@ -2540,78 +2618,78 @@ Note, that not all DRC settings must be set by the manufacturer. Several can be 
 <attribute name="PACKAGE" value="None" x="19.05" y="137.16" size="1.778" layer="27" rot="R180" display="off"/>
 <attribute name="VALUE" x="23.06146875" y="141.151459375" size="0.813096875" layer="27" rot="R180"/>
 </element>
-<element name="R1" library="rcl" library_urn="urn:adsk.eagle:library:334" package="0204/7" package3d_urn="urn:adsk.eagle:package:23498/2" value="" x="25.4" y="55.88" smashed="yes" rot="R180">
-<attribute name="NAME" x="27.94" y="54.5846" size="0.9906" layer="25" ratio="10" rot="R180"/>
-<attribute name="POPULARITY" value="48" x="25.4" y="55.88" size="1.778" layer="27" rot="R180" display="off"/>
-<attribute name="SPICEPREFIX" value="R" x="25.4" y="55.88" size="1.778" layer="27" rot="R180" display="off"/>
-<attribute name="VALUE" x="27.0256" y="56.3626" size="0.9906" layer="27" ratio="10" rot="R180"/>
+<element name="R1" library="rcl" library_urn="urn:adsk.eagle:library:334" package="0204/7" package3d_urn="urn:adsk.eagle:package:23498/2" value="" x="38.1" y="55.88" smashed="yes" rot="R180">
+<attribute name="NAME" x="40.64" y="54.5846" size="0.9906" layer="25" ratio="10" rot="R180"/>
+<attribute name="POPULARITY" value="48" x="38.1" y="55.88" size="1.778" layer="27" rot="R180" display="off"/>
+<attribute name="SPICEPREFIX" value="R" x="38.1" y="55.88" size="1.778" layer="27" rot="R180" display="off"/>
+<attribute name="VALUE" x="39.7256" y="56.3626" size="0.9906" layer="27" ratio="10" rot="R180"/>
 </element>
-<element name="R2" library="rcl" library_urn="urn:adsk.eagle:library:334" package="0204/7" package3d_urn="urn:adsk.eagle:package:23498/2" value="" x="38.1" y="55.88" smashed="yes">
-<attribute name="NAME" x="35.56" y="57.1754" size="0.9906" layer="25" ratio="10"/>
-<attribute name="POPULARITY" value="48" x="38.1" y="55.88" size="1.778" layer="27" display="off"/>
-<attribute name="SPICEPREFIX" value="R" x="38.1" y="55.88" size="1.778" layer="27" display="off"/>
-<attribute name="VALUE" x="36.4744" y="55.3974" size="0.9906" layer="27" ratio="10"/>
+<element name="R2" library="rcl" library_urn="urn:adsk.eagle:library:334" package="0204/7" package3d_urn="urn:adsk.eagle:package:23498/2" value="" x="50.8" y="55.88" smashed="yes">
+<attribute name="NAME" x="48.26" y="57.1754" size="0.9906" layer="25" ratio="10"/>
+<attribute name="POPULARITY" value="48" x="50.8" y="55.88" size="1.778" layer="27" display="off"/>
+<attribute name="SPICEPREFIX" value="R" x="50.8" y="55.88" size="1.778" layer="27" display="off"/>
+<attribute name="VALUE" x="49.1744" y="55.3974" size="0.9906" layer="27" ratio="10"/>
 </element>
-<element name="R3" library="rcl" library_urn="urn:adsk.eagle:library:334" package="0204/7" package3d_urn="urn:adsk.eagle:package:23498/2" value="" x="25.4" y="50.8" smashed="yes">
-<attribute name="NAME" x="22.86" y="52.0954" size="0.9906" layer="25" ratio="10"/>
-<attribute name="POPULARITY" value="48" x="25.4" y="50.8" size="1.778" layer="27" display="off"/>
-<attribute name="SPICEPREFIX" value="R" x="25.4" y="50.8" size="1.778" layer="27" display="off"/>
-<attribute name="VALUE" x="23.7744" y="50.3174" size="0.9906" layer="27" ratio="10"/>
+<element name="R3" library="rcl" library_urn="urn:adsk.eagle:library:334" package="0204/7" package3d_urn="urn:adsk.eagle:package:23498/2" value="" x="38.1" y="50.8" smashed="yes">
+<attribute name="NAME" x="35.56" y="52.0954" size="0.9906" layer="25" ratio="10"/>
+<attribute name="POPULARITY" value="48" x="38.1" y="50.8" size="1.778" layer="27" display="off"/>
+<attribute name="SPICEPREFIX" value="R" x="38.1" y="50.8" size="1.778" layer="27" display="off"/>
+<attribute name="VALUE" x="36.4744" y="50.3174" size="0.9906" layer="27" ratio="10"/>
 </element>
-<element name="R4" library="rcl" library_urn="urn:adsk.eagle:library:334" package="0204/7" package3d_urn="urn:adsk.eagle:package:23498/2" value="" x="38.1" y="50.8" smashed="yes" rot="R180">
-<attribute name="NAME" x="40.64" y="49.5046" size="0.9906" layer="25" ratio="10" rot="R180"/>
-<attribute name="POPULARITY" value="48" x="38.1" y="50.8" size="1.778" layer="27" rot="R180" display="off"/>
-<attribute name="SPICEPREFIX" value="R" x="38.1" y="50.8" size="1.778" layer="27" rot="R180" display="off"/>
-<attribute name="VALUE" x="39.7256" y="51.2826" size="0.9906" layer="27" ratio="10" rot="R180"/>
+<element name="R4" library="rcl" library_urn="urn:adsk.eagle:library:334" package="0204/7" package3d_urn="urn:adsk.eagle:package:23498/2" value="" x="50.8" y="50.8" smashed="yes" rot="R180">
+<attribute name="NAME" x="53.34" y="49.5046" size="0.9906" layer="25" ratio="10" rot="R180"/>
+<attribute name="POPULARITY" value="48" x="50.8" y="50.8" size="1.778" layer="27" rot="R180" display="off"/>
+<attribute name="SPICEPREFIX" value="R" x="50.8" y="50.8" size="1.778" layer="27" rot="R180" display="off"/>
+<attribute name="VALUE" x="52.4256" y="51.2826" size="0.9906" layer="27" ratio="10" rot="R180"/>
 </element>
 </elements>
 <signals>
 <signal name="GND">
-<contactref element="U$1" pad="GND"/>
-<contactref element="U$2" pad="GND"/>
-<contactref element="U$2" pad="GND2"/>
-<contactref element="U$1" pad="GND2"/>
-<contactref element="U$2" pad="AGND"/>
-<contactref element="U$1" pad="AGND"/>
-<contactref element="U$32" pad="GND1"/>
-<contactref element="U$32" pad="GND2"/>
-<contactref element="U$32" pad="GND3"/>
-<contactref element="U$32" pad="GND" route="any" routetag="G$1.GND"/>
-<contactref element="XB1" pad="10"/>
+<contactref element="DAQ" pad="GND"/>
+<contactref element="ECVT" pad="GND"/>
+<contactref element="ECVT" pad="GND2"/>
+<contactref element="DAQ" pad="GND2"/>
+<contactref element="ECVT" pad="AGND"/>
+<contactref element="DAQ" pad="AGND"/>
+<contactref element="MOTOR_DRIVER" pad="GND1"/>
+<contactref element="MOTOR_DRIVER" pad="GND2"/>
+<contactref element="MOTOR_DRIVER" pad="GND3"/>
+<contactref element="MOTOR_DRIVER" pad="GND" route="any" routetag="G$1.GND"/>
+<contactref element="XBEE" pad="10"/>
 <contactref element="C1" pad="2"/>
-<contactref element="CR1" pad="1"/>
+<contactref element="VOLT_REG" pad="1"/>
 <contactref element="C2" pad="2"/>
-<contactref element="U$57" pad="3"/>
-<contactref element="U$58" pad="3"/>
-<contactref element="U1" pad="8"/>
-<contactref element="U1" pad="12"/>
-<contactref element="J2" pad="6_A"/>
-<contactref element="J2" pad="6_B"/>
-<contactref element="J3" pad="6_A"/>
-<contactref element="J3" pad="6_B"/>
-<contactref element="J3" pad="5_A"/>
-<contactref element="J3" pad="5_B"/>
-<contactref element="J4" pad="6_A"/>
-<contactref element="J4" pad="6_B"/>
-<contactref element="J5" pad="6_A"/>
-<contactref element="J5" pad="6_B"/>
-<contactref element="J6" pad="6_A"/>
-<contactref element="J6" pad="6_B"/>
-<contactref element="J7" pad="6_A"/>
-<contactref element="J7" pad="6_B"/>
-<contactref element="U2" pad="8"/>
-<contactref element="U2" pad="7"/>
+<contactref element="PENC" pad="3"/>
+<contactref element="SENC" pad="3"/>
+<contactref element="DIFF_LINE_REC" pad="8"/>
+<contactref element="DIFF_LINE_REC" pad="12"/>
+<contactref element="WHEEL_SPEED" pad="6_A"/>
+<contactref element="WHEEL_SPEED" pad="6_B"/>
+<contactref element="BRAKE_PRESSURE" pad="6_A"/>
+<contactref element="BRAKE_PRESSURE" pad="6_B"/>
+<contactref element="BRAKE_PRESSURE" pad="5_A"/>
+<contactref element="BRAKE_PRESSURE" pad="5_B"/>
+<contactref element="DAQ_BUTTONS_LEDS" pad="6_A"/>
+<contactref element="DAQ_BUTTONS_LEDS" pad="6_B"/>
+<contactref element="ECVT_BUTTONS_LEDS" pad="6_A"/>
+<contactref element="ECVT_BUTTONS_LEDS" pad="6_B"/>
+<contactref element="SPARE_ANALOG_PWM_I2C" pad="6_A"/>
+<contactref element="SPARE_ANALOG_PWM_I2C" pad="6_B"/>
+<contactref element="SPARE_ANALOG_DAC" pad="6_A"/>
+<contactref element="SPARE_ANALOG_DAC" pad="6_B"/>
+<contactref element="LEVEL_SHIFT" pad="8"/>
+<contactref element="LEVEL_SHIFT" pad="7"/>
 <polygon width="0.4064" layer="1" rank="6">
 <vertex x="-1.27" y="-1.27"/>
-<vertex x="255.27" y="-1.27"/>
-<vertex x="255.27" y="255.27"/>
-<vertex x="-1.27" y="255.27"/>
+<vertex x="90.17" y="-1.27"/>
+<vertex x="90.17" y="140.97"/>
+<vertex x="-1.27" y="140.97"/>
 </polygon>
 <polygon width="0.4064" layer="16" rank="6">
 <vertex x="-1.27" y="-1.27"/>
-<vertex x="255.27" y="-1.27"/>
-<vertex x="255.27" y="255.27"/>
-<vertex x="-1.27" y="255.27"/>
+<vertex x="90.17" y="-1.27"/>
+<vertex x="90.17" y="140.97"/>
+<vertex x="-1.27" y="140.97"/>
 </polygon>
 <wire x1="15.0622" y1="125.095" x2="15.3797" y2="125.4125" width="0.4064" layer="1"/>
 <wire x1="15.3797" y1="125.4125" x2="17.78" y2="125.4125" width="0.8128" layer="1"/>
@@ -2619,36 +2697,36 @@ Note, that not all DRC settings must be set by the manufacturer. Several can be 
 <wire x1="10.3378" y1="121.285" x2="9.7028" y2="120.65" width="0.4064" layer="1"/>
 <wire x1="9.7028" y1="120.65" x2="8.89" y2="120.65" width="0.8128" layer="1"/>
 <via x="8.89" y="120.65" extent="1-16" drill="0.35"/>
-<contactref element="J1" pad="5"/>
+<contactref element="USB" pad="5"/>
 <contactref element="R2" pad="2"/>
 <contactref element="R4" pad="1"/>
 </signal>
 <signal name="+3V3">
-<contactref element="U$1" pad="3V3_LO"/>
-<contactref element="U$2" pad="3V3_LO"/>
-<contactref element="U$32" pad="VDD"/>
-<contactref element="U$32" pad="M1EN"/>
-<contactref element="U$32" pad="M2EN"/>
-<contactref element="U$32" pad="3V3" route="any" routetag="G$1.3V3"/>
-<contactref element="XB1" pad="1"/>
-<contactref element="CR1" pad="2"/>
+<contactref element="DAQ" pad="3V3_LO"/>
+<contactref element="ECVT" pad="3V3_LO"/>
+<contactref element="MOTOR_DRIVER" pad="VDD"/>
+<contactref element="MOTOR_DRIVER" pad="M1EN"/>
+<contactref element="MOTOR_DRIVER" pad="M2EN"/>
+<contactref element="MOTOR_DRIVER" pad="3V3" route="any" routetag="G$1.3V3"/>
+<contactref element="XBEE" pad="1"/>
+<contactref element="VOLT_REG" pad="2"/>
 <contactref element="C2" pad="1"/>
-<contactref element="J6" pad="1_A"/>
-<contactref element="J6" pad="1_B"/>
-<contactref element="J7" pad="1_A"/>
-<contactref element="J7" pad="1_B"/>
-<contactref element="U2" pad="1"/>
-<contactref element="U2" pad="15"/>
-<contactref element="U2" pad="9"/>
+<contactref element="SPARE_ANALOG_PWM_I2C" pad="1_A"/>
+<contactref element="SPARE_ANALOG_PWM_I2C" pad="1_B"/>
+<contactref element="SPARE_ANALOG_DAC" pad="1_A"/>
+<contactref element="SPARE_ANALOG_DAC" pad="1_B"/>
+<contactref element="LEVEL_SHIFT" pad="1"/>
+<contactref element="LEVEL_SHIFT" pad="15"/>
+<contactref element="LEVEL_SHIFT" pad="9"/>
 <wire x1="76.2" y1="109.22" x2="83.82" y2="109.22" width="0.8128" layer="1"/>
 <wire x1="76.2" y1="74.93" x2="83.82" y2="74.93" width="0.8128" layer="16"/>
 <wire x1="69.85" y1="68.58" x2="76.2" y2="74.93" width="0.8128" layer="16"/>
 <wire x1="45.974" y1="64.77" x2="45.974" y2="66.294" width="0.8128" layer="16"/>
 <wire x1="45.974" y1="66.294" x2="48.26" y2="68.58" width="0.8128" layer="16"/>
 <wire x1="48.26" y1="68.58" x2="69.85" y2="68.58" width="0.8128" layer="16"/>
-<contactref element="U$1" pad="3V3"/>
-<contactref element="U$2" pad="3V3"/>
-<contactref element="U2" pad="2"/>
+<contactref element="DAQ" pad="3V3"/>
+<contactref element="ECVT" pad="3V3"/>
+<contactref element="LEVEL_SHIFT" pad="2"/>
 <wire x1="31.75" y1="137.414" x2="31.75" y2="135.89" width="0.8128" layer="16"/>
 <wire x1="31.75" y1="129.54" x2="31.75" y2="135.89" width="0.8128" layer="16"/>
 <wire x1="31.75" y1="129.54" x2="13.97" y2="111.76" width="0.8128" layer="16"/>
@@ -2715,23 +2793,23 @@ Note, that not all DRC settings must be set by the manufacturer. Several can be 
 <wire x1="43.18" y1="68.58" x2="48.26" y2="68.58" width="0.8128" layer="16"/>
 </signal>
 <signal name="DAQ_ECVT_MOSI">
-<contactref element="U$1" pad="0/RX"/>
-<contactref element="U$2" pad="0/RX"/>
+<contactref element="DAQ" pad="0/RX"/>
+<contactref element="ECVT" pad="0/RX"/>
 <wire x1="5.08" y1="92.71" x2="3.81" y2="91.44" width="0.4064" layer="1"/>
 <wire x1="3.81" y1="91.44" x2="3.81" y2="74.93" width="0.4064" layer="1"/>
 <wire x1="5.08" y1="73.66" x2="3.81" y2="74.93" width="0.4064" layer="1"/>
 </signal>
 <signal name="DAQ_ECVT_MISO">
-<contactref element="U$1" pad="1/TX"/>
-<contactref element="U$2" pad="1/TX"/>
+<contactref element="DAQ" pad="1/TX"/>
+<contactref element="ECVT" pad="1/TX"/>
 <wire x1="7.62" y1="92.71" x2="6.35" y2="91.44" width="0.4064" layer="1"/>
 <wire x1="7.62" y1="73.66" x2="6.35" y2="74.93" width="0.4064" layer="1"/>
 <wire x1="6.35" y1="91.44" x2="6.35" y2="74.93" width="0.4064" layer="1"/>
 </signal>
 <signal name="LOGGER_BUTTON">
-<contactref element="U$1" pad="2"/>
-<contactref element="J4" pad="3_A"/>
-<contactref element="J4" pad="3_B"/>
+<contactref element="DAQ" pad="2"/>
+<contactref element="DAQ_BUTTONS_LEDS" pad="3_A"/>
+<contactref element="DAQ_BUTTONS_LEDS" pad="3_B"/>
 <wire x1="76.2" y1="13.97" x2="83.82" y2="13.97" width="0.8128" layer="16"/>
 <wire x1="10.16" y1="92.71" x2="13.97" y2="96.52" width="0.4064" layer="1"/>
 <wire x1="29.21" y1="96.52" x2="31.75" y2="93.98" width="0.4064" layer="1"/>
@@ -2752,9 +2830,9 @@ Note, that not all DRC settings must be set by the manufacturer. Several can be 
 <wire x1="73.66" y1="71.12" x2="80.01" y2="71.12" width="0.4064" layer="1"/>
 </signal>
 <signal name="MARKER_BUTTON">
-<contactref element="U$1" pad="3/CANTX"/>
-<contactref element="J4" pad="4_A"/>
-<contactref element="J4" pad="4_B"/>
+<contactref element="DAQ" pad="3/CANTX"/>
+<contactref element="DAQ_BUTTONS_LEDS" pad="4_A"/>
+<contactref element="DAQ_BUTTONS_LEDS" pad="4_B"/>
 <wire x1="76.2" y1="19.05" x2="83.82" y2="19.05" width="0.8128" layer="16"/>
 <wire x1="12.7" y1="92.71" x2="15.24" y2="95.25" width="0.4064" layer="1"/>
 <wire x1="27.94" y1="95.25" x2="15.24" y2="95.25" width="0.4064" layer="1"/>
@@ -2775,8 +2853,8 @@ Note, that not all DRC settings must be set by the manufacturer. Several can be 
 <wire x1="72.39" y1="69.85" x2="80.01" y2="69.85" width="0.4064" layer="1"/>
 </signal>
 <signal name="LOGGING_STATUS_LED">
-<contactref element="U$1" pad="4/CANRX"/>
-<contactref element="U2" pad="3"/>
+<contactref element="DAQ" pad="4/CANRX"/>
+<contactref element="LEVEL_SHIFT" pad="3"/>
 <wire x1="7.62" y1="46.99" x2="11.43" y2="43.18" width="0.4064" layer="1"/>
 <wire x1="7.62" y1="71.12" x2="8.89" y2="72.39" width="0.4064" layer="1"/>
 <wire x1="8.89" y1="72.39" x2="8.89" y2="90.17" width="0.4064" layer="1"/>
@@ -2789,10 +2867,10 @@ Note, that not all DRC settings must be set by the manufacturer. Several can be 
 <wire x1="11.43" y1="43.18" x2="24.60500625" y2="43.18" width="0.4064" layer="1"/>
 </signal>
 <signal name="ENGINE_SPEED">
-<contactref element="U$1" pad="5"/>
-<contactref element="U$2" pad="5"/>
-<contactref element="J2" pad="2_A"/>
-<contactref element="J2" pad="2_B"/>
+<contactref element="DAQ" pad="5"/>
+<contactref element="ECVT" pad="5"/>
+<contactref element="WHEEL_SPEED" pad="2_A"/>
+<contactref element="WHEEL_SPEED" pad="2_B"/>
 <wire x1="5.08" y1="26.67" x2="12.7" y2="26.67" width="0.8128" layer="1"/>
 <wire x1="17.78" y1="73.66" x2="16.51" y2="72.39" width="0.4064" layer="16"/>
 <wire x1="16.51" y1="72.39" x2="16.51" y2="30.48" width="0.4064" layer="16"/>
@@ -2804,10 +2882,10 @@ Note, that not all DRC settings must be set by the manufacturer. Several can be 
 <wire x1="17.78" y1="73.66" x2="15.24" y2="76.2" width="0.4064" layer="16"/>
 </signal>
 <signal name="RWHEELS_SPEED">
-<contactref element="U$1" pad="6"/>
-<contactref element="U$2" pad="6"/>
-<contactref element="J2" pad="3_A"/>
-<contactref element="J2" pad="3_B"/>
+<contactref element="DAQ" pad="6"/>
+<contactref element="ECVT" pad="6"/>
+<contactref element="WHEEL_SPEED" pad="3_A"/>
+<contactref element="WHEEL_SPEED" pad="3_B"/>
 <wire x1="5.08" y1="21.59" x2="12.7" y2="21.59" width="0.8128" layer="1"/>
 <wire x1="17.78" y1="66.04" x2="20.330875" y2="68.590875" width="0.4064" layer="16"/>
 <wire x1="17.78" y1="66.04" x2="17.78" y2="26.67" width="0.4064" layer="16"/>
@@ -2822,16 +2900,16 @@ Note, that not all DRC settings must be set by the manufacturer. Several can be 
 <wire x1="22.86" y1="83.82" x2="22.86" y2="77.44825" width="0.4064" layer="16"/>
 </signal>
 <signal name="DAQ_XBEE_RX">
-<contactref element="U$1" pad="7"/>
-<contactref element="XB1" pad="2"/>
+<contactref element="DAQ" pad="7"/>
+<contactref element="XBEE" pad="2"/>
 <wire x1="39.8" y1="131.46" x2="31.75" y2="123.41" width="0.4064" layer="16"/>
 <wire x1="31.75" y1="106.68" x2="22.86" y2="97.79" width="0.4064" layer="16"/>
 <wire x1="22.86" y1="97.79" x2="22.86" y2="92.71" width="0.4064" layer="16"/>
 <wire x1="31.75" y1="123.41" x2="31.75" y2="106.68" width="0.4064" layer="16"/>
 </signal>
 <signal name="DAQ_XBEE_TX">
-<contactref element="U$1" pad="8"/>
-<contactref element="XB1" pad="3"/>
+<contactref element="DAQ" pad="8"/>
+<contactref element="XBEE" pad="3"/>
 <wire x1="39.8" y1="129.46" x2="34.29" y2="123.95" width="0.4064" layer="16"/>
 <wire x1="34.29" y1="106.68" x2="34.29" y2="123.95" width="0.4064" layer="16"/>
 <wire x1="25.4" y1="92.71" x2="25.4" y2="97.79" width="0.4064" layer="16"/>
@@ -2842,8 +2920,8 @@ Note, that not all DRC settings must be set by the manufacturer. Several can be 
 <wire x1="26.67" y1="100.33" x2="31.75" y2="105.41" width="0.4064" layer="16"/>
 </signal>
 <signal name="DAQ_ECVT_RX">
-<contactref element="U$1" pad="9/CS"/>
-<contactref element="U$2" pad="10/CS"/>
+<contactref element="DAQ" pad="9/CS"/>
+<contactref element="ECVT" pad="10/CS"/>
 <wire x1="29.21" y1="90.17" x2="27.94" y2="91.44" width="0.4064" layer="16"/>
 <wire x1="27.94" y1="92.71" x2="27.94" y2="91.44" width="0.4064" layer="16"/>
 <wire x1="29.21" y1="90.17" x2="29.21" y2="86.36" width="0.4064" layer="16"/>
@@ -2851,8 +2929,8 @@ Note, that not all DRC settings must be set by the manufacturer. Several can be 
 <wire x1="30.48" y1="85.09" x2="29.21" y2="86.36" width="0.4064" layer="16"/>
 </signal>
 <signal name="DAQ_ECVT_TX">
-<contactref element="U$1" pad="10/CS"/>
-<contactref element="U$2" pad="9/CS"/>
+<contactref element="DAQ" pad="10/CS"/>
+<contactref element="ECVT" pad="9/CS"/>
 <wire x1="29.21" y1="85.09" x2="29.21" y2="76.2" width="0.4064" layer="16"/>
 <via x="29.21" y="85.09" extent="1-16" drill="0.35"/>
 <wire x1="31.75" y1="90.17" x2="30.48" y2="91.44" width="0.4064" layer="1"/>
@@ -2864,10 +2942,10 @@ Note, that not all DRC settings must be set by the manufacturer. Several can be 
 <wire x1="27.94" y1="74.93" x2="27.94" y2="73.66" width="0.4064" layer="1"/>
 </signal>
 <signal name="FLWHEEL_SPEED">
-<contactref element="U$1" pad="29"/>
-<contactref element="U$2" pad="29"/>
-<contactref element="J2" pad="4_A"/>
-<contactref element="J2" pad="4_B"/>
+<contactref element="DAQ" pad="29"/>
+<contactref element="ECVT" pad="29"/>
+<contactref element="WHEEL_SPEED" pad="4_A"/>
+<contactref element="WHEEL_SPEED" pad="4_B"/>
 <wire x1="5.08" y1="16.51" x2="12.7" y2="16.51" width="0.8128" layer="1"/>
 <polygon width="0.4064" layer="1">
 <vertex x="52.07" y="72.39"/>
@@ -2877,18 +2955,19 @@ Note, that not all DRC settings must be set by the manufacturer. Several can be 
 </polygon>
 <wire x1="16.51" y1="20.32" x2="16.51" y2="24.13" width="0.4064" layer="16"/>
 <wire x1="16.51" y1="20.32" x2="12.7" y2="16.51" width="0.4064" layer="16"/>
-<wire x1="28.0162" y1="26.7462" x2="53.34" y2="52.07" width="0.4064" layer="16"/>
+<wire x1="28.0162" y1="26.7462" x2="49.53" y2="48.26" width="0.4064" layer="16"/>
 <wire x1="53.34" y1="73.66" x2="53.34" y2="64.77" width="0.4064" layer="1"/>
 <via x="53.34" y="64.77" extent="1-16" drill="0.35"/>
-<wire x1="53.34" y1="64.77" x2="53.34" y2="52.07" width="0.4064" layer="16"/>
+<wire x1="53.34" y1="64.77" x2="49.53" y2="60.96" width="0.4064" layer="16"/>
+<wire x1="49.53" y1="60.96" x2="49.53" y2="48.26" width="0.4064" layer="16"/>
 <wire x1="16.51" y1="24.13" x2="19.1262" y2="26.7462" width="0.4064" layer="16"/>
 <wire x1="19.1262" y1="26.7462" x2="28.0162" y2="26.7462" width="0.4064" layer="16"/>
 </signal>
 <signal name="FRWHEEL_SPEED">
-<contactref element="U$1" pad="30"/>
-<contactref element="U$2" pad="30"/>
-<contactref element="J2" pad="5_A"/>
-<contactref element="J2" pad="5_B"/>
+<contactref element="DAQ" pad="30"/>
+<contactref element="ECVT" pad="30"/>
+<contactref element="WHEEL_SPEED" pad="5_A"/>
+<contactref element="WHEEL_SPEED" pad="5_B"/>
 <wire x1="5.08" y1="11.43" x2="12.7" y2="11.43" width="0.8128" layer="1"/>
 <wire x1="17.78" y1="22.86" x2="17.78" y2="16.51" width="0.4064" layer="16"/>
 <wire x1="17.78" y1="16.51" x2="12.7" y2="11.43" width="0.4064" layer="16"/>
@@ -2900,14 +2979,15 @@ Note, that not all DRC settings must be set by the manufacturer. Several can be 
 </polygon>
 <wire x1="55.88" y1="73.66" x2="55.88" y2="64.77" width="0.4064" layer="1"/>
 <via x="55.88" y="64.77" extent="1-16" drill="0.35"/>
-<wire x1="55.88" y1="52.07" x2="55.88" y2="64.77" width="0.4064" layer="16"/>
+<wire x1="52.07" y1="60.96" x2="52.07" y2="48.26" width="0.4064" layer="16"/>
+<wire x1="52.07" y1="60.96" x2="55.88" y2="64.77" width="0.4064" layer="16"/>
 <wire x1="17.78" y1="22.86" x2="19.4818" y2="24.5618" width="0.4064" layer="16"/>
 <wire x1="19.4818" y1="24.5618" x2="28.3718" y2="24.5618" width="0.4064" layer="16"/>
-<wire x1="28.3718" y1="24.5618" x2="55.88" y2="52.07" width="0.4064" layer="16"/>
+<wire x1="28.3718" y1="24.5618" x2="52.07" y2="48.26" width="0.4064" layer="16"/>
 </signal>
 <signal name="DAQ_ECVT_CS">
-<contactref element="U$1" pad="31/A12"/>
-<contactref element="U$2" pad="31/A12"/>
+<contactref element="DAQ" pad="31/A12"/>
+<contactref element="ECVT" pad="31/A12"/>
 <polygon width="0.4064" layer="1" rank="3">
 <vertex x="57.15" y="72.39"/>
 <vertex x="59.69" y="72.39"/>
@@ -2916,8 +2996,8 @@ Note, that not all DRC settings must be set by the manufacturer. Several can be 
 </polygon>
 </signal>
 <signal name="DAQ_ECVT_SCK">
-<contactref element="U$1" pad="32/A13"/>
-<contactref element="U$2" pad="32/A13"/>
+<contactref element="DAQ" pad="32/A13"/>
+<contactref element="ECVT" pad="32/A13"/>
 <polygon width="0.4064" layer="1" rank="4">
 <vertex x="59.69" y="72.39"/>
 <vertex x="62.23" y="72.39"/>
@@ -2926,49 +3006,48 @@ Note, that not all DRC settings must be set by the manufacturer. Several can be 
 </polygon>
 </signal>
 <signal name="RBRAKE_PRESSURE">
-<contactref element="U$1" pad="33/A14"/>
-<contactref element="U$2" pad="33/A14"/>
+<contactref element="DAQ" pad="33/A14"/>
+<contactref element="ECVT" pad="33/A14"/>
 <polygon width="0.4064" layer="16" rank="2">
 <vertex x="59.69" y="87.63"/>
 <vertex x="62.23" y="87.63"/>
 <vertex x="62.23" y="109.22"/>
 <vertex x="59.69" y="109.22"/>
 </polygon>
-<wire x1="59.69" y1="58.42" x2="64.77" y2="63.5" width="0.4064" layer="1"/>
-<wire x1="46.99" y1="58.42" x2="59.69" y2="58.42" width="0.4064" layer="1"/>
-<wire x1="64.77" y1="63.5" x2="64.77" y2="85.09" width="0.4064" layer="1"/>
-<via x="64.77" y="85.09" extent="1-16" drill="0.35"/>
-<wire x1="64.77" y1="85.09" x2="60.96" y2="88.9" width="0.4064" layer="16"/>
+<wire x1="53.34" y1="52.07" x2="64.77" y2="63.5" width="0.4064" layer="1"/>
+<wire x1="48.26" y1="52.07" x2="53.34" y2="52.07" width="0.4064" layer="1"/>
+<wire x1="64.77" y1="85.09" x2="64.77" y2="63.5" width="0.4064" layer="1"/>
+<wire x1="64.77" y1="85.09" x2="63.5" y2="86.36" width="0.4064" layer="1"/>
+<via x="63.5" y="86.36" extent="1-16" drill="0.35"/>
+<wire x1="63.5" y1="86.36" x2="60.96" y2="88.9" width="0.4064" layer="16"/>
 <contactref element="R3" pad="2"/>
 <contactref element="R4" pad="2"/>
-<wire x1="29.21" y1="50.8" x2="34.29" y2="50.8" width="0.4064" layer="1"/>
-<wire x1="34.29" y1="50.8" x2="36.83" y2="53.34" width="0.4064" layer="1"/>
-<wire x1="41.91" y1="53.34" x2="46.99" y2="58.42" width="0.4064" layer="1"/>
-<wire x1="36.83" y1="53.34" x2="41.91" y2="53.34" width="0.4064" layer="1"/>
+<wire x1="41.91" y1="50.8" x2="46.99" y2="50.8" width="0.4064" layer="1"/>
+<wire x1="46.99" y1="50.8" x2="48.26" y2="52.07" width="0.4064" layer="1"/>
 </signal>
 <signal name="FBRAKE_PRESSURE">
-<contactref element="U$1" pad="34/A15"/>
-<contactref element="U$2" pad="34/A15"/>
+<contactref element="DAQ" pad="34/A15"/>
+<contactref element="ECVT" pad="34/A15"/>
 <polygon width="0.4064" layer="16">
 <vertex x="57.15" y="109.22"/>
 <vertex x="57.15" y="87.63"/>
 <vertex x="59.69" y="87.63"/>
 <vertex x="59.69" y="109.22"/>
 </polygon>
-<wire x1="38.1" y1="59.69" x2="58.42" y2="59.69" width="0.4064" layer="1"/>
-<wire x1="58.42" y1="59.69" x2="63.5" y2="64.77" width="0.4064" layer="1"/>
+<wire x1="48.26" y1="57.15" x2="55.88" y2="57.15" width="0.4064" layer="1"/>
+<wire x1="55.88" y1="57.15" x2="63.5" y2="64.77" width="0.4064" layer="1"/>
 <wire x1="63.5" y1="64.77" x2="63.5" y2="83.82" width="0.4064" layer="1"/>
 <via x="63.5" y="83.82" extent="1-16" drill="0.35"/>
 <wire x1="63.5" y1="83.82" x2="58.42" y2="88.9" width="0.4064" layer="16"/>
 <contactref element="R1" pad="1"/>
 <contactref element="R2" pad="1"/>
-<wire x1="29.21" y1="55.88" x2="34.29" y2="55.88" width="0.4064" layer="1"/>
-<wire x1="34.29" y1="55.88" x2="38.1" y2="59.69" width="0.4064" layer="1"/>
+<wire x1="41.91" y1="55.88" x2="46.99" y2="55.88" width="0.4064" layer="1"/>
+<wire x1="46.99" y1="55.88" x2="48.26" y2="57.15" width="0.4064" layer="1"/>
 </signal>
 <signal name="DAQ_SPARE_A16_PWM">
-<contactref element="U$1" pad="35/A16"/>
-<contactref element="J6" pad="2_A"/>
-<contactref element="J6" pad="2_B"/>
+<contactref element="DAQ" pad="35/A16"/>
+<contactref element="SPARE_ANALOG_PWM_I2C" pad="2_A"/>
+<contactref element="SPARE_ANALOG_PWM_I2C" pad="2_B"/>
 <wire x1="76.2" y1="80.01" x2="83.82" y2="80.01" width="0.8128" layer="16"/>
 <wire x1="55.88" y1="107.95" x2="61.595" y2="102.235" width="0.4064" layer="1"/>
 <wire x1="61.595" y1="102.235" x2="76.835" y2="102.235" width="0.4064" layer="1"/>
@@ -2977,9 +3056,9 @@ Note, that not all DRC settings must be set by the manufacturer. Several can be 
 <wire x1="80.645" y1="98.425" x2="80.645" y2="84.455" width="0.4064" layer="1"/>
 </signal>
 <signal name="DAQ_SPARE_A17_PWM">
-<contactref element="U$1" pad="36/A17"/>
-<contactref element="J6" pad="3_A"/>
-<contactref element="J6" pad="3_B"/>
+<contactref element="DAQ" pad="36/A17"/>
+<contactref element="SPARE_ANALOG_PWM_I2C" pad="3_A"/>
+<contactref element="SPARE_ANALOG_PWM_I2C" pad="3_B"/>
 <wire x1="76.2" y1="85.09" x2="83.82" y2="85.09" width="0.8128" layer="16"/>
 <wire x1="53.34" y1="107.95" x2="62.865" y2="98.425" width="0.4064" layer="1"/>
 <wire x1="62.865" y1="98.425" x2="76.835" y2="98.425" width="0.4064" layer="1"/>
@@ -2988,9 +3067,9 @@ Note, that not all DRC settings must be set by the manufacturer. Several can be 
 <wire x1="79.375" y1="88.265" x2="76.2" y2="85.09" width="0.4064" layer="1"/>
 </signal>
 <signal name="DAQ_SPARE_A18_PWM_SCL">
-<contactref element="U$1" pad="37/A18"/>
-<contactref element="J6" pad="4_A"/>
-<contactref element="J6" pad="4_B"/>
+<contactref element="DAQ" pad="37/A18"/>
+<contactref element="SPARE_ANALOG_PWM_I2C" pad="4_A"/>
+<contactref element="SPARE_ANALOG_PWM_I2C" pad="4_B"/>
 <wire x1="76.2" y1="90.17" x2="83.82" y2="90.17" width="0.8128" layer="16"/>
 <wire x1="50.8" y1="107.95" x2="61.595" y2="97.155" width="0.4064" layer="1"/>
 <wire x1="61.595" y1="97.155" x2="76.835" y2="97.155" width="0.4064" layer="1"/>
@@ -2999,26 +3078,26 @@ Note, that not all DRC settings must be set by the manufacturer. Several can be 
 <wire x1="78.105" y1="92.075" x2="76.2" y2="90.17" width="0.4064" layer="1"/>
 </signal>
 <signal name="DAQ_SPARE_A19_PWM_SDA">
-<contactref element="U$1" pad="38/A19"/>
-<contactref element="J6" pad="5_A"/>
-<contactref element="J6" pad="5_B"/>
+<contactref element="DAQ" pad="38/A19"/>
+<contactref element="SPARE_ANALOG_PWM_I2C" pad="5_A"/>
+<contactref element="SPARE_ANALOG_PWM_I2C" pad="5_B"/>
 <wire x1="76.2" y1="95.25" x2="83.82" y2="95.25" width="0.8128" layer="16"/>
 <wire x1="48.26" y1="107.95" x2="60.96" y2="95.25" width="0.4064" layer="1"/>
 <wire x1="60.96" y1="95.25" x2="76.2" y2="95.25" width="0.4064" layer="1"/>
 </signal>
-<signal name="DAQ_SPARE_DAC0">
-<contactref element="U$1" pad="21/DAC0"/>
-<contactref element="J7" pad="2_A"/>
-<contactref element="J7" pad="2_B"/>
+<signal name="DAQ_SPARE_A21_DAC0">
+<contactref element="DAQ" pad="21/DAC0"/>
+<contactref element="SPARE_ANALOG_DAC" pad="2_A"/>
+<contactref element="SPARE_ANALOG_DAC" pad="2_B"/>
 <wire x1="76.2" y1="114.3" x2="83.82" y2="114.3" width="0.8128" layer="1"/>
 <wire x1="44.45" y1="109.22" x2="43.18" y2="107.95" width="0.4064" layer="1"/>
 <wire x1="44.45" y1="109.22" x2="71.12" y2="109.22" width="0.4064" layer="1"/>
 <wire x1="71.12" y1="109.22" x2="76.2" y2="114.3" width="0.4064" layer="1"/>
 </signal>
-<signal name="DAQ_SPARE_DAC1">
-<contactref element="U$1" pad="A22/DAC1"/>
-<contactref element="J7" pad="3_A"/>
-<contactref element="J7" pad="3_B"/>
+<signal name="DAQ_SPARE_A22_DAC1">
+<contactref element="DAQ" pad="A22/DAC1"/>
+<contactref element="SPARE_ANALOG_DAC" pad="3_A"/>
+<contactref element="SPARE_ANALOG_DAC" pad="3_B"/>
 <wire x1="76.2" y1="119.38" x2="83.82" y2="119.38" width="0.8128" layer="1"/>
 <wire x1="43.18" y1="110.49" x2="40.64" y2="107.95" width="0.4064" layer="1"/>
 <wire x1="43.18" y1="110.49" x2="69.85" y2="110.49" width="0.4064" layer="1"/>
@@ -3027,8 +3106,8 @@ Note, that not all DRC settings must be set by the manufacturer. Several can be 
 <wire x1="74.93" y1="115.57" x2="69.85" y2="110.49" width="0.4064" layer="1"/>
 </signal>
 <signal name="DAQ_XBEE_SCK">
-<contactref element="U$1" pad="14/A0"/>
-<contactref element="XB1" pad="18"/>
+<contactref element="DAQ" pad="14/A0"/>
+<contactref element="XBEE" pad="18"/>
 <wire x1="35.56" y1="113.03" x2="33.02" y2="110.49" width="0.4064" layer="1"/>
 <wire x1="33.02" y1="107.95" x2="33.02" y2="110.49" width="0.4064" layer="1"/>
 <wire x1="57.99" y1="129.46" x2="61.8" y2="129.46" width="0.4064" layer="1"/>
@@ -3036,8 +3115,8 @@ Note, that not all DRC settings must be set by the manufacturer. Several can be 
 <wire x1="35.56" y1="113.03" x2="41.56" y2="113.03" width="0.4064" layer="1"/>
 </signal>
 <signal name="DAQ_XBEE_CS">
-<contactref element="U$1" pad="15/A1"/>
-<contactref element="XB1" pad="17"/>
+<contactref element="DAQ" pad="15/A1"/>
+<contactref element="XBEE" pad="17"/>
 <wire x1="61.8" y1="127.46" x2="57.99" y2="127.46" width="0.4064" layer="1"/>
 <wire x1="57.99" y1="127.46" x2="52.45" y2="121.92" width="0.4064" layer="1"/>
 <via x="52.45" y="121.92" extent="1-16" drill="0.35"/>
@@ -3049,50 +3128,50 @@ Note, that not all DRC settings must be set by the manufacturer. Several can be 
 <wire x1="30.48" y1="110.49" x2="30.48" y2="107.95" width="0.4064" layer="1"/>
 </signal>
 <signal name="LAUNCH_CONTROL_BUTTON">
-<contactref element="U$2" pad="2"/>
-<contactref element="J5" pad="3_A"/>
-<contactref element="J5" pad="3_B"/>
+<contactref element="ECVT" pad="2"/>
+<contactref element="ECVT_BUTTONS_LEDS" pad="3_A"/>
+<contactref element="ECVT_BUTTONS_LEDS" pad="3_B"/>
 <wire x1="76.2" y1="48.26" x2="83.82" y2="48.26" width="0.8128" layer="1"/>
 <wire x1="15.24" y1="67.31" x2="15.24" y2="68.58" width="0.4064" layer="16"/>
 <wire x1="15.24" y1="68.58" x2="10.16" y2="73.66" width="0.4064" layer="16"/>
 <via x="15.24" y="67.31" extent="1-16" drill="0.35"/>
-<wire x1="15.24" y1="67.31" x2="21.59" y2="60.96" width="0.4064" layer="1"/>
-<wire x1="57.15" y1="60.96" x2="21.59" y2="60.96" width="0.4064" layer="1"/>
-<via x="57.15" y="60.96" extent="1-16" drill="0.35"/>
-<wire x1="57.15" y1="60.96" x2="63.5" y2="60.96" width="0.4064" layer="16"/>
-<wire x1="63.5" y1="60.96" x2="76.2" y2="48.26" width="0.4064" layer="16"/>
+<wire x1="15.24" y1="67.31" x2="20.32" y2="62.23" width="0.4064" layer="1"/>
+<wire x1="57.15" y1="62.23" x2="20.32" y2="62.23" width="0.4064" layer="1"/>
+<via x="57.15" y="62.23" extent="1-16" drill="0.35"/>
+<wire x1="57.15" y1="62.23" x2="62.23" y2="62.23" width="0.4064" layer="16"/>
+<wire x1="62.23" y1="62.23" x2="76.2" y2="48.26" width="0.4064" layer="16"/>
 </signal>
 <signal name="UPSHIFT_LED">
-<contactref element="U$2" pad="3/CANTX"/>
-<contactref element="U2" pad="14"/>
-<wire x1="38.1" y1="43.815" x2="38.1" y2="41.7068" width="0.4064" layer="1"/>
+<contactref element="ECVT" pad="3/CANTX"/>
+<contactref element="LEVEL_SHIFT" pad="14"/>
+<wire x1="39.37" y1="43.815" x2="39.37" y2="42.9768" width="0.4064" layer="1"/>
 <wire x1="35.1282" y1="40.005" x2="36.3982" y2="40.005" width="0.4064" layer="1"/>
-<wire x1="38.1" y1="41.7068" x2="36.3982" y2="40.005" width="0.4064" layer="1"/>
-<wire x1="38.1" y1="43.815" x2="34.29" y2="47.625" width="0.4064" layer="1"/>
-<wire x1="34.29" y1="47.625" x2="12.065" y2="47.625" width="0.4064" layer="1"/>
+<wire x1="39.37" y1="42.9768" x2="36.3982" y2="40.005" width="0.4064" layer="1"/>
+<wire x1="39.37" y1="43.815" x2="35.56" y2="47.625" width="0.4064" layer="1"/>
+<wire x1="35.56" y1="47.625" x2="12.065" y2="47.625" width="0.4064" layer="1"/>
 <wire x1="9.525" y1="50.165" x2="9.525" y2="70.485" width="0.4064" layer="1"/>
 <wire x1="12.7" y1="73.66" x2="9.525" y2="70.485" width="0.4064" layer="1"/>
 <wire x1="9.525" y1="50.165" x2="12.065" y2="47.625" width="0.4064" layer="1"/>
 </signal>
-<signal name="BACKSHIFT_LED">
-<contactref element="U$2" pad="4/CANRX"/>
-<contactref element="U2" pad="10"/>
+<signal name="BKSHIFT_LED">
+<contactref element="ECVT" pad="4/CANRX"/>
+<contactref element="LEVEL_SHIFT" pad="10"/>
 <wire x1="10.795" y1="50.165" x2="10.795" y2="69.215" width="0.4064" layer="1"/>
 <wire x1="10.795" y1="69.215" x2="15.24" y2="73.66" width="0.4064" layer="1"/>
 <wire x1="35.1282" y1="34.925" x2="33.655" y2="34.925" width="0.4064" layer="1"/>
 <wire x1="33.655" y1="34.925" x2="33.02" y2="35.56" width="0.4064" layer="1"/>
 <wire x1="33.02" y1="35.56" x2="33.02" y2="38.48859375" width="0.4064" layer="1"/>
 <wire x1="33.90140625" y1="39.37" x2="33.02" y2="38.48859375" width="0.4064" layer="1"/>
-<wire x1="12.065" y1="48.895" x2="34.925" y2="48.895" width="0.4064" layer="1"/>
-<wire x1="34.925" y1="48.895" x2="39.37" y2="44.45" width="0.4064" layer="1"/>
-<wire x1="39.37" y1="44.45" x2="39.37" y2="40.64" width="0.4064" layer="1"/>
-<wire x1="39.37" y1="40.64" x2="38.1" y2="39.37" width="0.4064" layer="1"/>
+<wire x1="12.065" y1="48.895" x2="36.195" y2="48.895" width="0.4064" layer="1"/>
+<wire x1="36.195" y1="48.895" x2="40.64" y2="44.45" width="0.4064" layer="1"/>
+<wire x1="40.64" y1="44.45" x2="40.64" y2="41.91" width="0.4064" layer="1"/>
+<wire x1="40.64" y1="41.91" x2="38.1" y2="39.37" width="0.4064" layer="1"/>
 <wire x1="38.1" y1="39.37" x2="33.90140625" y2="39.37" width="0.4064" layer="1"/>
 <wire x1="10.795" y1="50.165" x2="12.065" y2="48.895" width="0.4064" layer="1"/>
 </signal>
 <signal name="DAQ_XBEE_MOSI">
-<contactref element="U$1" pad="11/MOSI"/>
-<contactref element="XB1" pad="11"/>
+<contactref element="DAQ" pad="11/MOSI"/>
+<contactref element="XBEE" pad="11"/>
 <wire x1="61.8" y1="115.46" x2="45.61" y2="115.46" width="0.4064" layer="16"/>
 <wire x1="45.61" y1="115.46" x2="39.37" y2="109.22" width="0.4064" layer="16"/>
 <wire x1="39.37" y1="105.41" x2="33.02" y2="99.06" width="0.4064" layer="16"/>
@@ -3100,8 +3179,8 @@ Note, that not all DRC settings must be set by the manufacturer. Several can be 
 <wire x1="39.37" y1="109.22" x2="39.37" y2="105.41" width="0.4064" layer="16"/>
 </signal>
 <signal name="DAQ_XBEE_MISO">
-<contactref element="U$1" pad="12/MISO"/>
-<contactref element="XB1" pad="4"/>
+<contactref element="DAQ" pad="12/MISO"/>
+<contactref element="XBEE" pad="4"/>
 <wire x1="39.8" y1="127.46" x2="36.83" y2="124.49" width="0.4064" layer="16"/>
 <via x="36.83" y="104.14" extent="1-16" drill="0.35"/>
 <wire x1="36.83" y1="104.14" x2="36.83" y2="101.6" width="0.4064" layer="1"/>
@@ -3111,18 +3190,18 @@ Note, that not all DRC settings must be set by the manufacturer. Several can be 
 <wire x1="35.56" y1="99.06" x2="35.56" y2="92.71" width="0.4064" layer="16"/>
 <wire x1="36.83" y1="124.49" x2="36.83" y2="104.14" width="0.4064" layer="16"/>
 </signal>
-<signal name="S_MOT_PWM">
-<contactref element="U$2" pad="23/A9"/>
-<contactref element="U$32" pad="M2PWM"/>
+<signal name="SMOT_PWM">
+<contactref element="ECVT" pad="23/A9"/>
+<contactref element="MOTOR_DRIVER" pad="M2PWM"/>
 <wire x1="10.16" y1="88.9" x2="11.43" y2="87.63" width="0.4064" layer="1"/>
 <wire x1="11.43" y1="87.63" x2="11.43" y2="82.55" width="0.4064" layer="1"/>
 <wire x1="19.05" y1="68.834" x2="23.114" y2="64.77" width="0.4064" layer="1"/>
 <wire x1="11.43" y1="82.55" x2="19.05" y2="74.93" width="0.4064" layer="1"/>
 <wire x1="19.05" y1="74.93" x2="19.05" y2="68.834" width="0.4064" layer="1"/>
 </signal>
-<signal name="P_MOT_PWM">
-<contactref element="U$2" pad="22/A8"/>
-<contactref element="U$32" pad="M1PWM"/>
+<signal name="PMOT_PWM">
+<contactref element="ECVT" pad="22/A8"/>
+<contactref element="MOTOR_DRIVER" pad="M1PWM"/>
 <wire x1="12.7" y1="88.9" x2="13.97" y2="87.63" width="0.4064" layer="1"/>
 <wire x1="16.51" y1="81.28" x2="13.97" y2="83.82" width="0.4064" layer="1"/>
 <via x="16.51" y="81.28" extent="1-16" drill="0.35"/>
@@ -3135,9 +3214,9 @@ Note, that not all DRC settings must be set by the manufacturer. Several can be 
 <wire x1="35.56" y1="64.77" x2="35.814" y2="64.77" width="0.4064" layer="1"/>
 <wire x1="13.97" y1="87.63" x2="13.97" y2="83.82" width="0.4064" layer="1"/>
 </signal>
-<signal name="S_MOT_INB">
-<contactref element="U$2" pad="21/A7"/>
-<contactref element="U$32" pad="M2INB"/>
+<signal name="SMOT_INB">
+<contactref element="ECVT" pad="21/A7"/>
+<contactref element="MOTOR_DRIVER" pad="M2INB"/>
 <wire x1="15.24" y1="88.9" x2="17.78" y2="86.36" width="0.4064" layer="1"/>
 <wire x1="17.78" y1="86.36" x2="17.78" y2="78.74" width="0.4064" layer="1"/>
 <wire x1="17.78" y1="78.74" x2="21.59" y2="74.93" width="0.4064" layer="1"/>
@@ -3145,9 +3224,9 @@ Note, that not all DRC settings must be set by the manufacturer. Several can be 
 <wire x1="21.59" y1="68.58" x2="25.4" y2="64.77" width="0.4064" layer="1"/>
 <wire x1="25.4" y1="64.77" x2="25.654" y2="64.77" width="0.4064" layer="1"/>
 </signal>
-<signal name="S_MOT_INA">
-<contactref element="U$2" pad="20/A6"/>
-<contactref element="U$32" pad="M2INA"/>
+<signal name="SMOT_INA">
+<contactref element="ECVT" pad="20/A6"/>
+<contactref element="MOTOR_DRIVER" pad="M2INA"/>
 <wire x1="17.78" y1="88.9" x2="20.32" y2="86.36" width="0.4064" layer="1"/>
 <wire x1="20.32" y1="86.36" x2="20.32" y2="78.74" width="0.4064" layer="1"/>
 <wire x1="20.32" y1="78.74" x2="24.13" y2="74.93" width="0.4064" layer="1"/>
@@ -3155,41 +3234,41 @@ Note, that not all DRC settings must be set by the manufacturer. Several can be 
 <wire x1="24.13" y1="68.58" x2="27.94" y2="64.77" width="0.4064" layer="1"/>
 <wire x1="27.94" y1="64.77" x2="28.194" y2="64.77" width="0.4064" layer="1"/>
 </signal>
-<signal name="P_MOT_INB">
-<contactref element="U$2" pad="19/A5/SCL"/>
-<contactref element="U$32" pad="M1INB"/>
+<signal name="PMOT_INB">
+<contactref element="ECVT" pad="19/A5/SCL"/>
+<contactref element="MOTOR_DRIVER" pad="M1INB"/>
 <wire x1="20.32" y1="88.9" x2="34.29" y2="74.93" width="0.4064" layer="1"/>
 <wire x1="34.29" y1="74.93" x2="34.29" y2="68.58" width="0.4064" layer="1"/>
 <wire x1="34.29" y1="68.58" x2="38.1" y2="64.77" width="0.4064" layer="1"/>
 <wire x1="38.1" y1="64.77" x2="38.354" y2="64.77" width="0.4064" layer="1"/>
 </signal>
-<signal name="P_MOT_INA">
-<contactref element="U$2" pad="18/A4/SDA"/>
-<contactref element="U$32" pad="M1INA"/>
+<signal name="PMOT_INA">
+<contactref element="ECVT" pad="18/A4/SDA"/>
+<contactref element="MOTOR_DRIVER" pad="M1INA"/>
 <wire x1="22.86" y1="88.9" x2="36.83" y2="74.93" width="0.4064" layer="1"/>
 <wire x1="36.83" y1="74.93" x2="36.83" y2="68.58" width="0.4064" layer="1"/>
 <wire x1="36.83" y1="68.58" x2="40.64" y2="64.77" width="0.4064" layer="1"/>
 <wire x1="40.64" y1="64.77" x2="40.894" y2="64.77" width="0.4064" layer="1"/>
 </signal>
-<signal name="S_MOT_CS">
-<contactref element="U$2" pad="17/A3"/>
-<contactref element="U$32" pad="M2CS"/>
+<signal name="SMOT_CS">
+<contactref element="ECVT" pad="17/A3"/>
+<contactref element="MOTOR_DRIVER" pad="M2CS"/>
 <wire x1="20.574" y1="64.77" x2="20.574" y2="66.294" width="0.4064" layer="16"/>
 <wire x1="20.574" y1="66.294" x2="26.67" y2="72.39" width="0.4064" layer="16"/>
 <wire x1="26.67" y1="72.39" x2="26.67" y2="87.63" width="0.4064" layer="16"/>
 <wire x1="26.67" y1="87.63" x2="25.4" y2="88.9" width="0.4064" layer="16"/>
 </signal>
-<signal name="P_MOT_CS">
-<contactref element="U$2" pad="16/A2"/>
-<contactref element="U$32" pad="M1CS"/>
+<signal name="PMOT_CS">
+<contactref element="ECVT" pad="16/A2"/>
+<contactref element="MOTOR_DRIVER" pad="M1CS"/>
 <wire x1="27.94" y1="88.9" x2="27.94" y2="76.2" width="0.4064" layer="16"/>
 <wire x1="27.94" y1="76.2" x2="29.21" y2="74.93" width="0.4064" layer="16"/>
 <wire x1="29.21" y1="68.834" x2="33.274" y2="64.77" width="0.4064" layer="16"/>
 <wire x1="29.21" y1="74.93" x2="29.21" y2="68.834" width="0.4064" layer="16"/>
 </signal>
-<signal name="P_ENC_A">
-<contactref element="U$2" pad="24"/>
-<contactref element="U1" pad="3"/>
+<signal name="PENC_A">
+<contactref element="ECVT" pad="24"/>
+<contactref element="DIFF_LINE_REC" pad="3"/>
 <wire x1="40.64" y1="74.93" x2="34.29" y2="81.28" width="0.4064" layer="1"/>
 <wire x1="40.64" y1="73.66" x2="40.64" y2="74.93" width="0.4064" layer="1"/>
 <via x="19.05" y="124.46" extent="1-16" drill="0.35"/>
@@ -3208,9 +3287,9 @@ Note, that not all DRC settings must be set by the manufacturer. Several can be 
 <via x="30.48" y="97.79" extent="1-16" drill="0.35"/>
 <wire x1="30.48" y1="97.79" x2="34.29" y2="93.98" width="0.4064" layer="1"/>
 </signal>
-<signal name="P_ENC_B">
-<contactref element="U$2" pad="25"/>
-<contactref element="U1" pad="5"/>
+<signal name="PENC_B">
+<contactref element="ECVT" pad="25"/>
+<contactref element="DIFF_LINE_REC" pad="5"/>
 <wire x1="43.18" y1="73.66" x2="43.18" y2="74.93" width="0.4064" layer="1"/>
 <wire x1="36.83" y1="81.28" x2="43.18" y2="74.93" width="0.4064" layer="1"/>
 <wire x1="10.3378" y1="125.095" x2="11.43" y2="125.095" width="0.4064" layer="1"/>
@@ -3228,9 +3307,9 @@ Note, that not all DRC settings must be set by the manufacturer. Several can be 
 <wire x1="29.21" y1="99.06" x2="31.75" y2="99.06" width="0.4064" layer="1"/>
 <wire x1="36.83" y1="93.98" x2="36.83" y2="81.28" width="0.4064" layer="1"/>
 </signal>
-<signal name="S_ENC_A">
-<contactref element="U$2" pad="26"/>
-<contactref element="U1" pad="11"/>
+<signal name="SENC_A">
+<contactref element="ECVT" pad="26"/>
+<contactref element="DIFF_LINE_REC" pad="11"/>
 <wire x1="15.0622" y1="123.825" x2="18.415" y2="123.825" width="0.4064" layer="1"/>
 <wire x1="45.72" y1="73.66" x2="45.72" y2="74.93" width="0.4064" layer="1"/>
 <wire x1="45.72" y1="74.93" x2="39.37" y2="81.28" width="0.4064" layer="1"/>
@@ -3241,9 +3320,9 @@ Note, that not all DRC settings must be set by the manufacturer. Several can be 
 <wire x1="31.75" y1="101.6" x2="29.21" y2="101.6" width="0.4064" layer="1"/>
 <wire x1="29.21" y1="101.6" x2="24.13" y2="106.68" width="0.4064" layer="1"/>
 </signal>
-<signal name="S_ENC_B">
-<contactref element="U$2" pad="27"/>
-<contactref element="U1" pad="13"/>
+<signal name="SENC_B">
+<contactref element="ECVT" pad="27"/>
+<contactref element="DIFF_LINE_REC" pad="13"/>
 <wire x1="15.0622" y1="126.365" x2="20.955" y2="126.365" width="0.4064" layer="1"/>
 <wire x1="48.26" y1="73.66" x2="48.26" y2="74.93" width="0.4064" layer="1"/>
 <wire x1="48.26" y1="74.93" x2="41.91" y2="81.28" width="0.4064" layer="1"/>
@@ -3253,12 +3332,12 @@ Note, that not all DRC settings must be set by the manufacturer. Several can be 
 <wire x1="29.21" y1="118.11" x2="29.21" y2="106.68" width="0.4064" layer="1"/>
 </signal>
 <signal name="N$24">
-<contactref element="U$2" pad="28"/>
+<contactref element="ECVT" pad="28"/>
 </signal>
-<signal name="ECVT_SPARE_DAC0">
-<contactref element="U$2" pad="21/DAC0"/>
-<contactref element="J7" pad="4_A"/>
-<contactref element="J7" pad="4_B"/>
+<signal name="ECVT_SPARE_A21_DAC0">
+<contactref element="ECVT" pad="21/DAC0"/>
+<contactref element="SPARE_ANALOG_DAC" pad="4_A"/>
+<contactref element="SPARE_ANALOG_DAC" pad="4_B"/>
 <wire x1="76.2" y1="124.46" x2="83.82" y2="124.46" width="0.8128" layer="1"/>
 <wire x1="43.18" y1="88.9" x2="43.18" y2="87.63" width="0.4064" layer="1"/>
 <wire x1="44.45" y1="86.36" x2="43.18" y2="87.63" width="0.4064" layer="1"/>
@@ -3273,10 +3352,10 @@ Note, that not all DRC settings must be set by the manufacturer. Several can be 
 <via x="52.07" y="100.33" extent="1-16" drill="0.35"/>
 <wire x1="52.07" y1="100.33" x2="52.07" y2="87.63" width="0.4064" layer="1"/>
 </signal>
-<signal name="ECVT_SPARE_DAC1">
-<contactref element="U$2" pad="A22/DAC1"/>
-<contactref element="J7" pad="5_A"/>
-<contactref element="J7" pad="5_B"/>
+<signal name="ECVT_SPARE_A22_DAC1">
+<contactref element="ECVT" pad="A22/DAC1"/>
+<contactref element="SPARE_ANALOG_DAC" pad="5_A"/>
+<contactref element="SPARE_ANALOG_DAC" pad="5_B"/>
 <wire x1="76.2" y1="129.54" x2="83.82" y2="129.54" width="0.8128" layer="1"/>
 <wire x1="76.2" y1="129.54" x2="72.39" y2="125.73" width="0.4064" layer="16"/>
 <wire x1="72.39" y1="125.73" x2="72.39" y2="118.11" width="0.4064" layer="16"/>
@@ -3293,131 +3372,131 @@ Note, that not all DRC settings must be set by the manufacturer. Several can be 
 <via x="49.53" y="87.63" extent="1-16" drill="0.35"/>
 </signal>
 <signal name="N$2">
-<contactref element="U$1" pad="13/SCK"/>
+<contactref element="DAQ" pad="13/SCK"/>
 </signal>
 <signal name="N$3">
-<contactref element="U$1" pad="16/A2"/>
+<contactref element="DAQ" pad="16/A2"/>
 </signal>
 <signal name="N$4">
-<contactref element="U$1" pad="17/A3"/>
+<contactref element="DAQ" pad="17/A3"/>
 </signal>
 <signal name="N$5">
-<contactref element="U$1" pad="18/A4/SDA"/>
+<contactref element="DAQ" pad="18/A4/SDA"/>
 </signal>
 <signal name="N$6">
-<contactref element="U$1" pad="19/A5/SCL"/>
+<contactref element="DAQ" pad="19/A5/SCL"/>
 </signal>
 <signal name="N$7">
-<contactref element="U$1" pad="20/A6"/>
+<contactref element="DAQ" pad="20/A6"/>
 </signal>
 <signal name="N$8">
-<contactref element="U$1" pad="21/A7"/>
+<contactref element="DAQ" pad="21/A7"/>
 </signal>
 <signal name="N$9">
-<contactref element="U$1" pad="22/A8"/>
+<contactref element="DAQ" pad="22/A8"/>
 </signal>
 <signal name="N$10">
-<contactref element="U$1" pad="23/A9"/>
+<contactref element="DAQ" pad="23/A9"/>
 </signal>
 <signal name="N$11">
-<contactref element="U$1" pad="24"/>
+<contactref element="DAQ" pad="24"/>
 </signal>
 <signal name="N$12">
-<contactref element="U$1" pad="25"/>
+<contactref element="DAQ" pad="25"/>
 </signal>
 <signal name="N$13">
-<contactref element="U$1" pad="26"/>
+<contactref element="DAQ" pad="26"/>
 </signal>
 <signal name="N$14">
-<contactref element="U$1" pad="27"/>
+<contactref element="DAQ" pad="27"/>
 </signal>
 <signal name="N$15">
-<contactref element="U$1" pad="28"/>
+<contactref element="DAQ" pad="28"/>
 </signal>
 <signal name="N$16">
-<contactref element="U$1" pad="VUSB"/>
+<contactref element="DAQ" pad="VUSB"/>
 </signal>
 <signal name="N$17">
-<contactref element="U$1" pad="AREF"/>
+<contactref element="DAQ" pad="AREF"/>
 </signal>
 <signal name="N$18">
-<contactref element="U$1" pad="A10"/>
+<contactref element="DAQ" pad="A10"/>
 </signal>
 <signal name="N$19">
-<contactref element="U$1" pad="A11"/>
+<contactref element="DAQ" pad="A11"/>
 </signal>
 <signal name="N$20">
-<contactref element="U$1" pad="39/A20"/>
+<contactref element="DAQ" pad="39/A20"/>
 </signal>
 <signal name="N$22">
-<contactref element="U$2" pad="13/SCK"/>
+<contactref element="ECVT" pad="13/SCK"/>
 </signal>
 <signal name="N$23">
-<contactref element="U$2" pad="VUSB"/>
+<contactref element="ECVT" pad="VUSB"/>
 </signal>
 <signal name="N$25">
-<contactref element="U$2" pad="AREF"/>
+<contactref element="ECVT" pad="AREF"/>
 </signal>
 <signal name="N$26">
-<contactref element="U$2" pad="A10"/>
+<contactref element="ECVT" pad="A10"/>
 </signal>
 <signal name="N$27">
-<contactref element="U$2" pad="A11"/>
+<contactref element="ECVT" pad="A11"/>
 </signal>
 <signal name="N$28">
-<contactref element="U$2" pad="39/A20"/>
+<contactref element="ECVT" pad="39/A20"/>
 </signal>
 <signal name="N$29">
-<contactref element="U$2" pad="7"/>
+<contactref element="ECVT" pad="7"/>
 </signal>
 <signal name="N$30">
-<contactref element="U$2" pad="8"/>
+<contactref element="ECVT" pad="8"/>
 </signal>
 <signal name="N$31">
-<contactref element="U$2" pad="11/MOSI"/>
+<contactref element="ECVT" pad="11/MOSI"/>
 </signal>
 <signal name="N$32">
-<contactref element="U$2" pad="12/MISO"/>
+<contactref element="ECVT" pad="12/MISO"/>
 </signal>
 <signal name="N$33">
-<contactref element="U$2" pad="14/A0"/>
+<contactref element="ECVT" pad="14/A0"/>
 </signal>
 <signal name="N$34">
-<contactref element="U$2" pad="15/A1"/>
+<contactref element="ECVT" pad="15/A1"/>
 </signal>
 <signal name="N$35">
-<contactref element="U$2" pad="35/A16"/>
+<contactref element="ECVT" pad="35/A16"/>
 </signal>
 <signal name="N$36">
-<contactref element="U$2" pad="36/A17"/>
+<contactref element="ECVT" pad="36/A17"/>
 </signal>
 <signal name="N$37">
-<contactref element="U$2" pad="37/A18"/>
+<contactref element="ECVT" pad="37/A18"/>
 </signal>
 <signal name="N$38">
-<contactref element="U$2" pad="38/A19"/>
+<contactref element="ECVT" pad="38/A19"/>
 </signal>
 <signal name="N$54">
-<contactref element="U$2" pad="VIN"/>
+<contactref element="ECVT" pad="VIN"/>
 </signal>
 <signal name="N$55">
-<contactref element="U$1" pad="VIN"/>
+<contactref element="DAQ" pad="VIN"/>
 </signal>
 <signal name="+5V">
-<contactref element="U$32" pad="5V"/>
-<contactref element="CR1" pad="3"/>
-<contactref element="U$57" pad="2"/>
-<contactref element="U$58" pad="2"/>
-<contactref element="U1" pad="4"/>
-<contactref element="U1" pad="16"/>
-<contactref element="J2" pad="1_A"/>
-<contactref element="J2" pad="1_B"/>
-<contactref element="J3" pad="1_A"/>
-<contactref element="J3" pad="1_B"/>
-<contactref element="J4" pad="1_A"/>
-<contactref element="J4" pad="1_B"/>
-<contactref element="J5" pad="1_A"/>
-<contactref element="J5" pad="1_B"/>
+<contactref element="MOTOR_DRIVER" pad="5V"/>
+<contactref element="VOLT_REG" pad="3"/>
+<contactref element="PENC" pad="2"/>
+<contactref element="SENC" pad="2"/>
+<contactref element="DIFF_LINE_REC" pad="4"/>
+<contactref element="DIFF_LINE_REC" pad="16"/>
+<contactref element="WHEEL_SPEED" pad="1_A"/>
+<contactref element="WHEEL_SPEED" pad="1_B"/>
+<contactref element="BRAKE_PRESSURE" pad="1_A"/>
+<contactref element="BRAKE_PRESSURE" pad="1_B"/>
+<contactref element="DAQ_BUTTONS_LEDS" pad="1_A"/>
+<contactref element="DAQ_BUTTONS_LEDS" pad="1_B"/>
+<contactref element="ECVT_BUTTONS_LEDS" pad="1_A"/>
+<contactref element="ECVT_BUTTONS_LEDS" pad="1_B"/>
 <wire x1="76.2" y1="38.1" x2="83.82" y2="38.1" width="0.8128" layer="16"/>
 <wire x1="5.08" y1="31.75" x2="12.7" y2="31.75" width="0.8128" layer="1"/>
 <wire x1="5.08" y1="66.04" x2="12.7" y2="66.04" width="0.8128" layer="16"/>
@@ -3446,8 +3525,8 @@ Note, that not all DRC settings must be set by the manufacturer. Several can be 
 <vertex x="30.48" y="130.81"/>
 <vertex x="30.48" y="139.7"/>
 </polygon>
-<wire x1="4.445" y1="134.62" x2="11.43" y2="134.62" width="0.8128" layer="16"/>
-<wire x1="13.97" y1="132.08" x2="11.43" y2="134.62" width="0.8128" layer="16"/>
+<wire x1="4.445" y1="134.62" x2="10.16" y2="134.62" width="0.8128" layer="16"/>
+<wire x1="12.7" y1="132.08" x2="10.16" y2="134.62" width="0.8128" layer="16"/>
 <via x="20.32" y="132.08" extent="1-16" drill="0.35"/>
 <wire x1="4.445" y1="119.38" x2="5.08" y2="119.38" width="0.8128" layer="16"/>
 <wire x1="5.08" y1="119.38" x2="6.35" y2="118.11" width="0.8128" layer="16"/>
@@ -3464,45 +3543,45 @@ Note, that not all DRC settings must be set by the manufacturer. Several can be 
 <wire x1="12.55270625" y1="128.27" x2="9.09830625" y2="128.27" width="0.4064" layer="1"/>
 <wire x1="15.0622" y1="130.175" x2="18.415" y2="130.175" width="0.8128" layer="1"/>
 <wire x1="18.415" y1="130.175" x2="20.32" y2="132.08" width="0.8128" layer="1"/>
-<wire x1="13.97" y1="132.08" x2="20.32" y2="132.08" width="0.8128" layer="16"/>
+<wire x1="12.7" y1="132.08" x2="20.32" y2="132.08" width="0.8128" layer="16"/>
 <wire x1="21.59" y1="132.08" x2="22.86" y2="132.08" width="0.8128" layer="16"/>
 <wire x1="20.32" y1="132.08" x2="21.59" y2="132.08" width="0.8128" layer="16"/>
 <wire x1="12.7" y1="118.11" x2="5.08" y2="110.49" width="0.8128" layer="16"/>
-<contactref element="J1" pad="1"/>
+<contactref element="USB" pad="1"/>
 </signal>
 <signal name="N$43">
-<contactref element="XB1" pad="5"/>
+<contactref element="XBEE" pad="5"/>
 </signal>
 <signal name="N$45">
-<contactref element="XB1" pad="13"/>
+<contactref element="XBEE" pad="13"/>
 </signal>
 <signal name="N$46">
-<contactref element="XB1" pad="6"/>
+<contactref element="XBEE" pad="6"/>
 </signal>
 <signal name="N$47">
-<contactref element="XB1" pad="9"/>
+<contactref element="XBEE" pad="9"/>
 </signal>
 <signal name="N$48">
-<contactref element="XB1" pad="12"/>
+<contactref element="XBEE" pad="12"/>
 </signal>
 <signal name="N$49">
-<contactref element="XB1" pad="16"/>
+<contactref element="XBEE" pad="16"/>
 </signal>
 <signal name="N$50">
-<contactref element="XB1" pad="15"/>
+<contactref element="XBEE" pad="15"/>
 </signal>
 <signal name="N$51">
-<contactref element="XB1" pad="19"/>
+<contactref element="XBEE" pad="19"/>
 </signal>
 <signal name="N$52">
-<contactref element="XB1" pad="20"/>
+<contactref element="XBEE" pad="20"/>
 </signal>
 <signal name="N$53">
-<contactref element="XB1" pad="14"/>
+<contactref element="XBEE" pad="14"/>
 </signal>
-<signal name="P_ENC_CHA/">
-<contactref element="U$57" pad="5"/>
-<contactref element="U1" pad="1"/>
+<signal name="PENC_CHA/">
+<contactref element="PENC" pad="5"/>
+<contactref element="DIFF_LINE_REC" pad="1"/>
 <wire x1="2.1971" y1="135.0250625" x2="2.7699375" y2="135.5979" width="0.4064" layer="1"/>
 <wire x1="2.1971" y1="132.9449375" x2="2.7699375" y2="132.3721" width="0.4064" layer="1"/>
 <wire x1="2.1971" y1="135.0250625" x2="2.1971" y2="132.9449375" width="0.4064" layer="1"/>
@@ -3511,9 +3590,9 @@ Note, that not all DRC settings must be set by the manufacturer. Several can be 
 <wire x1="2.7699375" y1="135.5979" x2="4.9149" y2="135.5979" width="0.4064" layer="1"/>
 <wire x1="4.9149" y1="135.5979" x2="10.3378" y2="130.175" width="0.4064" layer="1"/>
 </signal>
-<signal name="P_ENC_CHB/">
-<contactref element="U$57" pad="7"/>
-<contactref element="U1" pad="7"/>
+<signal name="PENC_CHB/">
+<contactref element="PENC" pad="7"/>
+<contactref element="DIFF_LINE_REC" pad="7"/>
 <wire x1="2.7699375" y1="130.5179" x2="2.1971" y2="129.9450625" width="0.4064" layer="1"/>
 <wire x1="2.1971" y1="129.9450625" x2="2.1971" y2="129.1349375" width="0.4064" layer="1"/>
 <wire x1="8.7770375" y1="122.555" x2="2.1971" y2="129.1349375" width="0.4064" layer="1"/>
@@ -3522,20 +3601,20 @@ Note, that not all DRC settings must be set by the manufacturer. Several can be 
 <wire x1="2.8829" y1="130.5179" x2="2.7699375" y2="130.5179" width="0.4064" layer="1"/>
 </signal>
 <signal name="N$64">
-<contactref element="U$57" pad="4"/>
+<contactref element="PENC" pad="4"/>
 </signal>
 <signal name="N$65">
-<contactref element="U$57" pad="1"/>
+<contactref element="PENC" pad="1"/>
 </signal>
 <signal name="N$56">
-<contactref element="U$57" pad="9"/>
+<contactref element="PENC" pad="9"/>
 </signal>
 <signal name="N$59">
-<contactref element="U$57" pad="10"/>
+<contactref element="PENC" pad="10"/>
 </signal>
-<signal name="S_ENC_CHA/">
-<contactref element="U$58" pad="5"/>
-<contactref element="U1" pad="9"/>
+<signal name="SENC_CHA/">
+<contactref element="SENC" pad="5"/>
+<contactref element="DIFF_LINE_REC" pad="9"/>
 <via x="12.7" y="119.38" extent="1-16" drill="0.35"/>
 <wire x1="2.7699375" y1="117.1321" x2="2.1971" y2="117.7049375" width="0.4064" layer="16"/>
 <wire x1="2.1971" y1="119.7850625" x2="2.7699375" y2="120.3579" width="0.4064" layer="16"/>
@@ -3548,9 +3627,9 @@ Note, that not all DRC settings must be set by the manufacturer. Several can be 
 <wire x1="12.7" y1="119.38" x2="14.605" y2="121.285" width="0.4064" layer="1"/>
 <wire x1="14.605" y1="121.285" x2="15.0622" y2="121.285" width="0.4064" layer="1"/>
 </signal>
-<signal name="S_ENC_CHB/">
-<contactref element="U$58" pad="7"/>
-<contactref element="U1" pad="15"/>
+<signal name="SENC_CHB/">
+<contactref element="SENC" pad="7"/>
+<contactref element="DIFF_LINE_REC" pad="15"/>
 <wire x1="14.45770625" y1="128.905" x2="15.0622" y2="128.905" width="0.4064" layer="1"/>
 <wire x1="3.0620375" y1="115.57" x2="3.175" y2="115.57" width="0.4064" layer="1"/>
 <wire x1="2.54" y1="121.92" x2="1.27" y2="120.65" width="0.4064" layer="1"/>
@@ -3561,18 +3640,18 @@ Note, that not all DRC settings must be set by the manufacturer. Several can be 
 <wire x1="13.0556" y1="127.50289375" x2="13.0556" y2="123.39830625" width="0.4064" layer="1"/>
 <wire x1="13.0556" y1="123.39830625" x2="11.57729375" y2="121.92" width="0.4064" layer="1"/>
 </signal>
-<signal name="S_ENC_CHA">
-<contactref element="U$58" pad="6"/>
-<contactref element="U1" pad="10"/>
+<signal name="SENC_CHA">
+<contactref element="SENC" pad="6"/>
+<contactref element="DIFF_LINE_REC" pad="10"/>
 <via x="8.89" y="116.84" extent="1-16" drill="0.35"/>
 <wire x1="14.45770625" y1="122.555" x2="8.89" y2="116.98729375" width="0.4064" layer="1"/>
 <wire x1="8.89" y1="116.84" x2="8.89" y2="116.98729375" width="0.4064" layer="1"/>
 <wire x1="14.45770625" y1="122.555" x2="15.0622" y2="122.555" width="0.4064" layer="1"/>
 <wire x1="8.89" y1="116.84" x2="4.445" y2="116.84" width="0.4064" layer="16"/>
 </signal>
-<signal name="S_ENC_CHB">
-<contactref element="U$58" pad="8"/>
-<contactref element="U1" pad="14"/>
+<signal name="SENC_CHB">
+<contactref element="SENC" pad="8"/>
+<contactref element="DIFF_LINE_REC" pad="14"/>
 <wire x1="14.45770625" y1="127.635" x2="15.0622" y2="127.635" width="0.4064" layer="1"/>
 <wire x1="4.445" y1="115.57" x2="4.7371" y2="115.8621" width="0.4064" layer="1"/>
 <wire x1="4.7371" y1="115.8621" x2="6.78939375" y2="115.8621" width="0.4064" layer="1"/>
@@ -3581,27 +3660,27 @@ Note, that not all DRC settings must be set by the manufacturer. Several can be 
 <wire x1="6.78939375" y1="115.8621" x2="13.6144" y2="122.68710625" width="0.4064" layer="1"/>
 </signal>
 <signal name="N$68">
-<contactref element="U$58" pad="4"/>
+<contactref element="SENC" pad="4"/>
 </signal>
 <signal name="N$69">
-<contactref element="U$58" pad="10"/>
+<contactref element="SENC" pad="10"/>
 </signal>
 <signal name="N$70">
-<contactref element="U$58" pad="1"/>
+<contactref element="SENC" pad="1"/>
 </signal>
 <signal name="N$71">
-<contactref element="U$58" pad="9"/>
+<contactref element="SENC" pad="9"/>
 </signal>
-<signal name="P_ENC_CHA">
-<contactref element="U$57" pad="6"/>
-<contactref element="U1" pad="2"/>
+<signal name="PENC_CHA">
+<contactref element="PENC" pad="6"/>
+<contactref element="DIFF_LINE_REC" pad="2"/>
 <wire x1="4.445" y1="132.08" x2="5.08" y2="132.08" width="0.4064" layer="1"/>
 <wire x1="10.3378" y1="128.905" x2="8.255" y2="128.905" width="0.4064" layer="1"/>
 <wire x1="8.255" y1="128.905" x2="5.08" y2="132.08" width="0.4064" layer="1"/>
 </signal>
-<signal name="P_ENC_CHB">
-<contactref element="U$57" pad="8"/>
-<contactref element="U1" pad="6"/>
+<signal name="PENC_CHB">
+<contactref element="PENC" pad="8"/>
+<contactref element="DIFF_LINE_REC" pad="6"/>
 <wire x1="4.445" y1="130.81" x2="4.7371" y2="130.5179" width="0.4064" layer="1"/>
 <wire x1="4.7371" y1="130.5179" x2="4.8500625" y2="130.5179" width="0.4064" layer="1"/>
 <wire x1="9.73330625" y1="123.825" x2="10.3378" y2="123.825" width="0.4064" layer="1"/>
@@ -3610,14 +3689,14 @@ Note, that not all DRC settings must be set by the manufacturer. Several can be 
 <wire x1="8.1562" y1="127.2117625" x2="8.1562" y2="125.40210625" width="0.4064" layer="1"/>
 </signal>
 <signal name="+12V">
-<contactref element="J3" pad="2_A"/>
-<contactref element="J3" pad="2_B"/>
-<contactref element="J5" pad="2_A"/>
-<contactref element="J5" pad="2_B"/>
-<contactref element="J4" pad="2_A"/>
-<contactref element="J4" pad="2_B"/>
-<contactref element="U2" pad="16"/>
-<contactref element="U$32" pad="VOUT"/>
+<contactref element="BRAKE_PRESSURE" pad="2_A"/>
+<contactref element="BRAKE_PRESSURE" pad="2_B"/>
+<contactref element="ECVT_BUTTONS_LEDS" pad="2_A"/>
+<contactref element="ECVT_BUTTONS_LEDS" pad="2_B"/>
+<contactref element="DAQ_BUTTONS_LEDS" pad="2_A"/>
+<contactref element="DAQ_BUTTONS_LEDS" pad="2_B"/>
+<contactref element="LEVEL_SHIFT" pad="16"/>
+<contactref element="MOTOR_DRIVER" pad="VOUT"/>
 <wire x1="76.2" y1="8.89" x2="83.82" y2="8.89" width="0.8128" layer="16"/>
 <wire x1="76.2" y1="43.18" x2="83.82" y2="43.18" width="0.8128" layer="16"/>
 <wire x1="5.08" y1="60.96" x2="12.7" y2="60.96" width="0.8128" layer="16"/>
@@ -3633,16 +3712,17 @@ Note, that not all DRC settings must be set by the manufacturer. Several can be 
 <vertex x="78.74" y="3.81"/>
 <vertex x="10.16" y="3.81"/>
 </polygon>
-<wire x1="35.1282" y1="42.545" x2="36.195" y2="42.545" width="0.8128" layer="1"/>
-<wire x1="36.195" y1="42.545" x2="36.83" y2="43.18" width="0.8128" layer="1"/>
-<via x="36.83" y="43.18" extent="1-16" drill="0.35"/>
-<wire x1="48.514" y1="64.77" x2="48.514" y2="54.864" width="0.8128" layer="16"/>
-<wire x1="48.514" y1="54.864" x2="36.83" y2="43.18" width="0.8128" layer="16"/>
+<wire x1="35.1282" y1="42.545" x2="37.465" y2="42.545" width="0.8128" layer="1"/>
+<wire x1="37.465" y1="42.545" x2="38.1" y2="43.18" width="0.8128" layer="1"/>
+<via x="38.1" y="43.18" extent="1-16" drill="0.35"/>
+<wire x1="48.514" y1="64.77" x2="44.704" y2="60.96" width="0.8128" layer="16"/>
+<wire x1="44.704" y1="60.96" x2="44.704" y2="49.784" width="0.8128" layer="16"/>
+<wire x1="44.704" y1="49.784" x2="38.1" y2="43.18" width="0.8128" layer="16"/>
 </signal>
 <signal name="LOGGING_STATUS_LED_12V">
-<contactref element="J4" pad="5_A"/>
-<contactref element="J4" pad="5_B"/>
-<contactref element="U2" pad="4"/>
+<contactref element="DAQ_BUTTONS_LEDS" pad="5_A"/>
+<contactref element="DAQ_BUTTONS_LEDS" pad="5_B"/>
+<contactref element="LEVEL_SHIFT" pad="4"/>
 <wire x1="76.2" y1="24.13" x2="83.82" y2="24.13" width="0.8128" layer="16"/>
 <wire x1="28.3718" y1="38.735" x2="29.845" y2="38.735" width="0.4064" layer="1"/>
 <wire x1="29.845" y1="38.735" x2="30.48" y2="38.1" width="0.4064" layer="1"/>
@@ -3653,8 +3733,8 @@ Note, that not all DRC settings must be set by the manufacturer. Several can be 
 <wire x1="71.12" y1="24.13" x2="76.2" y2="24.13" width="0.4064" layer="1"/>
 </signal>
 <signal name="UPSHIFT_LED_12V">
-<contactref element="J5" pad="4_A"/>
-<contactref element="J5" pad="4_B"/>
+<contactref element="ECVT_BUTTONS_LEDS" pad="4_A"/>
+<contactref element="ECVT_BUTTONS_LEDS" pad="4_B"/>
 <contactref element="R5" pad="1"/>
 <wire x1="76.2" y1="53.34" x2="83.82" y2="53.34" width="0.8128" layer="16"/>
 <wire x1="60.96" y1="45.72" x2="75.565" y2="60.325" width="0.4064" layer="1"/>
@@ -3663,48 +3743,48 @@ Note, that not all DRC settings must be set by the manufacturer. Several can be 
 <wire x1="76.835" y1="60.325" x2="78.105" y2="59.055" width="0.4064" layer="1"/>
 <wire x1="78.105" y1="59.055" x2="78.105" y2="55.245" width="0.4064" layer="1"/>
 </signal>
-<signal name="BACKSHIFT_LED_12V">
-<contactref element="J5" pad="5_A"/>
-<contactref element="J5" pad="5_B"/>
+<signal name="BKSHIFT_LED_12V">
+<contactref element="ECVT_BUTTONS_LEDS" pad="5_A"/>
+<contactref element="ECVT_BUTTONS_LEDS" pad="5_B"/>
 <contactref element="R6" pad="2"/>
 <wire x1="76.2" y1="58.42" x2="83.82" y2="58.42" width="0.8128" layer="16"/>
 <wire x1="76.2" y1="58.42" x2="60.96" y2="43.18" width="0.4064" layer="1"/>
 </signal>
 <signal name="N$58">
-<contactref element="U2" pad="5"/>
+<contactref element="LEVEL_SHIFT" pad="5"/>
 </signal>
 <signal name="N$60">
-<contactref element="U2" pad="6"/>
+<contactref element="LEVEL_SHIFT" pad="6"/>
 </signal>
 <signal name="UPSHIFT_LED_12V_W/O_RES">
-<contactref element="U2" pad="13"/>
+<contactref element="LEVEL_SHIFT" pad="13"/>
 <contactref element="R5" pad="2"/>
 <wire x1="35.1282" y1="38.735" x2="38.735" y2="38.735" width="0.4064" layer="1"/>
 <wire x1="45.72" y1="45.72" x2="38.735" y2="38.735" width="0.4064" layer="1"/>
 <wire x1="45.72" y1="45.72" x2="53.34" y2="45.72" width="0.4064" layer="1"/>
 </signal>
 <signal name="BACKSHIFT_LED_12V_W/O_RES">
-<contactref element="U2" pad="11"/>
+<contactref element="LEVEL_SHIFT" pad="11"/>
 <contactref element="R6" pad="1"/>
 <wire x1="35.1282" y1="36.195" x2="41.275" y2="36.195" width="0.4064" layer="1"/>
 <wire x1="48.26" y1="43.18" x2="53.34" y2="43.18" width="0.4064" layer="1"/>
 <wire x1="48.26" y1="43.18" x2="41.275" y2="36.195" width="0.4064" layer="1"/>
 </signal>
 <signal name="N$1">
-<contactref element="J1" pad="2"/>
+<contactref element="USB" pad="2"/>
 </signal>
 <signal name="N$21">
-<contactref element="J1" pad="3"/>
+<contactref element="USB" pad="3"/>
 </signal>
 <signal name="N$39">
-<contactref element="J1" pad="4"/>
+<contactref element="USB" pad="4"/>
 </signal>
 <signal name="N$40">
-<contactref element="J1" pad="SH1"/>
-<contactref element="J1" pad="SH2"/>
-<contactref element="J1" pad="SH5"/>
-<contactref element="J1" pad="SH3"/>
-<contactref element="J1" pad="SH4"/>
+<contactref element="USB" pad="SH1"/>
+<contactref element="USB" pad="SH2"/>
+<contactref element="USB" pad="SH5"/>
+<contactref element="USB" pad="SH3"/>
+<contactref element="USB" pad="SH4"/>
 <wire x1="15.55" y1="136.61" x2="15.55" y2="135.785" width="0.8128" layer="1"/>
 <wire x1="15.55" y1="135.785" x2="16.825" y2="134.51" width="0.8128" layer="1"/>
 <wire x1="22.55" y1="136.61" x2="22.55" y2="135.785" width="0.8128" layer="1"/>
@@ -3713,18 +3793,18 @@ Note, that not all DRC settings must be set by the manufacturer. Several can be 
 <wire x1="19.05" y1="136.61" x2="22.55" y2="136.61" width="0.8128" layer="1"/>
 </signal>
 <signal name="FBRAKE_PRESSURE_W/O_RES">
-<contactref element="J3" pad="3_A"/>
-<contactref element="J3" pad="3_B"/>
+<contactref element="BRAKE_PRESSURE" pad="3_A"/>
+<contactref element="BRAKE_PRESSURE" pad="3_B"/>
 <wire x1="5.08" y1="55.88" x2="12.7" y2="55.88" width="0.8128" layer="16"/>
 <contactref element="R1" pad="2"/>
-<wire x1="12.7" y1="55.88" x2="21.59" y2="55.88" width="0.4064" layer="1"/>
+<wire x1="12.7" y1="55.88" x2="34.29" y2="55.88" width="0.4064" layer="1"/>
 </signal>
 <signal name="RBRAKE_PRESSURE_W/O_RES">
-<contactref element="J3" pad="4_A"/>
-<contactref element="J3" pad="4_B"/>
+<contactref element="BRAKE_PRESSURE" pad="4_A"/>
+<contactref element="BRAKE_PRESSURE" pad="4_B"/>
 <wire x1="5.08" y1="50.8" x2="12.7" y2="50.8" width="0.8128" layer="16"/>
 <contactref element="R3" pad="1"/>
-<wire x1="12.7" y1="50.8" x2="21.59" y2="50.8" width="0.4064" layer="1"/>
+<wire x1="12.7" y1="50.8" x2="34.29" y2="50.8" width="0.4064" layer="1"/>
 </signal>
 </signals>
 <mfgpreviewcolors>
@@ -3734,6 +3814,11 @@ Note, that not all DRC settings must be set by the manufacturer. Several can be 
 <mfgpreviewcolor name="coppercolor" color="0xFFFFBF00"/>
 <mfgpreviewcolor name="substratecolor" color="0xFF786E46"/>
 </mfgpreviewcolors>
+<errors>
+<approved hash="23,16,7bbb0447074478b8"/>
+<approved hash="23,16,1cf4e9bf4462e014"/>
+<approved hash="23,16,7b3d86c1888b7577"/>
+</errors>
 </board>
 </drawing>
 <compatibility>
@@ -3745,6 +3830,11 @@ which will not be processed correctly with this version.
 Since Version 8.2, EAGLE supports online libraries. The ids
 of those online libraries will not be understood (or retained)
 with this version.
+</note>
+<note version="8.3" severity="warning">
+Since Version 8.3, EAGLE supports Fusion synchronisation.
+This feature will not be available in this version and saving
+the document will break the link to the Fusion PCB feature.
 </note>
 <note version="8.3" severity="warning">
 Since Version 8.3, EAGLE supports URNs for individual library
