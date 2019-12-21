@@ -10,6 +10,9 @@
 const uint32_t TIMEOUT = 1000000;
 
 // Constructor
+/** This constructor accepts the number of triggers per revolution and stores
+	it. The appropriate number of positions in the prevTime array and currTime
+	are initialized to the system. **/
 EngineSpeed::EngineSpeed(uint8_t triggers) {
 	// Initialize variables
 	this->triggers = triggers;
@@ -19,10 +22,14 @@ EngineSpeed::EngineSpeed(uint8_t triggers) {
 	currTime = micros();
 }
 
-// Interrupt Service Routine Function
-/** This function stores the value of currTime (from the previous call of this
+// Interrupt Service Routine Method
+/** This function stores the value of currTime (from the previous call to this
 	function by the interrupt service routine) in the appropriate position of
-	the prevTime array.**/
+	the prevTime array and currTime is updated to the system time. Afterwards,
+	the position is incremented to prepare for the next call to this function.
+	If the position exceeds the twice the number of triggers per revolution
+	(that is, one thermodynamic cycle of a four-stroke engine), then the
+	position is reset to zero. **/
 void EngineSpeed::calc() {
 	prevTime[pos] = currTime;
 	currTime = micros();
@@ -33,15 +40,16 @@ void EngineSpeed::calc() {
 	}
 }
 
-// Get Engine Speed Function
-/** This function uses the currTime and appropriate prevTime to calculate the
-	engine speed and return it as a unsigned 16-bit integer. If the time
-	difference exceeds the defined TIMEOUT value (in microseconds), a value of
-	zero is returned to indicate that the vehicle is not moving.**/
+// Get Engine Speed Method
+/** This function uses the value of currTime and the value from the appropriate
+	position of prevTime to calculate the engine speed and return it as an
+	unsigned 16-bit integer. If the time difference exceeds the defined TIMEOUT
+	constant (in microseconds), a value of zero is returned to indicate that
+	engine is turned off. **/
 uint16_t EngineSpeed::get() {
 	if (micros() - prevTime[pos] >= TIMEOUT) {
 		return 0;
 	}
-	// return 2000000 / (currTime - prevTime[pos]);	// Rotations per Second (RPS)
-	return 120000000 / (currTime - prevTime[pos]);	// Rotations per Minute (RPM)
+	// return 2000000 / (currTime - prevTime[pos]);	// Revolutions per Second (RPS)
+	return 120000000 / (currTime - prevTime[pos]);	// Revolutions per Minute (RPM)
 }
