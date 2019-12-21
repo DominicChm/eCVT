@@ -4,7 +4,7 @@
  * Released to Cal Poly Baja SAE. ;)
  */
 
-// #define DEBUG 1
+#define DEBUG 1
 
 #include <Arduino.h>
 #include <avr/io.h>
@@ -20,45 +20,45 @@
 /* ** WIRING ** */
 
 // Hall Effect Sensors
-const uint8_t ENGINE_SPEED_PIN  = 13;
-const uint8_t RWHEELS_SPEED_PIN = 00;
-const uint8_t FLWHEEL_SPEED_PIN = 00;
-const uint8_t FRWHEEL_SPEED_PIN = 00;
+const uint8_t  ENGINE_SPEED_PIN =  5;
+const uint8_t RWHEELS_SPEED_PIN =  6;
+const uint8_t FLWHEEL_SPEED_PIN = 29;
+const uint8_t FRWHEEL_SPEED_PIN = 30;
 
 // Primary
-const uint8_t P_MOT_INA = 8;
-const uint8_t P_MOT_INB = 9;
-const uint8_t P_MOT_PWM = 6;
-const uint8_t P_ENC_A = 29;
-const uint8_t P_ENC_B = 30;
+const uint8_t P_MOT_INA = 18;
+const uint8_t P_MOT_INB = 19;
+const uint8_t P_MOT_PWM = 22;
+const uint8_t P_ENC_A =   24;
+const uint8_t P_ENC_B =   25;
 
 // Secondary
-const uint8_t S_MOT_INA = 11;
-const uint8_t S_MOT_INB = 12;
-const uint8_t S_MOT_PWM = 7;
-const uint8_t S_ENC_A = 32;
-const uint8_t S_ENC_B = 31;
+const uint8_t S_MOT_INA = 20;
+const uint8_t S_MOT_INB = 21;
+const uint8_t S_MOT_PWM = 23;
+const uint8_t S_ENC_A =   26;
+const uint8_t S_ENC_B =   27;
 
 
 
 /* ** SYSTEM ** */
 
-const uint16_t ENGAGE_SPEED = 35;
-const uint16_t SHIFT_SPEED  = 40;
-// TODO disengagement speed
+const uint16_t ENGAGE_SPEED = 20;		// Revolutions per Minute (RPM)
+const uint16_t SHIFT_SPEED  = 25;		// Revolutions per Minute (RPM)
+// TODO DISENGAGEMENT SPEED
 
 const uint16_t SHEAVE_OFFSET = 0;
 
 // PID Controllers
-PIDController ePID(1, 1, 0);
+PIDController ePID(1.00, 1, 0);
 PIDController pPID(0.01, 0, 0);
 PIDController sPID(0.01, 0, 0);
 
 // Hall Effect Sensors
-WheelSpeed engineSpeed(8);
-WheelSpeed rWheelsSpeed(50);
-WheelSpeed flWheelSpeed(50);
-WheelSpeed frWheelSpeed(50);
+WheelSpeed  engineSpeed(8);
+WheelSpeed rWheelsSpeed(24);
+WheelSpeed flWheelSpeed(24);
+WheelSpeed frWheelSpeed(24);
 
 // Motors
 Motor pMot(P_MOT_INA, P_MOT_INB, P_MOT_PWM);
@@ -70,7 +70,7 @@ Encoder sEnc(S_ENC_A, S_ENC_B);
 
 // Calibration
 const uint16_t CALIBRATION_DELAY = 1000;	// Milliseconds (ms)
-uint32_t pCalTime, sCalTime;				// Milliseconds (ms)
+uint16_t pCalTime, sCalTime;				// Milliseconds (ms)
 
 
 
@@ -78,12 +78,12 @@ uint32_t pCalTime, sCalTime;				// Milliseconds (ms)
 
 // Timer
 IntervalTimer timer;
-const uint32_t CONTROLLER_PERIOD = 1000;	// Microseconds (us)
+const uint32_t CONTROLLER_PERIOD = 5000;	// Microseconds (us)
 
 // Inter-Communication Variables
 bool run;
 bool eCalc, pCalc, sCalc;
-uint16_t pTicks, sTicks;
+uint32_t pTicks, sTicks;
 
 // States
 uint8_t eState, pState, sState;
@@ -108,17 +108,17 @@ void setup() {
 }
 
 void loop() {
-	// static uint32_t nextRunTime = micros();
-	// if (micros() > nextRunTime) {
-	// 	eCVT();
-	// 	primary();
-	// 	secondary();
-	// 	nextRunTime += 1000000;
-	// }
-	eCVT();
-	primary();
-	secondary();
-	Serial.println(engineSpeed.get());
+	 uint16_t nextRunTime = millis();
+	 if (micros() > nextRunTime) {
+	 	eCVT();
+	 	primary();
+	 	secondary();
+	 	nextRunTime += 1000;
+	 }
+//	eCVT();
+//	primary();
+//	secondary();
+//	Serial.println(engineSpeed.get());
 }
 
 
@@ -137,11 +137,12 @@ void eCVT() {
 		// INITIALIZE
 		case 0:
 			// Engine Speed Setup
+			pinMode(ENGINE_SPEED_PIN, INPUT);
 			attachInterrupt(digitalPinToInterrupt(ENGINE_SPEED_PIN), engineSpeedISR, RISING);
 
 			// PID Controller Setup
 			ePID.setSetpoint(SHIFT_SPEED);
-			ePID.setLoSat(0);
+			ePID.setLoSat(  0);
 			ePID.setHiSat(100);
 			ePID.reset();
 
@@ -200,6 +201,8 @@ void primary() {
 	#ifdef DEBUG
 	Serial.print("pState: ");
 	Serial.println(pState);
+	Serial.print("pEnc: ");
+	Serial.println(pEnc.read());
 	#endif
 	
 	switch (pState) {
@@ -265,6 +268,7 @@ void secondary() {
 	#ifdef DEBUG
 	Serial.print("sState: ");
 	Serial.println(sState);
+	Serial.print("sEnc: ");
 	Serial.println(sEnc.read());
 	#endif
 	
@@ -330,7 +334,7 @@ void secondary() {
 
 /* **INTERRUPT SERVICE ROUTINES** */
 
-void engineSpeedISR() { engineSpeed.calc(); }
+void  engineSpeedISR() {  engineSpeed.calc(); }
 void rWheelsSpeedISR() { rWheelsSpeed.calc(); }
 void flWheelSpeedISR() { flWheelSpeed.calc(); }
 void frWheelSpeedISR() { frWheelSpeed.calc(); }
@@ -344,16 +348,16 @@ void controllerISR() {
 
 /* **LOOKUP TABLES** */
 
-uint16_t pRatioToTicks(float ratio) {
+int32_t pRatioToTicks(float ratio) {
 	// 1% ratio increments
-	static const uint16_t pLookup[] = {15919,15563,15217,14878,14548,14226,13913,13607,13308,13017,12734,12457,12188,11925,11669,11419,11176,10938,10707,10481,10260,10045,9835,9631,9431,9236,9045,8859,8677,8500,8326,8157,7991,7829,7671,7516,7365,7217,7072,6930,6791,6655,6522,6392,6265,6140,6017,5897,5780,5665,5552,5441,5332,5226,5121,5019,4918,4820,4723,4628,4534,4443,4353,4264,4177,4092,4008,3925,3844,3765,3686,3609,3534,3459,3386,3314,3243,3173,3104,3037,2970,2905,2840,2777,2714,2653,2592,2532,2473,2415,2358,2302,2246,2191,2137,2084,2032,1980,1929,1879,1829};
+	static const int32_t pLookup[] = {63675,62253,60866,59513,58193,56906,55651,54427,53233,52070,50936,49830,48752,47701,46677,45678,44703,43753,42827,41923,41041,40181,39342,38523,37723,36943,36181,35436,34709,33999,33306,32628,31965,31317,30684,30065,29459,28867,28287,27720,27165,26622,26090,25569,25059,24559,24069,23590,23120,22659,22207,21764,21330,20904,20486,20076,19673,19279,18891,18511,18137,17770,17410,17056,16709,16367,16031,15702,15377,15059,14745,14437,14134,13836,13543,13255,12971,12692,12417,12147,11881,11619,11361,11107,10856,10610,10367,10128,9893,9661,9432,9207,8985,8766,8550,8337,8127,7920,7716,7515,7317};
 	if (ratio < 0) { return pLookup[0]; } else if (ratio > 100) { return pLookup[100]; }
 	return pLookup[(uint8_t)ratio];
 }
 
-uint16_t sRatioToTicks(float ratio) {
+int32_t sRatioToTicks(float ratio) {
 	// 1% ratio increments
-	static const uint16_t sLookup[] = {0,386,756,1111,1452,1780,2096,2399,2690,2970,3240,3500,3751,3992,4225,4449,4665,4874,5076,5271,5459,5641,5818,5988,6153,6313,6467,6617,6763,6904,7040,7173,7302,7427,7548,7666,7781,7893,8001,8107,8210,8310,8407,8502,8594,8685,8773,8858,8942,9023,9103,9181,9257,9331,9403,9474,9543,9611,9677,9742,9805,9867,9928,9987,10045,10102,10157,10212,10266,10318,10369,10420,10469,10517,10565,10612,10657,10702,10746,10789,10832,10874,10915,10955,10994,11033,11071,11109,11146,11182,11218,11253,11287,11321,11354,11387,11419,11451,11483,11513,11544};
+	static const int32_t sLookup[] = {0,1542,3023,4445,5810,7122,8382,9594,10760,11882,12962,14001,15003,15968,16898,17796,18661,19497,20304,21084,21837,22566,23270,23952,24612,25250,25869,26469,27050,27614,28161,28692,29207,29707,30193,30665,31124,31571,32005,32427,32838,33238,33628,34008,34378,34739,35090,35433,35768,36094,36412,36723,37027,37324,37613,37896,38173,38444,38708,38967,39220,39468,39710,39947,40180,40407,40630,40848,41062,41272,41477,41679,41876,42070,42260,42446,42629,42809,42985,43158,43328,43494,43658,43819,43977,44133,44285,44435,44583,44728,44870,45010,45148,45284,45417,45549,45678,45805,45930,46053,46175};
 	if (ratio < 0) { return sLookup[0]; } else if (ratio > 100) { return sLookup[100]; }
 	return sLookup[(uint8_t)ratio];
 }
