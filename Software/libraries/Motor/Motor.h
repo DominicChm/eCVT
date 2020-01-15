@@ -13,16 +13,16 @@ class Motor {
 
 	public:
 		// Constructor
-		Motor(uint8_t INA, uint8_t INB, uint8_t PWM);
+		Motor(int8_t INA, int8_t INB, int8_t PWM);
 
 		// Methods
 		void init();
 		void setDutyCycle(int8_t dutyCycle);
 
 	private:
-		uint8_t INA;
-		uint8_t INB;
-		uint8_t PWM;
+		int8_t INA;
+		int8_t INB;
+		int8_t PWM;
 		bool negative;
 };
 

@@ -8,7 +8,7 @@
 #include "Motor.h"
 
 // Constructor
-Motor::Motor(uint8_t INA, uint8_t INB, uint8_t PWM) {
+Motor::Motor(int8_t INA, int8_t INB, int8_t PWM) {
 	this->INA = INA;
 	this->INB = INB;
 	this->PWM = PWM;

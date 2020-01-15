@@ -13,10 +13,10 @@ const uint32_t TIMEOUT = 1000000;
 /** This constructor accepts the number of triggers per revolution and stores
 	it. The appropriate number of positions in the prevTime array and currTime
 	are initialized to the system. **/
-EngineSpeed::EngineSpeed(uint8_t triggers) {
+EngineSpeed::EngineSpeed(int8_t triggers) {
 	// Initialize variables
 	this->triggers = triggers;
-	for (uint8_t i = 0; i < 2 * triggers; i++) {
+	for (int8_t i = 0; i < 2 * triggers; i++) {
 		prevTime[i] = micros();
 	}
 	currTime = micros();
@@ -46,7 +46,7 @@ void EngineSpeed::calc() {
 	unsigned 16-bit integer. If the time difference exceeds the defined TIMEOUT
 	constant (in microseconds), a value of zero is returned to indicate that
 	engine is turned off. **/
-uint16_t EngineSpeed::get() {
+int16_t EngineSpeed::get() {
 	if (micros() - prevTime[pos] >= TIMEOUT) {
 		return 0;
 	}

@@ -13,15 +13,15 @@ class EngineSpeed {
 
 	public:
 		// Constructor
-		EngineSpeed(uint8_t triggers);
+		EngineSpeed(int8_t triggers);
 
 		// Methods
 		void calc();
-		uint16_t get();
+		int16_t get();
 
 	private:
-		uint8_t triggers;
-		uint8_t pos = 0;
+		int8_t triggers;
+		int8_t pos = 0;
 
 		volatile uint32_t prevTime[100];
 		volatile uint32_t currTime;

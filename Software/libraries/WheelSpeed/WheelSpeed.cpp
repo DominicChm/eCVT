@@ -12,7 +12,7 @@ const uint32_t TIMEOUT = 1000000;
 // Constructor
 /** This constructor accepts the number of triggers per revolution and stores
 	it. prevTime and currTime are initialized to the system. **/
-WheelSpeed::WheelSpeed(uint8_t triggers) {
+WheelSpeed::WheelSpeed(int8_t triggers) {
 	// Initialize variables
 	this->triggers = triggers;
 	prevTime = micros();
@@ -21,7 +21,7 @@ WheelSpeed::WheelSpeed(uint8_t triggers) {
 
 /** This function stores the value of currTime (from the previous call to this
 	function by the interrupt service routine) in prevTime and currTime is
-	updated to the system time. *//
+	updated to the system time. **/
 void WheelSpeed::calc() {
 	prevTime = currTime;
 	currTime = micros();

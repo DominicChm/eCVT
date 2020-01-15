@@ -13,14 +13,14 @@ class WheelSpeed {
 
 	public:
 		// Constructor
-		WheelSpeed(uint8_t triggers);
+		WheelSpeed(int8_t triggers);
 
 		// Methods
 		void calc();
 		float get();
 
 	private:
-		uint8_t triggers;
+		int8_t triggers;
 		
 		volatile uint32_t prevTime;
 		volatile uint32_t currTime;
