@@ -17,7 +17,7 @@ class Motor {
 
 		// Methods
 		void init();
-		void setDutyCycle(int8_t dutyCycle);
+		void setDutyCycle(int16_t dutyCycle);
 
 	private:
 		int8_t INA;

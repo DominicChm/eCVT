@@ -4,7 +4,7 @@
  * Released to Cal Poly Baja SAE. ;)
  */
 
-#define DEBUG 1
+// #define DEBUG 1
 
 #include <Arduino.h>
 #include <avr/io.h>
@@ -43,8 +43,8 @@ const int8_t S_ENC_B =   26;
 
 /* ** SYSTEM ** */
 
-const int16_t ENGAGE_SPEED = 20;		// Revolutions per Minute (RPM)
-const int16_t SHIFT_SPEED  = 25;		// Revolutions per Minute (RPM)
+const int16_t ENGAGE_SPEED = 45;		// Revolutions per Minute (RPM)
+const int16_t SHIFT_SPEED  = 35;		// Revolutions per Minute (RPM)
 // TODO DISENGAGEMENT SPEED
 
 // TODO SHEAVE OFFSET
@@ -95,12 +95,12 @@ int8_t eState, pState, sState;
 
 void setup() {
 	// Serial Monitor
-	#ifdef DEBUG
+	// #ifdef DEBUG
 	Serial.begin(9600);
 	while (!Serial) { ; } // Wait for serial port to connect. Needed for native USB.
 	Serial.println("Connect the motor wires! Delaying for 2 seconds...");
 	delay(2000);
-	#endif
+	// #endif
 
 	// Timer Interrupt
 	timer.begin(controllerISR, CONTROLLER_PERIOD);
@@ -124,7 +124,6 @@ void loop() {
 
 	// Temporary
 	Serial.println(engineSpeed.get());
-	delay(1000);
 }
 
 
@@ -216,7 +215,7 @@ void primary() {
 	Serial.print("pEnc: ");
 	Serial.println(pEnc.read());
 	#endif
-	
+
 	switch (pState) {
 		// INITIALIZE
 		case 0:
@@ -234,7 +233,7 @@ void primary() {
 
 		// CALIBRATE - OPEN SHEAVES
 		case 1:
-			pMot.setDutyCycle(-15);
+			pMot.setDutyCycle(-10);
 			pCalTime = millis();
 			// State Changes
 			pState = 2;
@@ -244,7 +243,6 @@ void primary() {
 		case 2:
 			if (millis() - pCalTime > CALIBRATION_DELAY) {
 				pEnc.write(0);
-
 				// State Changes
 				pState = 3;
 			}
@@ -256,6 +254,7 @@ void primary() {
 			if (pCalc) {
 				pState = 4;
 			}
+			return;
 
 		// P-ONLY CONTROLLER - UPDATE
 		case 4:
@@ -272,8 +271,11 @@ void primary() {
 			// State Changes
 			pCalc = false;
 			pState = 3;
+			return;
 	}
 }
+
+
 
 void secondary() {
 	// Debugging
@@ -301,7 +303,7 @@ void secondary() {
 
 		// CALIBRATE - OPEN SHEAVES
 		case 1:
-			sMot.setDutyCycle(-15);
+			sMot.setDutyCycle(-10);
 			sCalTime = millis();
 			// State Changes
 			sState = 2;
@@ -311,7 +313,6 @@ void secondary() {
 		case 2:
 			if (millis() - sCalTime > CALIBRATION_DELAY) {
 				sEnc.write(0);
-
 				// State Changes
 				sState = 3;
 			}
@@ -323,6 +324,7 @@ void secondary() {
 			if (sCalc) {
 				sState = 4;
 			}
+			return;
 
 		// P-ONLY CONTROLLER - UPDATE
 		case 4:
@@ -339,6 +341,7 @@ void secondary() {
 			// State Changes
 			sCalc = false;
 			sState = 3;
+			return;
 	}
 }
 
@@ -350,7 +353,7 @@ void  engineSpeedISR() {  engineSpeed.calc(); }
 void rWheelsSpeedISR() { rWheelsSpeed.calc(); }
 void flWheelSpeedISR() { flWheelSpeed.calc(); }
 void frWheelSpeedISR() { frWheelSpeed.calc(); }
-void controllerISR() {
+void   controllerISR() {
 	eCalc = true;
 	pCalc = true;
 	sCalc = true;

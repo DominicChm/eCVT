@@ -20,7 +20,7 @@ void Motor::init() {
 	pinMode(PWM, OUTPUT);
 }
 
-void Motor::setDutyCycle(int8_t dutyCycle) {
+void Motor::setDutyCycle(int16_t dutyCycle) {
 	// Normalize duty cycle, determine direction
 	if (dutyCycle < 0) {
 		dutyCycle *= -1;
