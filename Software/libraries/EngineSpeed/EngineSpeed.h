@@ -17,7 +17,7 @@ class EngineSpeed {
 
 		// Methods
 		void calc();
-		int16_t get();
+		int16_t read();
 
 	private:
 		int8_t triggers;

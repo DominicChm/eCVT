@@ -47,16 +47,16 @@ const int16_t ENGAGE_SPEED = 45;		// Revolutions per Minute (RPM)
 const int16_t SHIFT_SPEED  = 35;		// Revolutions per Minute (RPM)
 // TODO DISENGAGEMENT SPEED
 
-// TODO SHEAVE OFFSET
-// const int32_t SHEAVE_OFFSET = 0;
+const int32_t SHEAVE_OFFSET = 0;
 
+/* TODO PID CONTROLLER GAIN DOCUMENTATION */
 // PID Controllers
-PIDController ePID(1.00, 1, 0);
+PIDController ePID(   1, 1, 0);
 PIDController pPID(0.01, 0, 0);
 PIDController sPID(0.01, 0, 0);
 
 // Hall Effect Sensors
-WheelSpeed  engineSpeed(8);
+EngineSpeed engineSpeed( 8);
 WheelSpeed rWheelsSpeed(24);
 WheelSpeed flWheelSpeed(24);
 WheelSpeed frWheelSpeed(24);
@@ -71,7 +71,6 @@ Encoder sEnc(S_ENC_A, S_ENC_B);
 
 // Calibration
 const uint32_t CALIBRATION_DELAY = 5000;	// Milliseconds (ms)
-	  uint32_t pCalTime, sCalTime;			// Milliseconds (ms)
 
 
 
@@ -84,7 +83,7 @@ const uint32_t CONTROLLER_PERIOD = 10000;	// Microseconds (us)
 // Inter-Communication Variables
 bool run;
 bool eCalc, pCalc, sCalc;
-int32_t pTicks, sTicks;
+int32_t pSetpoint, sSetpoint;
 
 // States
 int8_t eState, pState, sState;
@@ -123,7 +122,7 @@ void loop() {
 	secondary();
 
 	// Temporary
-	Serial.println(engineSpeed.get());
+	Serial.println(engineSpeed.read());
 }
 
 
@@ -160,12 +159,12 @@ void eCVT() {
 
 		// DISENGAGED
 		case 1:
-			pTicks = 0;
-			sTicks = sRatioToTicks(100);
+			pSetpoint = 0;
+			sSetpoint = sRatioToTicks(100);
 
 			// State Changes
 			// noInterrupts();
-			if (engineSpeed.get() > ENGAGE_SPEED && run) {
+			if (engineSpeed.read() > ENGAGE_SPEED && run) {
 				// interrupts();
 				ePID.reset();
 				eState = 2;
@@ -176,7 +175,7 @@ void eCVT() {
 		case 2:
 			// State Changes
 			// noInterrupts();
-			if (engineSpeed.get() < ENGAGE_SPEED || !run) {
+			if (engineSpeed.read() < ENGAGE_SPEED || !run) {
 				// interrupts();
 				eState = 1;
 			} else if (eCalc) {
@@ -187,10 +186,10 @@ void eCVT() {
 		// ENGAGED, PID CONTROLLER - UPDATE
 		case 3:
 			// noInterrupts();
-			ePID.calc(engineSpeed.get());
+			ePID.calc(engineSpeed.read());
 			// interrupts();
-			pTicks = pRatioToTicks(ePID.get());
-			sTicks = sRatioToTicks(ePID.get());
+			pSetpoint = pRatioToTicks(ePID.get());
+			sSetpoint = sRatioToTicks(ePID.get());
 
 			// Debugging
 			#ifdef DEBUG
@@ -216,16 +215,20 @@ void primary() {
 	Serial.println(pEnc.read());
 	#endif
 
+	static uint32_t pCalTime;			// Milliseconds (ms)
+
 	switch (pState) {
 		// INITIALIZE
 		case 0:
 			// Setup Motor
 			pMot.init();
+			pMot.setDutyCycle(0);
 
 			// Setup PID Controller
+			pPID.setSetpoint(0);
 			pPID.setLoSat(-100);
 			pPID.setHiSat( 100);
-			pMot.setDutyCycle(0);
+			pPID.reset();
 
 			// State Changes
 			pState = 1;
@@ -258,7 +261,7 @@ void primary() {
 
 		// P-ONLY CONTROLLER - UPDATE
 		case 4:
-			pPID.setSetpoint(pTicks);
+			pPID.setSetpoint(pSetpoint + SHEAVE_OFFSET);
 			pPID.calc(pEnc.read());
 			pMot.setDutyCycle(pPID.get());
 
@@ -285,17 +288,21 @@ void secondary() {
 	Serial.print("sEnc: ");
 	Serial.println(sEnc.read());
 	#endif
+
+	static uint32_t sCalTime;			// Milliseconds (ms)
 	
 	switch (sState) {
 		// INITIALIZE
 		case 0:
 			// Setup Motor
 			sMot.init();
+			sMot.setDutyCycle(0);
 
 			// Setup PID Controller
+			sPID.setSetpoint(0);
 			sPID.setLoSat(-100);
 			sPID.setHiSat( 100);
-			sMot.setDutyCycle(0);
+			sPID.reset();
 
 			// State Changes
 			sState = 1;
@@ -328,7 +335,7 @@ void secondary() {
 
 		// P-ONLY CONTROLLER - UPDATE
 		case 4:
-			sPID.setSetpoint(sTicks);
+			sPID.setSetpoint(sSetpoint + SHEAVE_OFFSET);
 			sPID.calc(sEnc.read());
 			sMot.setDutyCycle(sPID.get());
 

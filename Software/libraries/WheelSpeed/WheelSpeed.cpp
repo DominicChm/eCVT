@@ -11,7 +11,7 @@ const uint32_t TIMEOUT = 1000000;
 
 // Constructor
 /** This constructor accepts the number of triggers per revolution and stores
-	it. prevTime and currTime are initialized to the system. **/
+	it. prevTime and currTime are initialized to the system time. **/
 WheelSpeed::WheelSpeed(int8_t triggers) {
 	// Initialize variables
 	this->triggers = triggers;
@@ -19,19 +19,22 @@ WheelSpeed::WheelSpeed(int8_t triggers) {
 	currTime = micros();
 }
 
+// Interrupt Service Routine Method
 /** This function stores the value of currTime (from the previous call to this
 	function by the interrupt service routine) in prevTime and currTime is
-	updated to the system time. **/
+	updated to the system time. This information is used by the read method to
+	calculate the wheel speed. **/
 void WheelSpeed::calc() {
 	prevTime = currTime;
 	currTime = micros();
 }
 
+// Read Wheel Speed Method
 /** This function uses the value of currTime and the value of prevTime to
 	calculate the wheel speed and return it as a float. If the time difference
 	exceeds the defined TIMEOUT constant (in microseconds), a value of zero is
 	returned to indicate that wheel is not moving. **/
-float WheelSpeed::get() {
+float WheelSpeed::read() {
 	if (micros() - prevTime >= TIMEOUT) {
 		return 0;
 	}

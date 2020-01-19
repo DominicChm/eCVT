@@ -17,7 +17,7 @@ class WheelSpeed {
 
 		// Methods
 		void calc();
-		float get();
+		float read();
 
 	private:
 		int8_t triggers;
