@@ -10862,8 +10862,8 @@ Grid 2.54 mm&lt;p&gt;
 <instance part="U$42" gate="A" x="160.02" y="114.3" smashed="yes" rot="R180"/>
 <instance part="U$43" gate="A" x="160.02" y="106.68" smashed="yes" rot="R180"/>
 <instance part="U$44" gate="A" x="160.02" y="104.14" smashed="yes" rot="R180"/>
-<instance part="GND4" gate="1" x="119.38" y="96.52" smashed="yes">
-<attribute name="VALUE" x="116.84" y="93.98" size="1.778" layer="96"/>
+<instance part="GND4" gate="1" x="121.92" y="96.52" smashed="yes">
+<attribute name="VALUE" x="119.38" y="93.98" size="1.778" layer="96"/>
 </instance>
 <instance part="U$45" gate="A" x="200.66" y="106.68" smashed="yes"/>
 <instance part="U$46" gate="A" x="200.66" y="109.22" smashed="yes"/>
@@ -10907,8 +10907,8 @@ Grid 2.54 mm&lt;p&gt;
 <pinref part="ECVT" gate="G$1" pin="GND2"/>
 </segment>
 <segment>
-<wire x1="119.38" y1="101.6" x2="86.36" y2="101.6" width="0.1524" layer="91"/>
-<wire x1="119.38" y1="101.6" x2="119.38" y2="99.06" width="0.1524" layer="91"/>
+<wire x1="121.92" y1="101.6" x2="86.36" y2="101.6" width="0.1524" layer="91"/>
+<wire x1="121.92" y1="101.6" x2="121.92" y2="99.06" width="0.1524" layer="91"/>
 <pinref part="GND4" gate="1" pin="GND"/>
 <pinref part="DAQ" gate="G$1" pin="GND2"/>
 </segment>
