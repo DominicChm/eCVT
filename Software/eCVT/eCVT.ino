@@ -43,8 +43,8 @@ const int8_t S_ENC_B =   26;
 
 /* ** SYSTEM ** */
 
-const int16_t ENGAGE_SPEED = 45;		// Revolutions per Minute (RPM)
-const int16_t SHIFT_SPEED  = 35;		// Revolutions per Minute (RPM)
+const int16_t ENGAGE_SPEED = 3400;		// Revolutions per Minute (RPM)
+const int16_t SHIFT_SPEED  = 2200;		// Revolutions per Minute (RPM)
 // TODO DISENGAGEMENT SPEED
 
 const int32_t SHEAVE_OFFSET = 0;
@@ -220,11 +220,11 @@ void primary() {
 	switch (pState) {
 		// INITIALIZE
 		case 0:
-			// Setup Motor
+			// Motor Setup
 			pMot.init();
 			pMot.setDutyCycle(0);
 
-			// Setup PID Controller
+			// PID Controller Setup
 			pPID.setSetpoint(0);
 			pPID.setLoSat(-100);
 			pPID.setHiSat( 100);
@@ -294,11 +294,11 @@ void secondary() {
 	switch (sState) {
 		// INITIALIZE
 		case 0:
-			// Setup Motor
+			// Motor Setup
 			sMot.init();
 			sMot.setDutyCycle(0);
 
-			// Setup PID Controller
+			// PID Controller Setup
 			sPID.setSetpoint(0);
 			sPID.setLoSat(-100);
 			sPID.setHiSat( 100);
