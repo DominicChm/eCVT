@@ -21,7 +21,7 @@ class EngineSpeed {
 
 	private:
 		int8_t triggers;
-		int8_t pos = 0;
+		volatile int8_t pos = 0;
 
 		volatile uint32_t prevTime[100];
 		volatile uint32_t currTime;

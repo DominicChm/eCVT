@@ -4,7 +4,7 @@
  * Released to Cal Poly Baja SAE. ;)
  */
 
-// #define DEBUG 1
+#define DEBUG 1
 
 #include <Arduino.h>
 #include <avr/io.h>
@@ -25,31 +25,57 @@ const int8_t RWHEELS_SPEED_PIN =  6;
 const int8_t FLWHEEL_SPEED_PIN = 29;
 const int8_t FRWHEEL_SPEED_PIN = 30;
 
-// Primary
+// Encoders
+/* Swap A and B pins to swap direction. */
+const int8_t P_ENC_A = 24;
+const int8_t P_ENC_B = 25;
+const int8_t S_ENC_A = 27;
+const int8_t S_ENC_B = 26;
+
+// Motors
+/* Swap A and B pins to swap direction. */
 const int8_t P_MOT_INA = 18;
 const int8_t P_MOT_INB = 19;
 const int8_t P_MOT_PWM = 22;
-const int8_t P_ENC_A =   24;
-const int8_t P_ENC_B =   25;
-
-// Secondary
 const int8_t S_MOT_INA = 20;
 const int8_t S_MOT_INB = 21;
 const int8_t S_MOT_PWM = 23;
-const int8_t S_ENC_A =   27;
-const int8_t S_ENC_B =   26;
+
+// Brake Pressure
+const int8_t FBRAKE_PRESSURE = 34;
+const int8_t RBRAKE_PRESSURE = 33;
+
+// Launch Control
+const int8_t LAUNCH_CONTROL = 2;
+
+// Upshift/Backshift LEDs
+const int8_t UPSHIFT_LED = 3;
+const int8_t BKSHIFT_LED = 4;
 
 
 
 /* ** SYSTEM ** */
 
-const int16_t ENGAGE_SPEED = 3400;		// Revolutions per Minute (RPM)
-const int16_t SHIFT_SPEED  = 2200;		// Revolutions per Minute (RPM)
+const int16_t ENGAGE_SPEED = 2000;		// Revolutions per Minute (RPM)
+const int16_t SHIFT_SPEED  = 3400;		// Revolutions per Minute (RPM)
 // TODO DISENGAGEMENT SPEED
 
-const int32_t SHEAVE_OFFSET = 0;
+/** This constant is used to account for mechanical imperfections and adjust belt
+	clamping force. Examples of mechanical imperfections include:
+		1. belt wear
+		2. deflection
+		3. manufacturing tolerances
+	This constant offsets the ideal sheave position (as determined by the lookup
+	table) by a number of encoder ticks. A larger number indicates increased
+	clamping and a smaller number indicates decreased clamping. The effective
+	change in clamping is determined by P * SHEAVE_OFFSET = VOLTS, where P is
+	the proportional gain for the respective clutch and VOLTS is the voltage
+	applied to the motor at the ideal sheave position. **/
+const int32_t SHEAVE_OFFSET = 0;		// Encoder Ticks (1/3584 of a revolution)
 
-/* TODO PID CONTROLLER GAIN DOCUMENTATION */
+/* ePID will only work with PI or PID control. The integral term is necessary. */
+/* pPID will only work with P-Only or PD control. Do NOT use the integral term. */
+/* sPID will only work with P-Only or PD control. Do NOT use the integral term. */
 // PID Controllers
 PIDController ePID(   1, 1, 0);
 PIDController pPID(0.01, 0, 0);
@@ -61,32 +87,40 @@ WheelSpeed rWheelsSpeed(24);
 WheelSpeed flWheelSpeed(24);
 WheelSpeed frWheelSpeed(24);
 
-// Motors
-Motor pMot(P_MOT_INA, P_MOT_INB, P_MOT_PWM);
-Motor sMot(S_MOT_INA, S_MOT_INB, S_MOT_PWM);
-
 // Encoders
 Encoder pEnc(P_ENC_A, P_ENC_B);
 Encoder sEnc(S_ENC_A, S_ENC_B);
 
+// Motors
+Motor pMot(P_MOT_INA, P_MOT_INB, P_MOT_PWM);
+Motor sMot(S_MOT_INA, S_MOT_INB, S_MOT_PWM);
+
 // Calibration
-const uint32_t CALIBRATION_DELAY = 5000;	// Milliseconds (ms)
+const uint32_t CALIBRATION_DELAY = 15000;	// Milliseconds (ms)
 
 
 
 /* ** FINITE STATE MACHINE ** */
 
+// States
+int8_t eState = 0;
+int8_t pState = 0;
+int8_t sState = 0;
+int8_t aState = 0;
+int8_t bState = 0;
+int8_t cState = 0;
+
+// Inter-Communication Variables
+bool run   = true;
+bool eCalc = false;
+bool pCalc = false;
+bool sCalc = false;
+int32_t pSetpoint = 0;
+int32_t sSetpoint = 0;
+
 // Timer
 IntervalTimer timer;
 const uint32_t CONTROLLER_PERIOD = 10000;	// Microseconds (us)
-
-// Inter-Communication Variables
-bool run;
-bool eCalc, pCalc, sCalc;
-int32_t pSetpoint, sSetpoint;
-
-// States
-int8_t eState, pState, sState;
 
 
 
@@ -94,20 +128,15 @@ int8_t eState, pState, sState;
 
 void setup() {
 	// Serial Monitor
-	// #ifdef DEBUG
+	#ifdef DEBUG
 	Serial.begin(9600);
 	while (!Serial) { ; } // Wait for serial port to connect. Needed for native USB.
 	Serial.println("Connect the motor wires! Delaying for 2 seconds...");
 	delay(2000);
-	// #endif
+	#endif
 
 	// Timer Interrupt
 	timer.begin(controllerISR, CONTROLLER_PERIOD);
-
-	// Initialize Task States
-	eState = 0;
-	pState = 0;
-	sState = 0;
 }
 
 void loop() {
@@ -136,6 +165,11 @@ void eCVT() {
 	Serial.println(eState);
 	#endif
 
+	// Engine Speed
+	noInterrupts();
+	int16_t eSpeed = engineSpeed.read();
+	interrupts();
+
 	switch (eState) {
 
 		// INITIALIZE
@@ -150,9 +184,6 @@ void eCVT() {
 			ePID.setHiSat(100);
 			ePID.reset();
 
-			// Run
-			run = true;
-
 			// State Changes
 			eState = 1;
 			return;
@@ -163,9 +194,7 @@ void eCVT() {
 			sSetpoint = sRatioToTicks(100);
 
 			// State Changes
-			// noInterrupts();
-			if (engineSpeed.read() > ENGAGE_SPEED && run) {
-				// interrupts();
+			if (eSpeed > ENGAGE_SPEED && run) {
 				ePID.reset();
 				eState = 2;
 			}
@@ -174,9 +203,7 @@ void eCVT() {
 		// ENGAGED, PID CONTROLLER - REST
 		case 2:
 			// State Changes
-			// noInterrupts();
-			if (engineSpeed.read() < ENGAGE_SPEED || !run) {
-				// interrupts();
+			if (eSpeed < ENGAGE_SPEED || !run) {
 				eState = 1;
 			} else if (eCalc) {
 				eState = 3;
@@ -185,9 +212,7 @@ void eCVT() {
 
 		// ENGAGED, PID CONTROLLER - UPDATE
 		case 3:
-			// noInterrupts();
-			ePID.calc(engineSpeed.read());
-			// interrupts();
+			ePID.calc(eSpeed);
 			pSetpoint = pRatioToTicks(ePID.get());
 			sSetpoint = sRatioToTicks(ePID.get());
 
@@ -350,6 +375,51 @@ void secondary() {
 			sState = 3;
 			return;
 	}
+}
+
+
+
+void launchControl() {
+	switch (aState) {
+		// INITIALIZE
+		case 0:
+			// State Changes
+			aState = 1;
+			return;
+		// HUB STATE
+		case 1:
+			return;
+		}
+}
+
+
+
+void statusLEDs() {
+	switch (bState) {
+		// INITIALIZE
+		case 0:
+			// State Changes
+			bState = 1;
+			return;
+		// HUB STATE
+		case 1:
+			return;
+		}
+}
+
+
+
+
+void communication() {
+	switch (cState) {
+		// INITIALIZE
+		case 0:
+			cState = 1;
+			return;
+		// HUB STATE
+		case 1:
+			return;
+		}
 }
 
 
