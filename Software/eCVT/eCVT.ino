@@ -163,6 +163,8 @@ void eCVT() {
 	#ifdef DEBUG
 	Serial.print("eState: ");
 	Serial.println(eState);
+	Serial.print("ePID: ");
+	Serial.println(ePID.get());
 	#endif
 
 	// Engine Speed
@@ -216,12 +218,6 @@ void eCVT() {
 			pSetpoint = pRatioToTicks(ePID.get());
 			sSetpoint = sRatioToTicks(ePID.get());
 
-			// Debugging
-			#ifdef DEBUG
-			Serial.print("ePID: ");
-			Serial.println(ePID.get());
-			#endif
-
 			// State Changes
 			eCalc = false;
 			eState = 2;
@@ -238,6 +234,8 @@ void primary() {
 	Serial.println(pState);
 	Serial.print("pEnc: ");
 	Serial.println(pEnc.read());
+	Serial.print("pPID: ");
+	Serial.println(pPID.get());
 	#endif
 
 	static uint32_t pCalTime;			// Milliseconds (ms)
@@ -290,12 +288,6 @@ void primary() {
 			pPID.calc(pEnc.read());
 			pMot.setDutyCycle(pPID.get());
 
-			// Debugging
-			#ifdef DEBUG
-			Serial.print("pPID: ");
-			Serial.println(pPID.get());
-			#endif
-
 			// State Changes
 			pCalc = false;
 			pState = 3;
@@ -312,6 +304,8 @@ void secondary() {
 	Serial.println(sState);
 	Serial.print("sEnc: ");
 	Serial.println(sEnc.read());
+	Serial.print("sPID: ");
+	Serial.println(sPID.get());
 	#endif
 
 	static uint32_t sCalTime;			// Milliseconds (ms)
@@ -363,12 +357,6 @@ void secondary() {
 			sPID.setSetpoint(sSetpoint + SHEAVE_OFFSET);
 			sPID.calc(sEnc.read());
 			sMot.setDutyCycle(sPID.get());
-
-			// Debugging
-			#ifdef DEBUG
-			Serial.print("sPID: ");
-			Serial.println(sPID.get());
-			#endif
 
 			// State Changes
 			sCalc = false;
