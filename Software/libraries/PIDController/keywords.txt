@@ -3,7 +3,8 @@ setKp			KEYWORD2
 setKi			KEYWORD2
 setKd			KEYWORD2
 setSetpoint		KEYWORD2
-setSaturation	KEYWORD2
+setLoSat		KEYWORD2
+setHiSat		KEYWORD2
 calc			KEYWORD2
 get				KEYWORD2
 reset			KEYWORD2
