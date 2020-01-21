@@ -7,8 +7,6 @@
 #define DEBUG 1
 
 #include <Arduino.h>
-#include <avr/io.h>
-#include <avr/interrupt.h>
 #include "PIDController.h"
 #include "Motor.h"
 #include <Encoder.h>
@@ -48,7 +46,7 @@ const int8_t RBRAKE_PRESSURE = 33;
 // Launch Control Button
 const int8_t LAUNCH_CONTROL = 2;
 
-// Upshift/Backshift LEDs
+// Dashboard LEDs
 const int8_t UPSHIFT_LED = 3;
 const int8_t BKSHIFT_LED = 4;
 
@@ -56,30 +54,14 @@ const int8_t BKSHIFT_LED = 4;
 
 /* ** SYSTEM ** */
 
-const int16_t ENGAGE_SPEED = 2000;		// Revolutions per Minute (RPM)
-const int16_t SHIFT_SPEED  = 3400;		// Revolutions per Minute (RPM)
-// TODO DISENGAGEMENT SPEED
-
-/** This constant is used to account for mechanical imperfections and adjust belt
-	clamping force. Examples of mechanical imperfections include:
-		1. belt wear
-		2. deflection
-		3. manufacturing tolerances
-	This constant offsets the ideal sheave position (as determined by the lookup
-	table) by a number of encoder ticks. A larger number indicates increased
-	clamping and a smaller number indicates decreased clamping. The effective
-	change in clamping is determined by P * SHEAVE_OFFSET = VOLTS, where P is
-	the proportional gain for the respective clutch and VOLTS is the voltage
-	applied to the motor at the ideal sheave position. **/
-const int32_t SHEAVE_OFFSET = 0;		// Encoder Ticks (1/3584 of a revolution)
-
-/* ePID will only work with PI or PID control. The integral term is necessary. */
-/* pPID will only work with P-Only or PD control. Do NOT use the integral term. */
-/* sPID will only work with P-Only or PD control. Do NOT use the integral term. */
 // PID Controllers
-PIDController ePID(   1, 1, 0);
-PIDController pPID(0.01, 0, 0);
-PIDController sPID(0.01, 0, 0);
+/** ePID will only work with PI or PID control. The integral term is necessary.
+	pPID will only work with P-Only or PD control. Do NOT use the integral term.
+	sPID will only work with P-Only or PD control. Do NOT use the integral term.
+	TODO PID DOCUMENTATION: EFFECT OF CONTROLLER_PERIOD. **/
+PIDController ePID(   1, 1, 0);			// Ratio Percent / Revolutions per Minute (%/RPM)
+PIDController pPID(0.01, 0, 0);			// Duty Cycle Percent / Encoder Counts (%/Count)
+PIDController sPID(0.01, 0, 0);			// Duty Cycle Percent / Encoder Counts (%/Count)
 
 // Hall Effect Sensors
 EngineSpeed engineSpeed( 8);
@@ -95,8 +77,35 @@ Encoder sEnc(S_ENC_A, S_ENC_B);
 Motor pMot(P_MOT_INA, P_MOT_INB, P_MOT_PWM);
 Motor sMot(S_MOT_INA, S_MOT_INB, S_MOT_PWM);
 
-// Calibration
+// eCVT Shift Curve
+/* TODO DISENGAGEMENT SPEED */
+const int16_t ENGAGE_SPEED = 2000;		// Revolutions per Minute (RPM)
+const int16_t SHIFT_SPEED  = 3400;		// Revolutions per Minute (RPM)
+
+// Primary/Secondary Calibration
 const uint32_t CALIBRATION_DELAY = 15000;	// Milliseconds (ms)
+
+// Primary/Secondary Sheave Offset
+/** This constant is used to account for mechanical imperfections and adjust belt
+	clamping force. Examples of mechanical imperfections include:
+		1. belt wear
+		2. deflection
+		3. manufacturing tolerances
+	This constant offsets the ideal sheave position (as determined by the lookup
+	table) by a number of encoder counts. A larger number indicates increased
+	clamping and a smaller number indicates decreased clamping. The effective
+	change in clamping is determined by P * SHEAVE_OFFSET = VOLTS, where P is
+	the proportional gain for the respective clutch and VOLTS is the voltage
+	applied to the motor at the ideal sheave position. **/
+const int32_t SHEAVE_OFFSET = 0;		// Encoder Counts (1/3584 of a revolution)
+
+// Launch Control
+const int16_t LC_BRKPRESSURE_THRESHOLD    = 1640;	// ~1/5 of 13-bit ADC (1640/8191)
+const int16_t LC_ENGINESPEED_THRESHOLD_LO = 2000;	// Revolutions per Minute (RPM)
+const int16_t LC_ENGINESPEED_THRESHOLD_HI = 3000;	// Revolutions per Minute (RPM)
+
+// Dashboard LEDs
+const uint32_t FLASH_PERIOD = 500;		// Milliseconds (ms)
 
 
 
@@ -106,8 +115,8 @@ const uint32_t CALIBRATION_DELAY = 15000;	// Milliseconds (ms)
 int8_t eState = 0;
 int8_t pState = 0;
 int8_t sState = 0;
-int8_t aState = 0;
-int8_t bState = 0;
+int8_t lState = 0;
+int8_t dState = 0;
 int8_t cState = 0;
 
 // Inter-Communication Variables
@@ -115,8 +124,8 @@ bool run   = true;
 bool eCalc = false;
 bool pCalc = false;
 bool sCalc = false;
-int32_t pSetpoint = 0;
-int32_t sSetpoint = 0;
+int32_t pSetpoint = 0;					// Encoder Counts (1/3584 of a revolution)
+int32_t sSetpoint = 0;					// Encoder Counts (1/3584 of a revolution)
 
 // Timer
 IntervalTimer timer;
@@ -150,7 +159,7 @@ void setup() {
 	// Launch Control Button Setup
 	pinMode(LAUNCH_CONTROL, INPUT);
 
-	// Upshift/Backshift LEDs Setup
+	// Dashboard LEDs Setup
 	pinMode(UPSHIFT_LED, OUTPUT);
 	pinMode(BKSHIFT_LED, OUTPUT);
 
@@ -171,6 +180,9 @@ void loop() {
 	eCVT();
 	primary();
 	secondary();
+	// launchcontrol();
+	// dashboardLEDs();
+	// communication();
 }
 
 
@@ -209,7 +221,7 @@ void eCVT() {
 		case 1:
 			// Set primary and secondary setpoints
 			pSetpoint = 0;
-			sSetpoint = sRatioToTicks(100);
+			sSetpoint = sRatioToCounts(100);
 
 			// State Changes
 			if (eSpeed > ENGAGE_SPEED && run) {
@@ -234,8 +246,8 @@ void eCVT() {
 			ePID.calc(eSpeed);
 
 			// Set primary and secondary setpoints
-			pSetpoint = pRatioToTicks(ePID.get());
-			sSetpoint = sRatioToTicks(ePID.get());
+			pSetpoint = pRatioToCounts(ePID.get());
+			sSetpoint = sRatioToCounts(ePID.get());
 
 			// State Changes
 			eCalc = false;
@@ -247,6 +259,9 @@ void eCVT() {
 
 
 void primary() {
+
+	static uint32_t pCalTime;			// Milliseconds (ms)
+
 	// Debugging
 	#ifdef DEBUG
 	Serial.print("pState: ");
@@ -257,9 +272,8 @@ void primary() {
 	Serial.println(pPID.get());
 	#endif
 
-	static uint32_t pCalTime;			// Milliseconds (ms)
-
 	switch (pState) {
+
 		// INITIALIZE
 		case 0:
 			// Motor Setup
@@ -288,11 +302,10 @@ void primary() {
 
 		// CALIBRATE - ZERO ENCODER
 		case 2:
+			// State Changes
 			if (millis() - pCalTime > CALIBRATION_DELAY) {
-				// Finish calibration
+				// Finish calibration and change the state
 				pEnc.write(0);
-				
-				// State Changes
 				pState = 3;
 			}
 			return;
@@ -324,6 +337,9 @@ void primary() {
 
 
 void secondary() {
+
+	static uint32_t sCalTime;			// Milliseconds (ms)
+
 	// Debugging
 	#ifdef DEBUG
 	Serial.print("sState: ");
@@ -333,10 +349,9 @@ void secondary() {
 	Serial.print("sPID: ");
 	Serial.println(sPID.get());
 	#endif
-
-	static uint32_t sCalTime;			// Milliseconds (ms)
 	
 	switch (sState) {
+
 		// INITIALIZE
 		case 0:
 			// Motor Setup
@@ -365,11 +380,10 @@ void secondary() {
 
 		// CALIBRATE - ZERO ENCODER
 		case 2:
+			// State Changes
 			if (millis() - sCalTime > CALIBRATION_DELAY) {
-				// Finish calibration
+				// Finish calibration and change the state
 				sEnc.write(0);
-
-				// State Changes
 				sState = 3;
 			}
 			return;
@@ -400,47 +414,157 @@ void secondary() {
 
 
 
-void launchControl() {
-	switch (aState) {
+void launchcontrol() {
+
+	// Engine Speed
+	noInterrupts();
+	int16_t eSpeed = engineSpeed.read();
+	interrupts();
+
+	switch (lState) {
+
 		// INITIALIZE
 		case 0:
 			// State Changes
-			aState = 1;
+			lState = 1;
 			return;
-		// HUB STATE
+
+		// ECVT ENABLED
 		case 1:
+			// State Changes
+			if (digitalRead(LAUNCH_CONTROL) &&
+				analogRead(FBRAKE_PRESSURE) > LC_BRKPRESSURE_THRESHOLD &&
+				analogRead(RBRAKE_PRESSURE) > LC_BRKPRESSURE_THRESHOLD &&
+				eSpeed < LC_ENGINESPEED_THRESHOLD_LO) {
+				// Disable the eCVT and change the state
+				run = false;
+				lState = 2;
+			}
 			return;
-		}
+
+		// ECVT DISABLED
+		case 2:
+			// State Changes
+			if (!digitalRead(LAUNCH_CONTROL) &&
+				analogRead(FBRAKE_PRESSURE) < LC_BRKPRESSURE_THRESHOLD &&
+				analogRead(RBRAKE_PRESSURE) < LC_BRKPRESSURE_THRESHOLD &&
+				eSpeed > LC_ENGINESPEED_THRESHOLD_HI) {
+				// Enable the eCVT and change the state
+				run = true;
+				lState = 1;
+			}
+			return;
+	}
 }
 
 
 
-void statusLEDs() {
-	switch (bState) {
+void dashboardLEDs() {
+
+	static int16_t prevRatio;			// Ratio Percent (%)
+	static uint32_t prevTime;			// Milliseconds (ms)
+
+	int16_t currRatio = pPID.get();		// Ratio Percent (%)
+
+	switch (dState) {
+
 		// INITIALIZE
 		case 0:
 			// State Changes
-			bState = 1;
+			dState = 1;
 			return;
+
 		// HUB STATE
 		case 1:
+			if (!run) {
+				dState = 2;
+			} else if (currRatio > prevRatio) {
+				dState = 4;
+			} else if (currRatio < prevRatio) {
+				dState = 5;
+			} else {
+				dState = 6;
+			}
 			return;
-		}
+		
+		// FLASH (BKSHIFT LED ON)
+		case 2:
+			// Turn on backshift LED, turn off upshift LED
+			digitalWrite(BKSHIFT_LED, HIGH);
+			digitalWrite(UPSHIFT_LED, LOW);
+
+			// State Changes
+			if (run) {
+				dState = 1;
+			} else if (millis() - prevTime > FLASH_PERIOD) {
+				// Increment prevTime by FLASH_PERIOD and change the state
+				dState = 3;
+			}
+			return;
+
+		// FLASH (UPSHIFT LED ON)
+		case 3:
+			// Turn off backshift LED, turn on upshift LED
+			digitalWrite(BKSHIFT_LED, LOW);
+			digitalWrite(UPSHIFT_LED, HIGH);
+
+			// State Changes
+			if (run) {
+				dState = 1;
+			} else if (millis() - prevTime > FLASH_PERIOD) {
+				// Increment prevTime by FLASH_PERIOD and change the state
+				dState = 2;
+			}
+			return;
+
+		// BKSHIFT LED ON
+		case 4:
+			// Turn on backshift LED, turn off upshift LED
+			digitalWrite(BKSHIFT_LED, HIGH);
+			digitalWrite(UPSHIFT_LED, LOW);
+
+			// State Changes
+			dState = 1;
+			return;
+
+		// UPSHIFT LED ON
+		case 5:
+			// Turn off backshift LED, turn on upshift LED
+			digitalWrite(BKSHIFT_LED, LOW);
+			digitalWrite(UPSHIFT_LED, HIGH);
+
+			// State Changes
+			dState = 1;
+			return;
+
+		// BOTH LEDS ON
+		case 6:
+			// Turn on backshift LED, turn on upshift LED
+			digitalWrite(BKSHIFT_LED, HIGH);
+			digitalWrite(UPSHIFT_LED, HIGH);
+
+			// State Changes
+			dState = 1;
+			return;
+	}
 }
 
 
 
 
 void communication() {
+
 	switch (cState) {
+
 		// INITIALIZE
 		case 0:
 			cState = 1;
 			return;
+
 		// HUB STATE
 		case 1:
 			return;
-		}
+	}
 }
 
 
@@ -461,14 +585,14 @@ void   controllerISR() {
 
 /* **LOOKUP TABLES** */
 
-int32_t pRatioToTicks(float ratio) {
+int32_t pRatioToCounts(float ratio) {
 	// 1% ratio increments
 	static const int32_t pLookup[] = {63675,62253,60866,59513,58193,56906,55651,54427,53233,52070,50936,49830,48752,47701,46677,45678,44703,43753,42827,41923,41041,40181,39342,38523,37723,36943,36181,35436,34709,33999,33306,32628,31965,31317,30684,30065,29459,28867,28287,27720,27165,26622,26090,25569,25059,24559,24069,23590,23120,22659,22207,21764,21330,20904,20486,20076,19673,19279,18891,18511,18137,17770,17410,17056,16709,16367,16031,15702,15377,15059,14745,14437,14134,13836,13543,13255,12971,12692,12417,12147,11881,11619,11361,11107,10856,10610,10367,10128,9893,9661,9432,9207,8985,8766,8550,8337,8127,7920,7716,7515,7317};
 	if (ratio < 0) { return pLookup[0]; } else if (ratio > 100) { return pLookup[100]; }
 	return pLookup[(int8_t)ratio];
 }
 
-int32_t sRatioToTicks(float ratio) {
+int32_t sRatioToCounts(float ratio) {
 	// 1% ratio increments
 	static const int32_t sLookup[] = {0,1542,3023,4445,5810,7122,8382,9594,10760,11882,12962,14001,15003,15968,16898,17796,18661,19497,20304,21084,21837,22566,23270,23952,24612,25250,25869,26469,27050,27614,28161,28692,29207,29707,30193,30665,31124,31571,32005,32427,32838,33238,33628,34008,34378,34739,35090,35433,35768,36094,36412,36723,37027,37324,37613,37896,38173,38444,38708,38967,39220,39468,39710,39947,40180,40407,40630,40848,41062,41272,41477,41679,41876,42070,42260,42446,42629,42809,42985,43158,43328,43494,43658,43819,43977,44133,44285,44435,44583,44728,44870,45010,45148,45284,45417,45549,45678,45805,45930,46053,46175};
 	if (ratio < 0) { return sLookup[0]; } else if (ratio > 100) { return sLookup[100]; }
