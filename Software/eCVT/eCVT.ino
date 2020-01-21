@@ -41,11 +41,11 @@ const int8_t S_MOT_INA = 20;
 const int8_t S_MOT_INB = 21;
 const int8_t S_MOT_PWM = 23;
 
-// Brake Pressure
+// Pressure Transducers
 const int8_t FBRAKE_PRESSURE = 34;
 const int8_t RBRAKE_PRESSURE = 33;
 
-// Launch Control
+// Launch Control Button
 const int8_t LAUNCH_CONTROL = 2;
 
 // Upshift/Backshift LEDs
@@ -128,14 +128,33 @@ const uint32_t CONTROLLER_PERIOD = 10000;	// Microseconds (us)
 
 void setup() {
 	// Serial Monitor
-	#ifdef DEBUG
+	// #ifdef DEBUG
 	Serial.begin(9600);
-	while (!Serial) { ; } // Wait for serial port to connect. Needed for native USB.
+	while (!Serial) { }	// Wait for serial port to connect. Needed for native USB.
+	// #endif
+
+	// TEMPORARY
 	Serial.println("Connect the motor wires! Delaying for 2 seconds...");
 	delay(2000);
-	#endif
 
-	// Timer Interrupt
+	// Hall Effect Sensor Setup
+	pinMode(ENGINE_SPEED_PIN, INPUT);
+	attachInterrupt(digitalPinToInterrupt(ENGINE_SPEED_PIN), engineSpeedISR, RISING);
+	pinMode(RWHEELS_SPEED_PIN, INPUT);
+	attachInterrupt(digitalPinToInterrupt(RWHEELS_SPEED_PIN), rWheelsSpeedISR, RISING);
+
+	// Pressure Transducer Setup
+	pinMode(FBRAKE_PRESSURE, INPUT);
+	pinMode(RBRAKE_PRESSURE, INPUT);
+
+	// Launch Control Button Setup
+	pinMode(LAUNCH_CONTROL, INPUT);
+
+	// Upshift/Backshift LEDs Setup
+	pinMode(UPSHIFT_LED, OUTPUT);
+	pinMode(BKSHIFT_LED, OUTPUT);
+
+	// Timer Interrupt Setup
 	timer.begin(controllerISR, CONTROLLER_PERIOD);
 }
 
@@ -145,13 +164,13 @@ void loop() {
 	Serial.println();
 	#endif
 
+	// TEMPORARY
+	Serial.println(engineSpeed.read());
+
 	// Tasks
 	eCVT();
 	primary();
 	secondary();
-
-	// Temporary
-	Serial.println(engineSpeed.read());
 }
 
 
@@ -176,10 +195,6 @@ void eCVT() {
 
 		// INITIALIZE
 		case 0:
-			// Engine Speed Setup
-			pinMode(ENGINE_SPEED_PIN, INPUT);
-			attachInterrupt(digitalPinToInterrupt(ENGINE_SPEED_PIN), engineSpeedISR, RISING);
-
 			// PID Controller Setup
 			ePID.setSetpoint(SHIFT_SPEED);
 			ePID.setLoSat(  0);
@@ -192,6 +207,7 @@ void eCVT() {
 
 		// DISENGAGED
 		case 1:
+			// Set primary and secondary setpoints
 			pSetpoint = 0;
 			sSetpoint = sRatioToTicks(100);
 
@@ -214,7 +230,10 @@ void eCVT() {
 
 		// ENGAGED, PID CONTROLLER - UPDATE
 		case 3:
+			// Calculate PID output
 			ePID.calc(eSpeed);
+
+			// Set primary and secondary setpoints
 			pSetpoint = pRatioToTicks(ePID.get());
 			sSetpoint = sRatioToTicks(ePID.get());
 
@@ -259,8 +278,10 @@ void primary() {
 
 		// CALIBRATE - OPEN SHEAVES
 		case 1:
+			// Start calibration
 			pMot.setDutyCycle(-10);
 			pCalTime = millis();
+
 			// State Changes
 			pState = 2;
 			return;
@@ -268,7 +289,9 @@ void primary() {
 		// CALIBRATE - ZERO ENCODER
 		case 2:
 			if (millis() - pCalTime > CALIBRATION_DELAY) {
+				// Finish calibration
 				pEnc.write(0);
+				
 				// State Changes
 				pState = 3;
 			}
@@ -284,8 +307,11 @@ void primary() {
 
 		// P-ONLY CONTROLLER - UPDATE
 		case 4:
+			// Update primary setpoint and calculate PID output
 			pPID.setSetpoint(pSetpoint + SHEAVE_OFFSET);
 			pPID.calc(pEnc.read());
+
+			// Set primary duty cycle
 			pMot.setDutyCycle(pPID.get());
 
 			// State Changes
@@ -329,8 +355,10 @@ void secondary() {
 
 		// CALIBRATE - OPEN SHEAVES
 		case 1:
+			// Start calibration
 			sMot.setDutyCycle(-10);
 			sCalTime = millis();
+
 			// State Changes
 			sState = 2;
 			return;
@@ -338,7 +366,9 @@ void secondary() {
 		// CALIBRATE - ZERO ENCODER
 		case 2:
 			if (millis() - sCalTime > CALIBRATION_DELAY) {
+				// Finish calibration
 				sEnc.write(0);
+
 				// State Changes
 				sState = 3;
 			}
@@ -354,8 +384,11 @@ void secondary() {
 
 		// P-ONLY CONTROLLER - UPDATE
 		case 4:
+			// Update secondary setpoint and calculate PID output
 			sPID.setSetpoint(sSetpoint + SHEAVE_OFFSET);
 			sPID.calc(sEnc.read());
+
+			// Set secondary duty cycle
 			sMot.setDutyCycle(sPID.get());
 
 			// State Changes
