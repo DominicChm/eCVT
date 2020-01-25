@@ -44,9 +44,9 @@ void EngineSpeed::calc() {
 // Read Engine Speed Method
 /** This function uses the value of currTime and the value from the appropriate
 	position of prevTime to calculate the engine speed and return it as an
-	unsigned 16-bit integer. If the time difference exceeds the defined TIMEOUT
-	constant (in microseconds), a value of zero is returned to indicate that
-	engine is turned off. **/
+	16-bit integer. If the time difference exceeds the defined TIMEOUT constant
+	(in microseconds), a value of zero is returned to indicate that engine is
+	turned off. **/
 int16_t EngineSpeed::read() {
 	if (micros() - prevTime[pos] >= TIMEOUT) {
 		return 0;

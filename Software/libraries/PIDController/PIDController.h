@@ -24,7 +24,7 @@ class PIDController {
 		void setHiSat(int8_t hiSat);
 
 		void calc(int32_t measurement);
-		float get();
+		int16_t get();
 		void reset();
 
 	private:
@@ -36,13 +36,13 @@ class PIDController {
 
 		int8_t loSat = 0;
 		int8_t hiSat = 0;
-		bool saturated;
+		bool saturated = false;;
 
 		float Kp;
 		float Ki;
 		float Kd;
 
-		float output = 0;
+		int16_t output = 0;
 };
 
 #endif

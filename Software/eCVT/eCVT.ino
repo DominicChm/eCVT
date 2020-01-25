@@ -43,10 +43,8 @@ const int8_t S_MOT_PWM = 23;
 const int8_t FBRAKE_PRESSURE = 34;
 const int8_t RBRAKE_PRESSURE = 33;
 
-// Launch Control Button
+// Dashboard
 const int8_t LAUNCH_CONTROL = 2;
-
-// Dashboard LEDs
 const int8_t UPSHIFT_LED = 3;
 const int8_t BKSHIFT_LED = 4;
 
@@ -100,7 +98,7 @@ const uint32_t CALIBRATION_DELAY = 15000;	// Milliseconds (ms)
 const int32_t SHEAVE_OFFSET = 0;		// Encoder Counts (1/3584 of a revolution)
 
 // Launch Control
-const int16_t LC_BRKPRESSURE_THRESHOLD    = 1640;	// ~1/5 of 13-bit ADC (1640/8191)
+const int16_t LC_BRKPRESSURE_THRESHOLD    = 1640;	// 13-bit ADC (1640/8191 ~= 1/5)
 const int16_t LC_ENGINESPEED_THRESHOLD_LO = 2000;	// Revolutions per Minute (RPM)
 const int16_t LC_ENGINESPEED_THRESHOLD_HI = 3000;	// Revolutions per Minute (RPM)
 
@@ -139,7 +137,7 @@ void setup() {
 	// Serial Monitor
 	// #ifdef DEBUG
 	Serial.begin(9600);
-	while (!Serial) { }	// Wait for serial port to connect. Needed for native USB.
+	while (!Serial) { }	// Wait for serial port to connect. Needed for native USB only.
 	// #endif
 
 	// TEMPORARY
@@ -152,14 +150,18 @@ void setup() {
 	pinMode(RWHEELS_SPEED_PIN, INPUT);
 	attachInterrupt(digitalPinToInterrupt(RWHEELS_SPEED_PIN), rWheelsSpeedISR, RISING);
 
+	// Encoder Setup
+	// Handled by Encoder constructor! */
+
+	// Motor Setup
+	/* Handled by Motor init() function! */
+
 	// Pressure Transducer Setup
 	pinMode(FBRAKE_PRESSURE, INPUT);
 	pinMode(RBRAKE_PRESSURE, INPUT);
 
-	// Launch Control Button Setup
-	pinMode(LAUNCH_CONTROL, INPUT);
-
-	// Dashboard LEDs Setup
+	// Dashboard Setup
+	pinMode(LAUNCH_CONTROL, INPUT_PULLUP);
 	pinMode(UPSHIFT_LED, OUTPUT);
 	pinMode(BKSHIFT_LED, OUTPUT);
 
@@ -190,6 +192,7 @@ void loop() {
 /* **TASKS** */
 
 void eCVT() {
+
 	// Debugging
 	#ifdef DEBUG
 	Serial.print("eState: ");
@@ -200,7 +203,7 @@ void eCVT() {
 
 	// Engine Speed
 	noInterrupts();
-	int16_t eSpeed = engineSpeed.read();
+	int16_t eSpeed = engineSpeed.read();	// Revolutions per Minute (RPM)
 	interrupts();
 
 	switch (eState) {
@@ -418,7 +421,7 @@ void launchcontrol() {
 
 	// Engine Speed
 	noInterrupts();
-	int16_t eSpeed = engineSpeed.read();
+	int16_t eSpeed = engineSpeed.read();	// Revolutions per Minute (RPM)
 	interrupts();
 
 	switch (lState) {
@@ -462,9 +465,12 @@ void launchcontrol() {
 void dashboardLEDs() {
 
 	static int16_t prevRatio;			// Ratio Percent (%)
+	static int16_t currRatio;			// Ratio Percent (%)
 	static uint32_t prevTime;			// Milliseconds (ms)
 
-	int16_t currRatio = pPID.get();		// Ratio Percent (%)
+	// Update previous and current ratios
+	prevRatio = currRatio;
+	currRatio = pPID.get();
 
 	switch (dState) {
 
@@ -476,7 +482,9 @@ void dashboardLEDs() {
 
 		// HUB STATE
 		case 1:
+			// State Changes
 			if (!run) {
+				prevTime = millis();
 				dState = 2;
 			} else if (currRatio > prevRatio) {
 				dState = 4;
@@ -585,16 +593,16 @@ void   controllerISR() {
 
 /* **LOOKUP TABLES** */
 
-int32_t pRatioToCounts(float ratio) {
-	// 1% ratio increments
+int32_t pRatioToCounts(int16_t ratio) {
+	// 1% Ratio Increments
 	static const int32_t pLookup[] = {63675,62253,60866,59513,58193,56906,55651,54427,53233,52070,50936,49830,48752,47701,46677,45678,44703,43753,42827,41923,41041,40181,39342,38523,37723,36943,36181,35436,34709,33999,33306,32628,31965,31317,30684,30065,29459,28867,28287,27720,27165,26622,26090,25569,25059,24559,24069,23590,23120,22659,22207,21764,21330,20904,20486,20076,19673,19279,18891,18511,18137,17770,17410,17056,16709,16367,16031,15702,15377,15059,14745,14437,14134,13836,13543,13255,12971,12692,12417,12147,11881,11619,11361,11107,10856,10610,10367,10128,9893,9661,9432,9207,8985,8766,8550,8337,8127,7920,7716,7515,7317};
 	if (ratio < 0) { return pLookup[0]; } else if (ratio > 100) { return pLookup[100]; }
-	return pLookup[(int8_t)ratio];
+	return pLookup[ratio];
 }
 
-int32_t sRatioToCounts(float ratio) {
-	// 1% ratio increments
+int32_t sRatioToCounts(int16_t ratio) {
+	// 1% Ratio Increments
 	static const int32_t sLookup[] = {0,1542,3023,4445,5810,7122,8382,9594,10760,11882,12962,14001,15003,15968,16898,17796,18661,19497,20304,21084,21837,22566,23270,23952,24612,25250,25869,26469,27050,27614,28161,28692,29207,29707,30193,30665,31124,31571,32005,32427,32838,33238,33628,34008,34378,34739,35090,35433,35768,36094,36412,36723,37027,37324,37613,37896,38173,38444,38708,38967,39220,39468,39710,39947,40180,40407,40630,40848,41062,41272,41477,41679,41876,42070,42260,42446,42629,42809,42985,43158,43328,43494,43658,43819,43977,44133,44285,44435,44583,44728,44870,45010,45148,45284,45417,45549,45678,45805,45930,46053,46175};
 	if (ratio < 0) { return sLookup[0]; } else if (ratio > 100) { return sLookup[100]; }
-	return sLookup[(int8_t)ratio];
+	return sLookup[ratio];
 }

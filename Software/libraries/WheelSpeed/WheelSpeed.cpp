@@ -31,13 +31,13 @@ void WheelSpeed::calc() {
 
 // Read Wheel Speed Method
 /** This function uses the value of currTime and the value of prevTime to
-	calculate the wheel speed and return it as a float. If the time difference
-	exceeds the defined TIMEOUT constant (in microseconds), a value of zero is
-	returned to indicate that wheel is not moving. **/
-float WheelSpeed::read() {
+	calculate the wheel speed and return it as an 16-bit integer. If the time
+	difference exceeds the defined TIMEOUT constant (in microseconds), a value
+	of zero is returned to indicate that wheel is not moving. **/
+int16_t WheelSpeed::read() {
 	if (micros() - prevTime >= TIMEOUT) {
 		return 0;
 	}
-	return (float)1000000 / ((currTime - prevTime) * triggers);		// Revolutions per Second (RPS)
-	// return (float)60000000 / ((currTime - prevTime) * triggers);	// Revolutions per Minute (RPM)
+	// return (float)1000000 / ((currTime - prevTime) * triggers);		// Revolutions per Second (RPS)
+	return (float)60000000 / ((currTime - prevTime) * triggers);	// Revolutions per Minute (RPM)
 }

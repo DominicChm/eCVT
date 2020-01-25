@@ -39,7 +39,7 @@ void PIDController::calc(int32_t measurement) {
 }
 
 // Get output
-float PIDController::get() {
+int16_t PIDController::get() {
 	// Calculate output
 	output = Kp * error + Ki * integral + Kd * derivative;
 	// Test if saturated
