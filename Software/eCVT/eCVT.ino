@@ -48,6 +48,9 @@ const int8_t LAUNCH_CONTROL = 2;
 const int8_t UPSHIFT_LED = 3;
 const int8_t BKSHIFT_LED = 4;
 
+// Communication
+#define DAQ_SERIAL Serial1
+
 
 
 /* ** SYSTEM ** */
@@ -56,8 +59,8 @@ const int8_t BKSHIFT_LED = 4;
 /** ePID will only work with PI or PID control. The integral term is necessary.
 	pPID will only work with P-Only or PD control. Do NOT use the integral term.
 	sPID will only work with P-Only or PD control. Do NOT use the integral term.
-	TODO PID DOCUMENTATION: EFFECT OF CONTROLLER_PERIOD. **/
-PIDController ePID(   1, 1, 0);			// Ratio Percent / Revolutions per Minute (%/RPM)
+	TODO PID DOCUMENTATION: EFFECT OF CTRL_PERIOD. **/
+PIDController ePID(0.5, 0.1, 0);		// Ratio Percent / Revolutions per Minute (%/RPM)
 PIDController pPID(0.01, 0, 0);			// Duty Cycle Percent / Encoder Counts (%/Count)
 PIDController sPID(0.01, 0, 0);			// Duty Cycle Percent / Encoder Counts (%/Count)
 
@@ -81,7 +84,7 @@ const int16_t ENGAGE_SPEED = 2000;		// Revolutions per Minute (RPM)
 const int16_t SHIFT_SPEED  = 3400;		// Revolutions per Minute (RPM)
 
 // Primary/Secondary Calibration
-const uint32_t CALIBRATION_DELAY = 15000;	// Milliseconds (ms)
+const uint32_t CALIB_DELAY = 15000;		// Milliseconds (ms)
 
 // Primary/Secondary Sheave Offset
 /** This constant is used to account for mechanical imperfections and adjust belt
@@ -98,12 +101,18 @@ const uint32_t CALIBRATION_DELAY = 15000;	// Milliseconds (ms)
 const int32_t SHEAVE_OFFSET = 0;		// Encoder Counts (1/3584 of a revolution)
 
 // Launch Control
-const int16_t LC_BRKPRESSURE_THRESHOLD    = 1640;	// 13-bit ADC (1640/8191 ~= 1/5)
-const int16_t LC_ENGINESPEED_THRESHOLD_LO = 2000;	// Revolutions per Minute (RPM)
-const int16_t LC_ENGINESPEED_THRESHOLD_HI = 3000;	// Revolutions per Minute (RPM)
+const int16_t LC_BRKPRESSURE    = 1640;	// 13-bit ADC (1640/8191 ~= 1/5)
+const int16_t LC_ENGINESPEED_LO = 2000;	// Revolutions per Minute (RPM)
+const int16_t LC_ENGINESPEED_HI = 3000;	// Revolutions per Minute (RPM)
 
 // Dashboard LEDs
 const uint32_t FLASH_PERIOD = 500;		// Milliseconds (ms)
+
+// Timers
+IntervalTimer ctrlTimer;
+IntervalTimer commTimer;
+const uint32_t CTRL_PERIOD = 10000;		// Microseconds (us)
+const uint32_t COMM_PERIOD = 10000;		// Microseconds (us)
 
 
 
@@ -118,22 +127,20 @@ int8_t dState = 0;
 int8_t cState = 0;
 
 // Inter-Communication Variables
-bool run   = true;
+bool run   =  true;
 bool eCalc = false;
 bool pCalc = false;
 bool sCalc = false;
+bool comm  = false;
 int32_t pSetpoint = 0;					// Encoder Counts (1/3584 of a revolution)
 int32_t sSetpoint = 0;					// Encoder Counts (1/3584 of a revolution)
-
-// Timer
-IntervalTimer timer;
-const uint32_t CONTROLLER_PERIOD = 10000;	// Microseconds (us)
 
 
 
 /* ** MAIN ** */
 
 void setup() {
+
 	// Serial Monitor
 	// #ifdef DEBUG
 	Serial.begin(9600);
@@ -145,9 +152,9 @@ void setup() {
 	delay(2000);
 
 	// Hall Effect Sensor Setup
-	pinMode(ENGINE_SPEED_PIN, INPUT);
-	attachInterrupt(digitalPinToInterrupt(ENGINE_SPEED_PIN), engineSpeedISR, RISING);
+	pinMode( ENGINE_SPEED_PIN, INPUT);
 	pinMode(RWHEELS_SPEED_PIN, INPUT);
+	attachInterrupt(digitalPinToInterrupt( ENGINE_SPEED_PIN),  engineSpeedISR, RISING);
 	attachInterrupt(digitalPinToInterrupt(RWHEELS_SPEED_PIN), rWheelsSpeedISR, RISING);
 
 	// Encoder Setup
@@ -166,10 +173,12 @@ void setup() {
 	pinMode(BKSHIFT_LED, OUTPUT);
 
 	// Timer Interrupt Setup
-	timer.begin(controllerISR, CONTROLLER_PERIOD);
+	ctrlTimer.begin(ctrlISR, CTRL_PERIOD);
+	commTimer.begin(commISR, COMM_PERIOD);
 }
 
 void loop() {
+
 	// Debugging
 	#ifdef DEBUG
 	Serial.println();
@@ -252,8 +261,10 @@ void eCVT() {
 			pSetpoint = pRatioToCounts(ePID.get());
 			sSetpoint = sRatioToCounts(ePID.get());
 
-			// State Changes
+			// Reset flag
 			eCalc = false;
+
+			// State Changes
 			eState = 2;
 			return;
 	}
@@ -306,8 +317,8 @@ void primary() {
 		// CALIBRATE - ZERO ENCODER
 		case 2:
 			// State Changes
-			if (millis() - pCalTime > CALIBRATION_DELAY) {
-				// Finish calibration and change the state
+			if (millis() - pCalTime > CALIB_DELAY) {
+				// Finish calibration and change state
 				pEnc.write(0);
 				pState = 3;
 			}
@@ -330,8 +341,10 @@ void primary() {
 			// Set primary duty cycle
 			pMot.setDutyCycle(pPID.get());
 
-			// State Changes
+			// Reset flag
 			pCalc = false;
+
+			// State Changes
 			pState = 3;
 			return;
 	}
@@ -384,8 +397,8 @@ void secondary() {
 		// CALIBRATE - ZERO ENCODER
 		case 2:
 			// State Changes
-			if (millis() - sCalTime > CALIBRATION_DELAY) {
-				// Finish calibration and change the state
+			if (millis() - sCalTime > CALIB_DELAY) {
+				// Finish calibration and change state
 				sEnc.write(0);
 				sState = 3;
 			}
@@ -408,8 +421,10 @@ void secondary() {
 			// Set secondary duty cycle
 			sMot.setDutyCycle(sPID.get());
 
-			// State Changes
+			// Reset flag
 			sCalc = false;
+
+			// State Changes
 			sState = 3;
 			return;
 	}
@@ -436,10 +451,10 @@ void launchcontrol() {
 		case 1:
 			// State Changes
 			if (digitalRead(LAUNCH_CONTROL) &&
-				analogRead(FBRAKE_PRESSURE) > LC_BRKPRESSURE_THRESHOLD &&
-				analogRead(RBRAKE_PRESSURE) > LC_BRKPRESSURE_THRESHOLD &&
-				eSpeed < LC_ENGINESPEED_THRESHOLD_LO) {
-				// Disable the eCVT and change the state
+				analogRead(FBRAKE_PRESSURE) > LC_BRKPRESSURE &&
+				analogRead(RBRAKE_PRESSURE) > LC_BRKPRESSURE &&
+				eSpeed < LC_ENGINESPEED_LO) {
+				// Disable eCVT and change state
 				run = false;
 				lState = 2;
 			}
@@ -449,10 +464,10 @@ void launchcontrol() {
 		case 2:
 			// State Changes
 			if (!digitalRead(LAUNCH_CONTROL) &&
-				analogRead(FBRAKE_PRESSURE) < LC_BRKPRESSURE_THRESHOLD &&
-				analogRead(RBRAKE_PRESSURE) < LC_BRKPRESSURE_THRESHOLD &&
-				eSpeed > LC_ENGINESPEED_THRESHOLD_HI) {
-				// Enable the eCVT and change the state
+				analogRead(FBRAKE_PRESSURE) < LC_BRKPRESSURE &&
+				analogRead(RBRAKE_PRESSURE) < LC_BRKPRESSURE &&
+				eSpeed > LC_ENGINESPEED_HI) {
+				// Enable eCVT and change state
 				run = true;
 				lState = 1;
 			}
@@ -505,7 +520,8 @@ void dashboardLEDs() {
 			if (run) {
 				dState = 1;
 			} else if (millis() - prevTime > FLASH_PERIOD) {
-				// Increment prevTime by FLASH_PERIOD and change the state
+				// Increment prevTime by FLASH_PERIOD and change state
+				prevTime += FLASH_PERIOD;
 				dState = 3;
 			}
 			return;
@@ -520,7 +536,8 @@ void dashboardLEDs() {
 			if (run) {
 				dState = 1;
 			} else if (millis() - prevTime > FLASH_PERIOD) {
-				// Increment prevTime by FLASH_PERIOD and change the state
+				// Increment prevTime by FLASH_PERIOD and change state
+				prevTime += FLASH_PERIOD;
 				dState = 2;
 			}
 			return;
@@ -569,7 +586,7 @@ void communication() {
 			cState = 1;
 			return;
 
-		// HUB STATE
+		// IDLE STATE
 		case 1:
 			return;
 	}
@@ -579,15 +596,20 @@ void communication() {
 
 /* **INTERRUPT SERVICE ROUTINES** */
 
+// Hall Effect Sensors
 void  engineSpeedISR() {  engineSpeed.calc(); }
 void rWheelsSpeedISR() { rWheelsSpeed.calc(); }
 void flWheelSpeedISR() { flWheelSpeed.calc(); }
 void frWheelSpeedISR() { frWheelSpeed.calc(); }
-void   controllerISR() {
+
+// Timers
+void ctrlISR() {
 	eCalc = true;
 	pCalc = true;
 	sCalc = true;
 }
+
+void commISR() { comm = true; }
 
 
 
