@@ -1,0 +1,43 @@
+START	1
+START	2
+eState	1
+eSpeed	1
+eSpeed	2
+ePID	1
+ePID	2
+eP		1
+eP		2
+eI		1
+eI		2
+eD		1
+eD		2
+pState	1
+pSet	1
+pSet	2
+pSet	3
+pSet	4
+pEnc	1
+pEnc	2
+pEnc	3
+pEnc	4
+pPID	1
+pPID	2
+sState	1
+sSet	1
+sSet	2
+sSet	3
+sSet	4
+sEnc	1
+sEnc	2
+sEnc	3
+sEnc	4
+sPID	1
+sPID	2
+CHECK	1
+CHECK	2
+
+
+
+/* VAR */			/* VAL */
+START				0X9999
+CHECK				CRC-16
