@@ -500,50 +500,18 @@ void dashboardLEDs() {
 			// State Changes
 			if (!run) {
 				prevTime = millis();
-				dState = 2;
-			} else if (currRatio > prevRatio) {
-				dState = 4;
-			} else if (currRatio < prevRatio) {
 				dState = 5;
-			} else {
-				dState = 6;
-			}
-			return;
-		
-		// FLASH (BKSHIFT LED ON)
-		case 2:
-			// Turn on backshift LED, turn off upshift LED
-			digitalWrite(BKSHIFT_LED, HIGH);
-			digitalWrite(UPSHIFT_LED, LOW);
-
-			// State Changes
-			if (run) {
-				dState = 1;
-			} else if (millis() - prevTime > FLASH_PERIOD) {
-				// Increment prevTime by FLASH_PERIOD and change state
-				prevTime += FLASH_PERIOD;
-				dState = 3;
-			}
-			return;
-
-		// FLASH (UPSHIFT LED ON)
-		case 3:
-			// Turn off backshift LED, turn on upshift LED
-			digitalWrite(BKSHIFT_LED, LOW);
-			digitalWrite(UPSHIFT_LED, HIGH);
-
-			// State Changes
-			if (run) {
-				dState = 1;
-			} else if (millis() - prevTime > FLASH_PERIOD) {
-				// Increment prevTime by FLASH_PERIOD and change state
-				prevTime += FLASH_PERIOD;
+			} else if (currRatio > prevRatio) {
 				dState = 2;
+			} else if (currRatio < prevRatio) {
+				dState = 3;
+			} else {
+				dState = 4;
 			}
 			return;
 
 		// BKSHIFT LED ON
-		case 4:
+		case 2:
 			// Turn on backshift LED, turn off upshift LED
 			digitalWrite(BKSHIFT_LED, HIGH);
 			digitalWrite(UPSHIFT_LED, LOW);
@@ -553,7 +521,7 @@ void dashboardLEDs() {
 			return;
 
 		// UPSHIFT LED ON
-		case 5:
+		case 3:
 			// Turn off backshift LED, turn on upshift LED
 			digitalWrite(BKSHIFT_LED, LOW);
 			digitalWrite(UPSHIFT_LED, HIGH);
@@ -563,13 +531,45 @@ void dashboardLEDs() {
 			return;
 
 		// BOTH LEDS ON
-		case 6:
+		case 4:
 			// Turn on backshift LED, turn on upshift LED
 			digitalWrite(BKSHIFT_LED, HIGH);
 			digitalWrite(UPSHIFT_LED, HIGH);
 
 			// State Changes
 			dState = 1;
+			return;
+
+		// FLASH (BKSHIFT LED ON)
+		case 5:
+			// Turn on backshift LED, turn off upshift LED
+			digitalWrite(BKSHIFT_LED, HIGH);
+			digitalWrite(UPSHIFT_LED, LOW);
+
+			// State Changes
+			if (run) {
+				dState = 1;
+			} else if (millis() - prevTime > FLASH_PERIOD) {
+				// Increment prevTime by FLASH_PERIOD and change state
+				prevTime += FLASH_PERIOD;
+				dState = 6;
+			}
+			return;
+
+		// FLASH (UPSHIFT LED ON)
+		case 6:
+			// Turn off backshift LED, turn on upshift LED
+			digitalWrite(BKSHIFT_LED, LOW);
+			digitalWrite(UPSHIFT_LED, HIGH);
+
+			// State Changes
+			if (run) {
+				dState = 1;
+			} else if (millis() - prevTime > FLASH_PERIOD) {
+				// Increment prevTime by FLASH_PERIOD and change state
+				prevTime += FLASH_PERIOD;
+				dState = 5;
+			}
 			return;
 	}
 }
