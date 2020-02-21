@@ -10800,6 +10800,7 @@ Grid 2.54 mm&lt;p&gt;
 <part name="R2" library="rcl" library_urn="urn:adsk.eagle:library:334" deviceset="R-US_" device="0204/7" package3d_urn="urn:adsk.eagle:package:23498/2"/>
 <part name="R3" library="rcl" library_urn="urn:adsk.eagle:library:334" deviceset="R-US_" device="0204/7" package3d_urn="urn:adsk.eagle:package:23498/2"/>
 <part name="R4" library="rcl" library_urn="urn:adsk.eagle:library:334" deviceset="R-US_" device="0204/7" package3d_urn="urn:adsk.eagle:package:23498/2"/>
+<part name="U$1" library="ME507" deviceset="NC" device=""/>
 </parts>
 <sheets>
 <sheet>
@@ -12362,6 +12363,7 @@ Grid 2.54 mm&lt;p&gt;
 <attribute name="NAME" x="36.6014" y="46.99" size="1.778" layer="95" rot="R90"/>
 <attribute name="VALUE" x="41.402" y="46.99" size="1.778" layer="96" rot="R90"/>
 </instance>
+<instance part="U$1" gate="A" x="162.56" y="152.4" smashed="yes"/>
 </instances>
 <busses>
 </busses>
@@ -12738,6 +12740,12 @@ Grid 2.54 mm&lt;p&gt;
 <pinref part="BRAKE_PRESSURE" gate="G$1" pin="4"/>
 <wire x1="58.42" y1="58.42" x2="53.34" y2="58.42" width="0.1524" layer="91"/>
 <pinref part="R3" gate="G$1" pin="1"/>
+</segment>
+</net>
+<net name="N$41" class="0">
+<segment>
+<pinref part="U$1" gate="A" pin="D"/>
+<pinref part="LEVEL_SHIFT" gate="A" pin="NC"/>
 </segment>
 </net>
 </nets>

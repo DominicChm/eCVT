@@ -3806,6 +3806,9 @@ Note, that not all DRC settings must be set by the manufacturer. Several can be 
 <signal name="N$24">
 <contactref element="ECVT" pad="28"/>
 </signal>
+<signal name="N$41">
+<contactref element="LEVEL_SHIFT" pad="12"/>
+</signal>
 </signals>
 <mfgpreviewcolors>
 <mfgpreviewcolor name="soldermaskcolor" color="0xC8008000"/>
