@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE eagle SYSTEM "eagle.dtd">
-<eagle version="9.5.0">
+<eagle version="9.5.2">
 <drawing>
 <settings>
 <setting alwaysvectorfont="no"/>
@@ -10867,7 +10867,7 @@ Grid 2.54 mm&lt;p&gt;
 </instance>
 <instance part="U$45" gate="A" x="200.66" y="106.68" smashed="yes"/>
 <instance part="U$46" gate="A" x="200.66" y="109.22" smashed="yes"/>
-<instance part="U$23" gate="A" x="154.94" y="88.9" smashed="yes" rot="R180"/>
+<instance part="U$23" gate="A" x="160.02" y="88.9" smashed="yes" rot="R180"/>
 <instance part="U$24" gate="A" x="200.66" y="83.82" smashed="yes"/>
 <instance part="U$25" gate="A" x="200.66" y="86.36" smashed="yes"/>
 <instance part="U$26" gate="A" x="200.66" y="88.9" smashed="yes"/>
@@ -11305,13 +11305,6 @@ Grid 2.54 mm&lt;p&gt;
 <pinref part="ECVT" gate="G$1" pin="27"/>
 </segment>
 </net>
-<net name="N$24" class="0">
-<segment>
-<wire x1="160.02" y1="88.9" x2="154.94" y2="88.9" width="0.1524" layer="91"/>
-<pinref part="U$23" gate="A" pin="D"/>
-<pinref part="ECVT" gate="G$1" pin="28"/>
-</segment>
-</net>
 <net name="ECVT_SPARE_A21_DAC0" class="0">
 <segment>
 <wire x1="205.74" y1="96.52" x2="200.66" y2="96.52" width="0.1524" layer="91"/>
@@ -11546,6 +11539,12 @@ Grid 2.54 mm&lt;p&gt;
 <segment>
 <pinref part="U$56" gate="A" pin="D"/>
 <pinref part="DAQ" gate="G$1" pin="VIN"/>
+</segment>
+</net>
+<net name="N$24" class="0">
+<segment>
+<pinref part="ECVT" gate="G$1" pin="28"/>
+<pinref part="U$23" gate="A" pin="D"/>
 </segment>
 </net>
 </nets>
