@@ -10825,7 +10825,6 @@ Grid 2.54 mm&lt;p&gt;
 <part name="U$28" library="Pololo Dual VNH5019" deviceset="POLOLU_DUAL_VNH5019_BAJA" device=""/>
 <part name="U1" library="Voltage Regulator 3.3V" deviceset="AP2114H-3.3TRG1" device=""/>
 <part name="GND7" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="GND" device=""/>
-<part name="U$29" library="ME507" deviceset="NC" device=""/>
 <part name="P+2" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="+5V" device=""/>
 <part name="+3V7" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="+3V3" device=""/>
 <part name="GND9" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="GND" device=""/>
@@ -10871,6 +10870,7 @@ Grid 2.54 mm&lt;p&gt;
 <part name="R4" library="rcl" library_urn="urn:adsk.eagle:library:334" deviceset="R-US_" device="0204/7" package3d_urn="urn:adsk.eagle:package:23498/2"/>
 <part name="+3V9" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="+3V3" device=""/>
 <part name="P+3" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="+5V" device=""/>
+<part name="+3V10" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="+3V3" device=""/>
 </parts>
 <sheets>
 <sheet>
@@ -11625,10 +11625,9 @@ Grid 2.54 mm&lt;p&gt;
 <attribute name="NAME" x="46.0756" y="156.4386" size="2.0828" layer="95" ratio="6" rot="SR0"/>
 <attribute name="VALUE" x="45.4406" y="153.8986" size="2.0828" layer="96" ratio="6" rot="SR0"/>
 </instance>
-<instance part="GND7" gate="1" x="27.94" y="142.24" smashed="yes">
-<attribute name="VALUE" x="25.4" y="139.7" size="1.778" layer="96"/>
+<instance part="GND7" gate="1" x="22.86" y="139.7" smashed="yes">
+<attribute name="VALUE" x="20.32" y="137.16" size="1.778" layer="96"/>
 </instance>
-<instance part="U$29" gate="A" x="33.02" y="144.78" smashed="yes" rot="R180"/>
 <instance part="P+2" gate="1" x="88.9" y="124.46" smashed="yes" rot="R180">
 <attribute name="VALUE" x="91.44" y="129.54" size="1.778" layer="96" rot="R270"/>
 </instance>
@@ -11654,6 +11653,9 @@ Grid 2.54 mm&lt;p&gt;
 <instance part="R5" gate="G$1" x="205.74" y="152.4" smashed="yes">
 <attribute name="NAME" x="201.93" y="153.8986" size="1.778" layer="95"/>
 <attribute name="VALUE" x="201.93" y="149.098" size="1.778" layer="96"/>
+</instance>
+<instance part="+3V10" gate="G$1" x="27.94" y="139.7" smashed="yes" rot="R180">
+<attribute name="VALUE" x="30.48" y="144.78" size="1.778" layer="96" rot="R270"/>
 </instance>
 </instances>
 <busses>
@@ -11687,8 +11689,8 @@ Grid 2.54 mm&lt;p&gt;
 <segment>
 <pinref part="U1" gate="A" pin="GND"/>
 <pinref part="GND7" gate="1" pin="GND"/>
-<wire x1="33.02" y1="147.32" x2="27.94" y2="147.32" width="0.1524" layer="91"/>
-<wire x1="27.94" y1="147.32" x2="27.94" y2="144.78" width="0.1524" layer="91"/>
+<wire x1="33.02" y1="147.32" x2="22.86" y2="147.32" width="0.1524" layer="91"/>
+<wire x1="22.86" y1="147.32" x2="22.86" y2="142.24" width="0.1524" layer="91"/>
 </segment>
 <segment>
 <pinref part="GND17" gate="1" pin="GND"/>
@@ -11743,6 +11745,12 @@ Grid 2.54 mm&lt;p&gt;
 <wire x1="182.88" y1="154.94" x2="182.88" y2="152.4" width="0.1524" layer="91"/>
 <pinref part="D1" gate="G$1" pin="+"/>
 <wire x1="182.88" y1="152.4" x2="187.96" y2="152.4" width="0.1524" layer="91"/>
+</segment>
+<segment>
+<pinref part="U1" gate="A" pin="VOUT_2"/>
+<wire x1="33.02" y1="144.78" x2="27.94" y2="144.78" width="0.1524" layer="91"/>
+<wire x1="27.94" y1="144.78" x2="27.94" y2="142.24" width="0.1524" layer="91"/>
+<pinref part="+3V10" gate="G$1" pin="+3V3"/>
 </segment>
 </net>
 <net name="PMOT_INA" class="0">
@@ -11909,12 +11917,6 @@ Grid 2.54 mm&lt;p&gt;
 <wire x1="48.26" y1="93.98" x2="48.26" y2="99.06" width="0.1524" layer="91"/>
 <pinref part="P+15" gate="1" pin="+12V"/>
 <pinref part="U$28" gate="G$1" pin="VOUT"/>
-</segment>
-</net>
-<net name="N$1" class="0">
-<segment>
-<pinref part="U$29" gate="A" pin="D"/>
-<pinref part="U1" gate="A" pin="VOUT_2"/>
 </segment>
 </net>
 <net name="N$34" class="0">
