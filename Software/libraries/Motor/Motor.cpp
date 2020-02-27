@@ -14,7 +14,7 @@ Motor::Motor(int8_t INA, int8_t INB, int8_t PWM) {
 	this->PWM = PWM;
 }
 
-void Motor::init() {
+void Motor::begin() {
 	pinMode(INA, OUTPUT);
 	pinMode(INB, OUTPUT);
 	pinMode(PWM, OUTPUT);
