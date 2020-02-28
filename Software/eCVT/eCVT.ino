@@ -4,7 +4,7 @@
  * Released to Cal Poly Baja SAE. ;)
  */
 
-#define DEBUG 1
+// #define DEBUG 0
 
 #include <Arduino.h>
 #include "PIDController.h"
@@ -32,8 +32,8 @@ const int8_t S_ENC_B = 26;
 
 // Motors
 /* Swap A and B pins to swap direction. */
-const int8_t P_MOT_INA = 18;
-const int8_t P_MOT_INB = 19;
+const int8_t P_MOT_INA = 19;
+const int8_t P_MOT_INB = 18;
 const int8_t P_MOT_PWM = 22;
 const int8_t S_MOT_INA = 20;
 const int8_t S_MOT_INB = 21;
@@ -64,9 +64,9 @@ const int8_t BKSHIFT_LED = 4;
 	pPID will only work with P-Only or PD control. Do NOT use the integral term.
 	sPID will only work with P-Only or PD control. Do NOT use the integral term.
 	TODO PID DOCUMENTATION: EFFECT OF CTRL_PERIOD. **/
-PIDController ePID(0.5, 0.1, 0);		// Ratio Percent / Revolutions per Minute (%/RPM)
-PIDController pPID(0.01, 0, 0);			// Duty Cycle Percent / Encoder Counts (%/Count)
-PIDController sPID(0.01, 0, 0);			// Duty Cycle Percent / Encoder Counts (%/Count)
+PIDController ePID(0.5, 0.2, 0);		// Ratio Percent / Revolutions per Minute (%/RPM)
+PIDController pPID(0.03, 0, 0);			// Duty Cycle Percent / Encoder Counts (%/Count)
+PIDController sPID(0.03, 0, 0);			// Duty Cycle Percent / Encoder Counts (%/Count)
 
 // Hall Effect Sensors
 EngineSpeed engineSpeed( 8);
@@ -85,10 +85,10 @@ Motor sMot(S_MOT_INA, S_MOT_INB, S_MOT_PWM);
 // eCVT Shift Curve
 /* TODO DISENGAGEMENT SPEED */
 const int16_t ENGAGE_SPEED = 2000;		// Revolutions per Minute (RPM)
-const int16_t SHIFT_SPEED  = 3000;		// Revolutions per Minute (RPM)
+const int16_t SHIFT_SPEED  = 3200;		// Revolutions per Minute (RPM)
 
 // Primary/Secondary Calibration
-const uint32_t CALIB_DELAY = 15000;		// Milliseconds (ms)
+const uint32_t CALIB_DELAY = 10000;		// Milliseconds (ms)
 
 // Primary/Secondary Sheave Offset
 /** This constant is used to account for mechanical imperfections and adjust belt
@@ -102,7 +102,7 @@ const uint32_t CALIB_DELAY = 15000;		// Milliseconds (ms)
 	change in clamping is determined by P * SHEAVE_OFFSET = VOLTS, where P is
 	the proportional gain for the respective clutch and VOLTS is the voltage
 	applied to the motor at the ideal sheave position. **/
-const int32_t SHEAVE_OFFSET = 0;		// Encoder Counts (1/3584 of a revolution)
+const int32_t SHEAVE_OFFSET = 1000;		// Encoder Counts (1/3606 of a revolution)
 
 // Launch Control
 const int16_t LC_BRKPRESSURE    = 1640;	// 13-bit ADC (1640/8191 ~= 1/5)
@@ -139,8 +139,8 @@ volatile bool eCalc = false;
 volatile bool pCalc = false;
 volatile bool sCalc = false;
 volatile bool comm  = false;
-int32_t pSetpoint = 0;					// Encoder Counts (1/3584 of a revolution)
-int32_t sSetpoint = 0;					// Encoder Counts (1/3584 of a revolution)
+int32_t pSetpoint = 0;					// Encoder Counts (1/3606 of a revolution)
+int32_t sSetpoint = 0;					// Encoder Counts (1/3606 of a revolution)
 
 
 
@@ -157,6 +157,7 @@ void setup() {
 	// TEMPORARY
 	Serial.println("Connect the motor wires! Delaying for 2 seconds...");
 	delay(2000);
+	Serial.println("GO!");
 
 	// Hall Effect Sensor Setup
 	pinMode( ENGINE_SPEED_PIN, INPUT);
@@ -168,7 +169,7 @@ void setup() {
 	// Handled by Encoder constructor! */
 
 	// Motor Setup
-	/* Handled by Motor init() function! */
+	/* Handled by Motor begin() function! */
 
 	// Pressure Transducer Setup
 	pinMode(FBRAKE_PRESSURE, INPUT);
@@ -188,7 +189,7 @@ void loop() {
 	#endif
 
 	// TEMPORARY
-	Serial.println(engineSpeed.read());
+	// Serial.println(engineSpeed.read());
 
 	// Tasks
 	eCVT();
