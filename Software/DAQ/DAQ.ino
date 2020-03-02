@@ -4,8 +4,8 @@
  * Released to Cal Poly Baja SAE. ;)
  */
 
-#define DEBUG 1
-#define TEST  1
+#define DEBUG
+#define TEST
 
 #include <Arduino.h>
 #include <Bounce2.h>
@@ -13,31 +13,13 @@
 #include "EngineSpeed.h"
 #include "WheelSpeed.h"
 
-#define hiByte highByte
-#define loByte  lowByte
 
 
+/* ** CONFIG ** */
 
-/* ** WIRING ** */
-
-// Hall Effect Sensors
-const int8_t  ENGINE_SPEED_PIN =  5;
-const int8_t RWHEELS_SPEED_PIN =  6;
-const int8_t FLWHEEL_SPEED_PIN = 29;
-const int8_t FRWHEEL_SPEED_PIN = 30;
-
-// Pressure Transducers
-const int8_t FBRAKE_PRESSURE = 34;
-const int8_t RBRAKE_PRESSURE = 33;
-
-// Dashboard
-const int8_t LOGGER_BUTTON = 2;
-const int8_t MARKER_BUTTON = 3;
-const int8_t STATUS_LED = 4;
-
-// Communication
-#define ECVT_SERIAL Serial1
-#define XBEE_SERIAL Serial2
+#include "WiringDec2019.h"
+// #include "WiringMar2019.h"
+#include "Communication.h"
 
 
 
@@ -51,22 +33,33 @@ WheelSpeed flWheelSpeed(24);
 WheelSpeed frWheelSpeed(24);
 
 // Debounced Buttons
-Bounce loggerButton = Bounce();
+Bounce loggerButton;
 
 // Filename Base
 const char FILENAME_BASE[] = "TEST_";
 
-// Communication
-const int8_t ECVT_DATA_SIZE = 33;		// Bytes
-const int8_t START_DATA_SIZE = 2;		// Bytes
-const int8_t CHECK_DATA_SIZE = 2;		// Bytes
-const int16_t START_BYTE_VAL = 0x5555;	// 0101 0101
+// Dashboard LED
+const uint32_t FLASH_PERIOD = 500;		// Milliseconds (ms)
+
+// Structure of Data
+struct Data {
+	uint32_t relTime;
+	int16_t  eSpeed;
+	int16_t ewSpeed;
+	int16_t rwSpeed;
+	int16_t flSpeed;
+	int16_t frSpeed;
+	int16_t fPressure;
+	int16_t rPressure;
+	bool markerButton;
+	uint8_t eCVT[ECVT_DATA_SIZE];
+} data;
 
 // Timers
 IntervalTimer writeTimer;
 IntervalTimer flushTimer;
 const uint32_t WRITE_PERIOD =     1000;	// Microseconds (us)
-const uint32_t FLUSH_PERIOD = 10000000;	// Microseconds (us)
+const uint32_t FLUSH_PERIOD = 60000000;	// Microseconds (us)
 
 #ifdef TEST
 IntervalTimer  testTimer;
@@ -77,19 +70,22 @@ const uint32_t TEST_PERIOD  =  5000000; // Microseconds (us)
 
 /* ** FINITE STATE MACHINE ** */
 
-// States
-int8_t dState = 0;
-int8_t cState = 0;
-
 // Inter-Communication Variables
-bool write = false;
-bool flush = false;
+volatile bool write = false;
+volatile bool flush = false;
 #ifdef TEST
-bool test  =  true;
+volatile bool test  =  true;
 #else
-bool test  = false;
+volatile bool test  = false;
 #endif
-uint8_t ecvtData[ECVT_DATA_SIZE];
+
+/*	The statuses are:
+		Status 0 - No change.
+		Status 1 - Change to off.
+		Status 2 - Change to on.
+		Status 3 - Error.
+*/
+int8_t status = 0;
 
 
 
@@ -119,14 +115,7 @@ void setup() {
 	// Dashboard Setup
 	pinMode(LOGGER_BUTTON, INPUT_PULLUP);
 	pinMode(MARKER_BUTTON, INPUT_PULLUP);
-	pinMode(STATUS_LED, OUTPUT);
-
-	// Timer Interrupt Setup
-	writeTimer.begin(writeISR, WRITE_PERIOD);
-	flushTimer.begin(flushISR, FLUSH_PERIOD);
-	#ifdef TEST
-	 testTimer.begin( testISR,  TEST_PERIOD);
-	#endif
+	pinMode(DAQ_STATUS_LED, OUTPUT);
 }
 
 void loop() {
@@ -138,7 +127,8 @@ void loop() {
 
 	// Tasks
 	daq();
-	// comm();
+	statusLED();
+	// communication();
 }
 
 
@@ -147,10 +137,12 @@ void loop() {
 
 void daq() {
 
+	static int8_t state = 0;
+
 	// Debugging
 	#ifdef DEBUG
-	// Serial.print("dState: ");
-	// Serial.println(dState);
+	// Serial.print("state: ");
+	// Serial.println(state);
 	#endif
 
 	static uint32_t calTime;
@@ -167,19 +159,28 @@ void daq() {
 	static int16_t num = 1;
 	static File file;
 
-	switch (dState) {
+	switch (state) {
 
 		// INITIALIZE
 		case 0:
 			// Logger Button
+			loggerButton = Bounce();
 			loggerButton.attach(LOGGER_BUTTON);
 			loggerButton.interval(10);	// Milliseconds (ms)
 
+			// Timer Interrupt Setup
+			writeTimer.begin(writeISR, WRITE_PERIOD);
+			flushTimer.begin(flushISR, FLUSH_PERIOD);
+			#ifdef TEST
+			 testTimer.begin( testISR,  TEST_PERIOD);
+			#endif
+
 			// SD Card and State Changes
 			if (SD.begin(BUILTIN_SDCARD)) {
-				dState = 1;
+				state = 1;
 			} else {
-				dState = 9;
+				status = 3;
+				state = 9;
 			}
 			return;
 
@@ -187,7 +188,7 @@ void daq() {
 		case 1:
 			// State Changes
 			if (loggerButton.fell() || test) {
-				dState = 2;
+				state = 2;
 			}
 
 			// Reset flag
@@ -214,7 +215,7 @@ void daq() {
 			if (SD.exists(filename)) {
 				num++;
 			} else {
-				dState = 3;
+				state = 3;
 			}
 			return;
 
@@ -227,9 +228,11 @@ void daq() {
 			if (file) {
 				// Set calibration time and change state
 				calTime = micros();
-				dState = 4;
+				status = 2;
+				state = 4;
 			} else {
-				dState = 9;
+				status = 3;
+				state = 9;
 			}
 			return;
 
@@ -237,11 +240,11 @@ void daq() {
 		case 4:
 			// State Changes
 			if (loggerButton.fell() || test) {
-				dState = 7;
+				state = 7;
 			} else if (flush) {
-				dState = 6;
+				state = 6;
 			} else if (write) {
-				dState = 5;
+				state = 5;
 			}
 
 			// Reset flag
@@ -253,66 +256,43 @@ void daq() {
 
 		// WRITE DATA
 		case 5:
-		{
 			// Store relative time
-			uint32_t relTime = micros() - calTime;
-			Serial.println(relTime);
+			data.relTime = micros() - calTime;
+			Serial.println(data.relTime);
 
 			// Store hall effect sensor data
 			noInterrupts();
-			int16_t  eSpeed =  engineSpeed.read();
+			data.eSpeed =  engineSpeed.read();
 			  interrupts();
 			noInterrupts();
-			int16_t ewSpeed =  eWheelSpeed.read();
+			data.ewSpeed =  eWheelSpeed.read();
 			  interrupts();
 			noInterrupts();
-			int16_t rwSpeed = rWheelsSpeed.read();
+			data.rwSpeed = rWheelsSpeed.read();
 			  interrupts();
 			noInterrupts();
-			int16_t flSpeed = flWheelSpeed.read();
+			data.flSpeed = flWheelSpeed.read();
 			  interrupts();
 			noInterrupts();
-			int16_t frSpeed = frWheelSpeed.read();
+			data.frSpeed = frWheelSpeed.read();
 			  interrupts();
 
 			// Store pressure transducer data
-			int16_t fPressure = analogRead(FBRAKE_PRESSURE);
-			int16_t rPressure = analogRead(RBRAKE_PRESSURE);
+			data.fPressure = analogRead(FBRAKE_PRESSURE);
+			data.rPressure = analogRead(RBRAKE_PRESSURE);
 
-			// Write relative time
-			file.write(relTime >> 24);
-			file.write(relTime >> 16);
-			file.write(relTime >>  8);
-			file.write(relTime >>  0);
+			// Store marker button status
+			data.markerButton = digitalRead(MARKER_BUTTON);
 
-			// Write hall effect sensor data
-			file.write(hiByte( eSpeed));
-			file.write(loByte( eSpeed));
-			file.write(hiByte(ewSpeed));
-			file.write(loByte(ewSpeed));
-			file.write(hiByte(rwSpeed));
-			file.write(loByte(rwSpeed));
-			file.write(hiByte(flSpeed));
-			file.write(loByte(flSpeed));
-			file.write(hiByte(frSpeed));
-			file.write(loByte(frSpeed));
-
-			// Write pressure transducer data
-			file.write(hiByte(fPressure));
-			file.write(loByte(fPressure));
-			file.write(hiByte(rPressure));
-			file.write(loByte(rPressure));
-
-			// Write new line character
-			file.println();
+			// Write all data
+			file.write((const uint8_t *)&data, sizeof(data));
 
 			// Reset flag
 			write = false;
 
 			// State Changes
-			dState = 4;
+			state = 4;
 			return;
-		}
 
 		// FLUSH DATA
 		case 6:
@@ -323,7 +303,7 @@ void daq() {
 			flush = false;
 
 			// State Changes
-			dState = 4;
+			state = 4;
 			return;
 
 		// CLOSE FILE
@@ -332,7 +312,8 @@ void daq() {
 			file.close();
 
 			// State Changes
-			dState = 1;
+			status = 1;
+			state = 1;
 			return;
 
 		// SD ERROR
@@ -348,18 +329,77 @@ void daq() {
 
 
 
-void comm() {
+void statusLED() {
 
-	static uint8_t numBytesRead = 0;
-	static uint8_t buffer[ECVT_DATA_SIZE];
-	static uint16_t daqChecksum;
-	static uint16_t	ecvtChecksum;
+	static int8_t state = 0;
 
-	switch (cState) {
+	switch (state) {
 
 		// INITIALIZE
 		case 0:
-			cState = 1;
+			state = 1;
+			return;
+
+		// HUB STATE
+		case 1:
+			// State Changes
+			if (status == 0) {
+				return;
+			} else if (status == 1) {
+				state = 2;
+			} else if (status == 2) {
+				state = 3;
+			} else if (status == 3) {
+				state = 4;
+			}
+			return;
+
+		// TURN LED OFF
+		case 2:
+			digitalWrite(DAQ_STATUS_LED, LOW);
+
+			// State Changes
+			status = 0;
+			state = 1;
+			return;
+
+		// TURN LED ON
+		case 3:
+			digitalWrite(DAQ_STATUS_LED, HIGH);
+
+			// State Changes
+			status = 0;
+			state = 1;
+			return;
+
+		// FLASH (OFF)
+		case 4:
+			return;
+
+		// FLASH (ON)
+		case 5:
+			return;
+	}
+
+}
+
+
+
+void communication() {
+
+	static int8_t state = 0;
+
+	static uint8_t numBytesRead = 0;
+	static uint8_t buffer[ECVT_DATA_SIZE];
+
+	static uint16_t  daqChecksum;
+	static uint16_t ecvtChecksum;
+
+	switch (state) {
+
+		// INITIALIZE
+		case 0:
+			state = 1;
 			return;
 
 		// READ START DATA
@@ -370,7 +410,7 @@ void comm() {
 			}
 
 			// If byte read is start byte...
-			if (ECVT_SERIAL.read() == START_BYTE_VAL) {
+			if (DAQ_ECVT_SERIAL.read() == START_BYTE_VAL) {
 				// Increment number of bytes read
 				numBytesRead++;
 			// Otherwise...
@@ -381,7 +421,8 @@ void comm() {
 
 			// State Changes
 			if (numBytesRead >= START_DATA_SIZE) {
-				cState = 2;
+				daqChecksum = 0;
+				state = 2;
 			}
 
 		// READ ECVT DATA
@@ -392,26 +433,20 @@ void comm() {
 			}
 
 			// Read byte and store in buffer
-			buffer[numBytesRead - START_DATA_SIZE] = ECVT_SERIAL.read();
+			uint8_t read;
+			read = DAQ_ECVT_SERIAL.read();
+			buffer[numBytesRead - START_DATA_SIZE] = read;
+			daqChecksum += numBytesRead * read;
 			numBytesRead++;
 
 			// State Changes
 			if (numBytesRead >= ECVT_DATA_SIZE) {
-				cState = 3;
+				state = 3;
 			}
 			return;
 
-		// GENERATE CHECKSUM
-		case 3:
-			// Generate checksum
-			daqChecksum = CRC16(ecvtData);
-
-			// State Changes
-			cState = 4;
-			return;
-
 		// READ CHECK DATA
-		case 4:
+		case 3:
 			// Wait until bytes available
 			if (!(Serial.available() >= 2)) {
 				return;
@@ -419,28 +454,33 @@ void comm() {
 
 			// Read bytes and store in checksum
 			ecvtChecksum = ((uint16_t)Serial.read() << 8) + Serial.read();
+			numBytesRead += CHECK_DATA_SIZE;
 
 			// State Changes
-			cState = 5;
+			state = 4;
 			return;
 
 		// VERIFY DATA INTEGRITY
-		case 5:
+		case 4:
 			// State Changes
 			if (daqChecksum == ecvtChecksum) {
-				cState = 6;
+				state = 5;
 			} else {
-				cState = 1;
+				// Reset number of bytes read and change state
+				numBytesRead = 0;
+				state = 1;
 			}
 			return;
 
 		// COPY BUFFER TO ECVT DATA
-		case 6:
+		case 5:
 			// Copy buffer to eCVT data
-			memcpy(ecvtData, buffer, ECVT_DATA_SIZE);
+			memcpy(data.eCVT, buffer, ECVT_DATA_SIZE);
 
 			// State Changes
-			cState = 1;
+			// Reset number of bytes read and change state
+			numBytesRead = 0;
+			state = 1;
 			return;
 	}
 }
@@ -466,11 +506,3 @@ void  testISR() {
 	test = !test;
 }
 #endif
-
-
-
-/* **CRC-16 CHECKSUM ALGORITHM** */
-
-int16_t CRC16(uint8_t* buffer) {
-	return 1;
-}
