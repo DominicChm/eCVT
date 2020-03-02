@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE eagle SYSTEM "eagle.dtd">
-<eagle version="9.5.2">
+<eagle version="9.5.0">
 <drawing>
 <settings>
 <setting alwaysvectorfont="no"/>
@@ -11105,6 +11105,11 @@ Grid 2.54 mm&lt;p&gt;
 <label x="205.74" y="109.22" size="1.27" layer="95" xref="yes"/>
 <pinref part="U$33" gate="G$1" pin="15/A1"/>
 </segment>
+<segment>
+<wire x1="91.44" y1="109.22" x2="86.36" y2="109.22" width="0.1524" layer="91"/>
+<label x="91.44" y="109.22" size="1.27" layer="95" xref="yes"/>
+<pinref part="U$31" gate="G$1" pin="15/A1"/>
+</segment>
 </net>
 <net name="DAQ_ECVT_SCK" class="0">
 <segment>
@@ -11336,13 +11341,6 @@ Grid 2.54 mm&lt;p&gt;
 <wire x1="45.72" y1="104.14" x2="40.64" y2="104.14" width="0.1524" layer="91"/>
 <label x="40.64" y="104.14" size="1.27" layer="95" rot="R180" xref="yes"/>
 <pinref part="U$31" gate="G$1" pin="12/MISO"/>
-</segment>
-</net>
-<net name="DAQ_ECVT\_CS" class="0">
-<segment>
-<wire x1="91.44" y1="109.22" x2="86.36" y2="109.22" width="0.1524" layer="91"/>
-<label x="91.44" y="109.22" size="1.27" layer="95" xref="yes"/>
-<pinref part="U$31" gate="G$1" pin="15/A1"/>
 </segment>
 </net>
 <net name="DAQ_XBEE_CS" class="0">
