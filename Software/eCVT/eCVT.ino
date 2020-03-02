@@ -4,7 +4,7 @@
  * Released to Cal Poly Baja SAE. ;)
  */
 
-// #define DEBUG 0
+// #define DEBUG
 
 #include <Arduino.h>
 #include "PIDController.h"
@@ -15,45 +15,11 @@
 
 
 
-/* ** WIRING ** */
+/* ** CONFIG ** */
 
-// Hall Effect Sensors
-const int8_t  ENGINE_SPEED_PIN =  5;
-const int8_t RWHEELS_SPEED_PIN =  6;
-const int8_t FLWHEEL_SPEED_PIN = 29;
-const int8_t FRWHEEL_SPEED_PIN = 30;
-
-// Encoders
-/* Swap A and B pins to swap direction. */
-const int8_t P_ENC_A = 24;
-const int8_t P_ENC_B = 25;
-const int8_t S_ENC_A = 27;
-const int8_t S_ENC_B = 26;
-
-// Motors
-/* Swap A and B pins to swap direction. */
-const int8_t P_MOT_INA = 19;
-const int8_t P_MOT_INB = 18;
-const int8_t P_MOT_PWM = 22;
-const int8_t S_MOT_INA = 20;
-const int8_t S_MOT_INB = 21;
-const int8_t S_MOT_PWM = 23;
-
-// Pressure Transducers
-const int8_t FBRAKE_PRESSURE = 34;
-const int8_t RBRAKE_PRESSURE = 33;
-
-// Dashboard
-const int8_t LOGGER_BUTTON = 2;
-const int8_t MARKER_BUTTON = 3;
-const int8_t STATUS_LED = 4;
-const int8_t LAUNCH_CONTROL = 2;
-const int8_t UPSHIFT_LED = 3;
-const int8_t BKSHIFT_LED = 4;
-
-// Communication
-#define DAQ_ECVT_SERIAL Serial1
-#define DAQ_XBEE_SERIAL Serial2
+#include "WiringDec2019.h"
+// #include "WiringMar2019.h"
+#include "Communication.h"
 
 
 
@@ -70,9 +36,9 @@ PIDController sPID(0.03, 0, 0);			// Duty Cycle Percent / Encoder Counts (%/Coun
 
 // Hall Effect Sensors
 EngineSpeed engineSpeed( 8);
-WheelSpeed rWheelsSpeed(24);
-WheelSpeed flWheelSpeed(24);
-WheelSpeed frWheelSpeed(24);
+// WheelSpeed rWheelsSpeed(24);
+// WheelSpeed flWheelSpeed(24);
+// WheelSpeed frWheelSpeed(24);
 
 // Encoders
 Encoder pEnc(P_ENC_A, P_ENC_B);
@@ -84,13 +50,10 @@ Motor sMot(S_MOT_INA, S_MOT_INB, S_MOT_PWM);
 
 // eCVT Shift Curve
 /* TODO DISENGAGEMENT SPEED */
-const int16_t ENGAGE_SPEED = 2000;		// Revolutions per Minute (RPM)
+const int16_t ENGAGE_SPEED = 2400;		// Revolutions per Minute (RPM)
 const int16_t SHIFT_SPEED  = 3200;		// Revolutions per Minute (RPM)
 
-// Primary/Secondary Calibration
-const uint32_t CALIB_DELAY = 10000;		// Milliseconds (ms)
-
-// Primary/Secondary Sheave Offset
+// eCVT Sheave Offset
 /** This constant is used to account for mechanical imperfections and adjust belt
 	clamping force. Examples of mechanical imperfections include:
 		1. belt wear
@@ -104,6 +67,10 @@ const uint32_t CALIB_DELAY = 10000;		// Milliseconds (ms)
 	applied to the motor at the ideal sheave position. **/
 const int32_t SHEAVE_OFFSET = 1000;		// Encoder Counts (1/3606 of a revolution)
 
+// Primary/Secondary Calibration
+const uint32_t CALIB_DELAY = 10000;		// Milliseconds (ms)
+const int16_t CALIB_ESPEED =  2000;		// Revolutions per Minute (RPM)
+
 // Launch Control
 const int16_t LC_BRKPRESSURE    = 1640;	// 13-bit ADC (1640/8191 ~= 1/5)
 const int16_t LC_ENGINESPEED_LO = 2000;	// Revolutions per Minute (RPM)
@@ -111,12 +78,6 @@ const int16_t LC_ENGINESPEED_HI = 3000;	// Revolutions per Minute (RPM)
 
 // Dashboard LEDs
 const uint32_t FLASH_PERIOD = 500;		// Milliseconds (ms)
-
-// Communication
-const int8_t ECVT_DATA_SIZE = 37;		// Bytes
-const int8_t START_DATA_SIZE = 2;		// Bytes
-const int8_t CHECK_DATA_SIZE = 2;		// Bytes
-const int16_t START_BYTE_VAL = 0x5555;	// 0101 0101
 
 // Timers
 IntervalTimer ctrlTimer;
@@ -139,6 +100,7 @@ volatile bool eCalc = false;
 volatile bool pCalc = false;
 volatile bool sCalc = false;
 volatile bool comm  = false;
+int16_t eSpeed = 0;						// Revolutions per Minute (RPM)
 int32_t pSetpoint = 0;					// Encoder Counts (1/3606 of a revolution)
 int32_t sSetpoint = 0;					// Encoder Counts (1/3606 of a revolution)
 
@@ -155,18 +117,19 @@ void setup() {
 	// #endif
 
 	// TEMPORARY
-	Serial.println("Connect the motor wires! Delaying for 2 seconds...");
+	Serial.println("Connect the motor wires!");
+	Serial.println("Delaying for 2 seconds..");
 	delay(2000);
 	Serial.println("GO!");
 
 	// Hall Effect Sensor Setup
 	pinMode( ENGINE_SPEED_PIN, INPUT);
-	pinMode(RWHEELS_SPEED_PIN, INPUT);
-	attachInterrupt(digitalPinToInterrupt( ENGINE_SPEED_PIN),  engineSpeedISR, RISING);
-	attachInterrupt(digitalPinToInterrupt(RWHEELS_SPEED_PIN), rWheelsSpeedISR, RISING);
+	// pinMode(RWHEELS_SPEED_PIN, INPUT);
+	// pinMode(FLWHEEL_SPEED_PIN, INPUT);
+	// pinMode(FRWHEEL_SPEED_PIN, INPUT);
 
 	// Encoder Setup
-	// Handled by Encoder constructor! */
+	/* Handled by Encoder constructor! */
 
 	// Motor Setup
 	/* Handled by Motor begin() function! */
@@ -176,7 +139,7 @@ void setup() {
 	pinMode(RBRAKE_PRESSURE, INPUT);
 
 	// Dashboard Setup
-	pinMode(LAUNCH_CONTROL, INPUT_PULLUP);
+	pinMode(LAUNCH_BUTTON, INPUT_PULLUP);
 	pinMode(UPSHIFT_LED, OUTPUT);
 	pinMode(BKSHIFT_LED, OUTPUT);
 }
@@ -188,14 +151,15 @@ void loop() {
 	Serial.println();
 	#endif
 
-	// TEMPORARY
-	// Serial.println(engineSpeed.read());
-
-	// Tasks
+	// Essential Tasks
 	eCVT();
 	primary();
 	secondary();
-	// launchcontrol();
+	hallEffectSensors();
+
+	// Bonus Tasks
+	// launchControl();
+	// ecvtstatusLED();
 	// dashboardLEDs();
 	// communication();
 }
@@ -213,11 +177,6 @@ void eCVT() {
 	Serial.print("ePID: ");
 	Serial.println(ePID.get());
 	#endif
-
-	// Engine Speed
-	noInterrupts();
-	int16_t eSpeed = engineSpeed.read();	// Revolutions per Minute (RPM)
-	interrupts();
 
 	switch (eState) {
 
@@ -265,8 +224,8 @@ void eCVT() {
 			ePID.calc(eSpeed);
 
 			// Set primary and secondary setpoints
-			pSetpoint = pRatioToCounts(ePID.get());
-			sSetpoint = sRatioToCounts(ePID.get());
+			pSetpoint = pRatioToCounts(ePID.get()) + SHEAVE_OFFSET;
+			sSetpoint = sRatioToCounts(ePID.get()) + SHEAVE_OFFSET;
 
 			// Reset flag
 			eCalc = false;
@@ -331,18 +290,26 @@ void primary() {
 			}
 			return;
 
-		// P-ONLY CONTROLLER - REST
+		// WAIT FOR USER READY
 		case 3:
 			// State Changes
-			if (pCalc) {
+			if (eSpeed > CALIB_ESPEED) {
 				pState = 4;
 			}
 			return;
 
-		// P-ONLY CONTROLLER - UPDATE
+		// P-ONLY CONTROLLER - REST
 		case 4:
+			// State Changes
+			if (pCalc) {
+				pState = 5;
+			}
+			return;
+
+		// P-ONLY CONTROLLER - UPDATE
+		case 5:
 			// Update primary setpoint and calculate PID output
-			pPID.setSetpoint(pSetpoint + SHEAVE_OFFSET);
+			pPID.setSetpoint(pSetpoint);
 			pPID.calc(pEnc.read());
 
 			// Set primary duty cycle
@@ -352,7 +319,7 @@ void primary() {
 			pCalc = false;
 
 			// State Changes
-			pState = 3;
+			pState = 4;
 			return;
 	}
 }
@@ -411,18 +378,26 @@ void secondary() {
 			}
 			return;
 
-		// P-ONLY CONTROLLER - REST
+		// WAIT FOR USER READY
 		case 3:
 			// State Changes
-			if (sCalc) {
+			if (eSpeed > CALIB_ESPEED) {
 				sState = 4;
 			}
 			return;
 
-		// P-ONLY CONTROLLER - UPDATE
+		// P-ONLY CONTROLLER - REST
 		case 4:
+			// State Changes
+			if (sCalc) {
+				sState = 5;
+			}
+			return;
+
+		// P-ONLY CONTROLLER - UPDATE
+		case 5:
 			// Update secondary setpoint and calculate PID output
-			sPID.setSetpoint(sSetpoint + SHEAVE_OFFSET);
+			sPID.setSetpoint(sSetpoint);
 			sPID.calc(sEnc.read());
 
 			// Set secondary duty cycle
@@ -432,21 +407,48 @@ void secondary() {
 			sCalc = false;
 
 			// State Changes
-			sState = 3;
+			sState = 4;
 			return;
 	}
 }
 
 
 
-void launchcontrol() {
+void hallEffectSensors() {
 
 	static int8_t state = 0;
 
-	// Engine Speed
-	noInterrupts();
-	int16_t eSpeed = engineSpeed.read();	// Revolutions per Minute (RPM)
-	interrupts();
+	switch (state) {
+
+		// INITIALIZE
+		case 0:
+			// Attach interrupts
+			attachInterrupt(digitalPinToInterrupt( ENGINE_SPEED_PIN),  engineSpeedISR, RISING);
+			// attachInterrupt(digitalPinToInterrupt(RWHEELS_SPEED_PIN), rWheelsSpeedISR, RISING);
+			// attachInterrupt(digitalPinToInterrupt(FLWHEEL_SPEED_PIN), flWheelSpeedISR, RISING);
+			// attachInterrupt(digitalPinToInterrupt(FRWHEEL_SPEED_PIN), frWheelSpeedISR, RISING);
+
+			// State Changes
+			state = 1;
+			return;
+
+		// UPDATE
+		case 1:
+			noInterrupts();
+			eSpeed = engineSpeed.read();
+			interrupts();
+
+			// State Changes
+			return;
+	}
+
+}
+
+
+
+void launchControl() {
+
+	static int8_t state = 0;
 
 	switch (state) {
 
@@ -459,7 +461,9 @@ void launchcontrol() {
 		// ECVT ENABLED
 		case 1:
 			// State Changes
-			if (digitalRead(LAUNCH_CONTROL) &&
+			/** A low signal from the launch button means the button is pressed
+				because the pin mode is configured to input pullup. **/
+			if (!digitalRead(LAUNCH_BUTTON) &&
 				analogRead(FBRAKE_PRESSURE) > LC_BRKPRESSURE &&
 				analogRead(RBRAKE_PRESSURE) > LC_BRKPRESSURE &&
 				eSpeed < LC_ENGINESPEED_LO) {
@@ -472,7 +476,9 @@ void launchcontrol() {
 		// ECVT DISABLED
 		case 2:
 			// State Changes
-			if (!digitalRead(LAUNCH_CONTROL) &&
+			/** A high signal from the launch button means the button is not
+				pressed because the pin mode is configured to input pullup. **/
+			if (digitalRead(LAUNCH_BUTTON) &&
 				analogRead(FBRAKE_PRESSURE) < LC_BRKPRESSURE &&
 				analogRead(RBRAKE_PRESSURE) < LC_BRKPRESSURE &&
 				eSpeed > LC_ENGINESPEED_HI) {
@@ -590,21 +596,6 @@ void dashboardLEDs() {
 // void communication() {
 
 // 	static int8_t state = 0;
-
-// 	// Structure of Data
-// 	static struct data {
-// 	    uint32_t relTime;
-// 	    int16_t  eSpeed;
-// 	    int16_t ewSpeed;
-// 	    int16_t rwSpeed;
-// 	    int16_t flSpeed;
-// 	    int16_t frSpeed;
-// 	    int16_t fPressure;
-// 	    int16_t rPressure;
-// 	    bool markerButton;
-// 	    uint8_t eCVT[ECVT_DATA_SIZE];
-// 	};
-
 // 	static int8_t numBytesWritten = 0;
 
 // 	switch (state) {
@@ -649,9 +640,9 @@ void dashboardLEDs() {
 
 // Hall Effect Sensors
 void  engineSpeedISR() {  engineSpeed.calc(); }
-void rWheelsSpeedISR() { rWheelsSpeed.calc(); }
-void flWheelSpeedISR() { flWheelSpeed.calc(); }
-void frWheelSpeedISR() { frWheelSpeed.calc(); }
+// void rWheelsSpeedISR() { rWheelsSpeed.calc(); }
+// void flWheelSpeedISR() { flWheelSpeed.calc(); }
+// void frWheelSpeedISR() { frWheelSpeed.calc(); }
 
 // Timers
 void ctrlISR() {
