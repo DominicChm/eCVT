@@ -24,8 +24,8 @@ const int8_t S_ENC_B = 26;
 
 // Motors
 /* Swap A and B pins to swap direction. */
-const int8_t P_MOT_INA = 18;
-const int8_t P_MOT_INB = 19;
+const int8_t P_MOT_INA = 19;
+const int8_t P_MOT_INB = 18;
 const int8_t P_MOT_PWM = 22;
 const int8_t S_MOT_INA = 20;
 const int8_t S_MOT_INB = 21;

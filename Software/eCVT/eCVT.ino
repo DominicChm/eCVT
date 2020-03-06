@@ -286,6 +286,7 @@ void primary() {
 			if (millis() - pCalTime > CALIB_DELAY) {
 				// Finish calibration and change state
 				pEnc.write(0);
+				pMot.setDutyCycle(0);
 				pState = 3;
 			}
 			return;
@@ -374,6 +375,7 @@ void secondary() {
 			if (millis() - sCalTime > CALIB_DELAY) {
 				// Finish calibration and change state
 				sEnc.write(0);
+				sMot.setDutyCycle(0);
 				sState = 3;
 			}
 			return;
@@ -434,9 +436,9 @@ void hallEffectSensors() {
 
 		// UPDATE
 		case 1:
-			noInterrupts();
+			cli();
 			eSpeed = engineSpeed.read();
-			interrupts();
+			sei();
 
 			// State Changes
 			return;
@@ -596,6 +598,29 @@ void dashboardLEDs() {
 // void communication() {
 
 // 	static int8_t state = 0;
+
+// 	// Structure of Data
+// 	static struct Data {
+// 		uint32_t time;
+// 		// eCVT
+// 		int8_t  eState;
+// 		int16_t eSpeed;
+// 		int16_t ePID;
+// 		int16_t eP;
+// 		int16_t eI;
+// 		int16_t eD;
+// 		// Primary
+// 		int8_t  pState;
+// 		int32_t pSet;
+// 		int32_t pEnc;
+// 		int16_t pPID;
+// 		// Secondary
+// 		int8_t  sState;
+// 		int32_t sSet;
+// 		int32_t sEnc;
+// 		int16_t sPID;
+// 	} data;
+
 // 	static int8_t numBytesWritten = 0;
 
 // 	switch (state) {
@@ -613,9 +638,8 @@ void dashboardLEDs() {
 // 		case 1:
 // 			// Write start data
 // 			if (comm) {
-// 				Serial.write(0x5555);
+// 				Serial.write(START_BYTE_VAL);
 // 				numBytesWritten++;
-// 				comm = false;
 // 			}
 
 // 			// State Changes
@@ -626,6 +650,31 @@ void dashboardLEDs() {
 
 // 		// STORE ECVT DATA
 // 		case 2:
+// 			// Store time data
+// 			data.time = micros();
+
+// 			// Store eCVT task data
+// 			data.eState = eState;
+// 			data.eSpeed = eSpeed;
+// 			data.ePID = ePID.get();
+// 			data.eP = ePID.getP();
+// 			data.eI = ePID.getI();
+// 			data.eD = ePID.getD();
+
+// 			// Store primary task data
+// 			data.pState = pState;
+// 			data.pSet = pSetpoint;
+// 			data.pEnc = pEnc.read();
+// 			data.pPID = pPID.get();
+
+// 			// Store secondary task data
+// 			data.pState = pState;
+// 			data.pSet = pSetpoint;
+// 			data.pEnc = pEnc.read();
+// 			data.pPID = pPID.get();
+
+// 			// State Changes
+// 			state = 3;
 // 			return;
 		
 // 		// WRITE ECVT DATA
