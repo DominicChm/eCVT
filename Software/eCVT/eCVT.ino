@@ -5,6 +5,7 @@
  */
 
 // #define DEBUG
+#define INFO
 
 #include <Arduino.h>
 #include "PIDController.h"
@@ -36,7 +37,7 @@ PIDController sPID(0.03, 0, 0);			// Duty Cycle Percent / Encoder Counts (%/Coun
 
 // Hall Effect Sensors
 EngineSpeed engineSpeed( 8);
-// WheelSpeed rWheelsSpeed(24);
+WheelSpeed rWheelsSpeed(24);
 // WheelSpeed flWheelSpeed(24);
 // WheelSpeed frWheelSpeed(24);
 
@@ -69,7 +70,11 @@ const int32_t SHEAVE_OFFSET = 1000;		// Encoder Counts (1/3606 of a revolution)
 
 // Primary/Secondary Calibration
 const uint32_t CALIB_DELAY = 10000;		// Milliseconds (ms)
-const int16_t CALIB_ESPEED =  2000;		// Revolutions per Minute (RPM)
+const int16_t CALIB_ESPEED  = 2000;		// Revolutions per Minute (RPM)
+const int8_t CALIB_DUTYCYCLE  = 10;		// Magnitude of Duty Cycle Percent (%)
+
+// Primary/Secondary Max Static Duty Cycle
+const int8_t MAX_STATIC_DUTYCYCLE = 25;	// Magnitude of Duty Cycle Percent (%)
 
 // Launch Control
 const int16_t LC_BRKPRESSURE    = 1640;	// 13-bit ADC (1640/8191 ~= 1/5)
@@ -100,11 +105,10 @@ volatile bool eCalc = false;
 volatile bool pCalc = false;
 volatile bool sCalc = false;
 volatile bool comm  = false;
-int16_t eSpeed = 0;						// Revolutions per Minute (RPM)
-int32_t pSetpoint = 0;					// Encoder Counts (1/3606 of a revolution)
-int32_t sSetpoint = 0;					// Encoder Counts (1/3606 of a revolution)
-
-bool calibReady = false;
+int16_t  eSpeed = 0;					// Revolutions per Minute (RPM)
+int16_t rwSpeed = 0;					// Revolutions per Minute (RPM)
+int32_t pSetpoint = 0;					// Encoder Counts (~1/3606 of a revolution)
+int32_t sSetpoint = 0;					// Encoder Counts (~1/3606 of a revolution)
 
 
 
@@ -113,20 +117,22 @@ bool calibReady = false;
 void setup() {
 
 	// Serial Monitor
-	// #ifdef DEBUG
+	#ifdef INFO
 	Serial.begin(9600);
 	while (!Serial) { }	// Wait for serial port to connect. Needed for native USB only.
-	// #endif
+	#endif
 
-	// TEMPORARY
+	// Bench Testing
+	#ifdef INFO
 	Serial.println("Connect the motor wires!");
 	Serial.println("Delaying for 2 seconds..");
 	delay(2000);
 	Serial.println("GO!");
+	#endif
 
 	// Hall Effect Sensor Setup
 	pinMode( ENGINE_SPEED_PIN, INPUT);
-	// pinMode(RWHEELS_SPEED_PIN, INPUT);
+	pinMode(RWHEELS_SPEED_PIN, INPUT);
 	// pinMode(FLWHEEL_SPEED_PIN, INPUT);
 	// pinMode(FRWHEEL_SPEED_PIN, INPUT);
 
@@ -275,7 +281,7 @@ void primary() {
 		// CALIBRATE - OPEN SHEAVES
 		case 1:
 			// Start calibration
-			pMot.setDutyCycle(-10);
+			pMot.setDutyCycle(-CALIB_DUTYCYCLE);
 			pCalTime = millis();
 
 			// State Changes
@@ -290,65 +296,47 @@ void primary() {
 				pEnc.write(0);
 				pMot.setDutyCycle(0);
 				pState = 3;
+
+				#ifdef INFO
+				Serial.println("Finished primary calibration!");
+				#endif
 			}
 			return;
 
-		// CALIBRATE - TODO DOCUMENTATION
+		// CALIBRATE - WAIT FOR USER
 		case 3:
 			// State Changes
 			if (eSpeed > CALIB_ESPEED) {
-				// Set primary setpoint to closed and change state
-				pPID.setSetpoint(pRatioToCounts(0));
 				pState = 4;
 			}
 			return;
 
-		// CALIBRATE - TODO DOCUMENTATION
+		// P-ONLY CONTROLLER - REST
 		case 4:
 			// State Changes
-			if (pEnc.read() > pRatioToCounts(10)) {
-				calibReady = true;
-				pState = 6;
-			} else if (pCalc) {
+			if (pCalc) {
 				pState = 5;
 			}
 			return;
 
-
-		// CALIBRATE - TODO DOCUMENTATION
-		case 5:
-			// Calculate PID output
-			pPID.calc(pEnc.read());
-
-			// Set primary duty cycle
-			pMot.setDutyCycle(pPID.get());
-
-			// State Changes'
-			pState = 4;
-			return;
-
-		// P-ONLY CONTROLLER - REST
-		case 6:
-			// State Changes
-			if (pCalc) {
-				pState = 7;
-			}
-			return;
-
 		// P-ONLY CONTROLLER - UPDATE
-		case 7:
+		case 5:
 			// Update primary setpoint and calculate PID output
 			pPID.setSetpoint(pSetpoint);
 			pPID.calc(pEnc.read());
 
 			// Set primary duty cycle
-			pMot.setDutyCycle(pPID.get());
+			if (eSpeed == 0) {
+				pMot.setDutyCycle(min(MAX_STATIC_DUTYCYCLE, pPID.get()));
+			} else {
+				pMot.setDutyCycle(pPID.get());
+			}
 
 			// Reset flag
 			pCalc = false;
 
 			// State Changes
-			pState = 6;
+			pState = 4;
 			return;
 	}
 }
@@ -390,7 +378,7 @@ void secondary() {
 		// CALIBRATE - OPEN SHEAVES
 		case 1:
 			// Start calibration
-			sMot.setDutyCycle(-10);
+			sMot.setDutyCycle(-CALIB_DUTYCYCLE);
 			sCalTime = millis();
 
 			// State Changes
@@ -405,13 +393,17 @@ void secondary() {
 				sEnc.write(0);
 				sMot.setDutyCycle(0);
 				sState = 3;
+
+				#ifdef INFO
+				Serial.println("Finished secondary calibration!");
+				#endif
 			}
 			return;
 
-		// CALIBRATE - TODO DOCUMENTATION
+		// CALIBRATE - WAIT FOR USER
 		case 3:
 			// State Changes
-			if (calibReady) {
+			if (eSpeed > CALIB_ESPEED) {
 				sState = 4;
 			}
 			return;
@@ -431,7 +423,11 @@ void secondary() {
 			sPID.calc(sEnc.read());
 
 			// Set secondary duty cycle
-			sMot.setDutyCycle(sPID.get());
+			if (rwSpeed != 0) {
+				sMot.setDutyCycle(min(MAX_STATIC_DUTYCYCLE, sPID.get()));
+			} else {
+				sMot.setDutyCycle(sPID.get());
+			}
 
 			// Reset flag
 			sCalc = false;
@@ -454,7 +450,7 @@ void hallEffectSensors() {
 		case 0:
 			// Attach interrupts
 			attachInterrupt(digitalPinToInterrupt( ENGINE_SPEED_PIN),  engineSpeedISR, RISING);
-			// attachInterrupt(digitalPinToInterrupt(RWHEELS_SPEED_PIN), rWheelsSpeedISR, RISING);
+			attachInterrupt(digitalPinToInterrupt(RWHEELS_SPEED_PIN), rWheelsSpeedISR, RISING);
 			// attachInterrupt(digitalPinToInterrupt(FLWHEEL_SPEED_PIN), flWheelSpeedISR, RISING);
 			// attachInterrupt(digitalPinToInterrupt(FRWHEEL_SPEED_PIN), frWheelSpeedISR, RISING);
 
@@ -464,9 +460,24 @@ void hallEffectSensors() {
 
 		// UPDATE
 		case 1:
+			// Read engine speed
 			cli();
-			eSpeed = engineSpeed.read();
+			eSpeed  =  engineSpeed.read();
 			sei();
+
+			// Read rear wheel speed
+			cli();
+			rwSpeed = rWheelsSpeed.read();
+
+			// // Read front left wheel speed
+			// cli();
+			// flSpeed = flWheelSpeed.read();
+			// sei();
+
+			// // Read front right wheel speed
+			// cli();
+			// frSpeed = frWheelSpeed.read();
+			// sei();
 
 			// State Changes
 			return;
@@ -717,7 +728,7 @@ void dashboardLEDs() {
 
 // Hall Effect Sensors
 void  engineSpeedISR() {  engineSpeed.calc(); }
-// void rWheelsSpeedISR() { rWheelsSpeed.calc(); }
+void rWheelsSpeedISR() { rWheelsSpeed.calc(); }
 // void flWheelSpeedISR() { flWheelSpeed.calc(); }
 // void frWheelSpeedISR() { frWheelSpeed.calc(); }
 
