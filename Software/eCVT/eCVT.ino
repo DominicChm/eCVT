@@ -104,6 +104,8 @@ int16_t eSpeed = 0;						// Revolutions per Minute (RPM)
 int32_t pSetpoint = 0;					// Encoder Counts (1/3606 of a revolution)
 int32_t sSetpoint = 0;					// Encoder Counts (1/3606 of a revolution)
 
+bool calibReady = false;
+
 
 
 /* ** MAIN ** */
@@ -291,24 +293,50 @@ void primary() {
 			}
 			return;
 
-		// WAIT FOR USER READY
+		// CALIBRATE - TODO DOCUMENTATION
 		case 3:
 			// State Changes
 			if (eSpeed > CALIB_ESPEED) {
+				// Set primary setpoint to closed and change state
+				pPID.setSetpoint(pRatioToCounts(0));
 				pState = 4;
 			}
 			return;
 
-		// P-ONLY CONTROLLER - REST
+		// CALIBRATE - TODO DOCUMENTATION
 		case 4:
 			// State Changes
-			if (pCalc) {
+			if (pEnc.read() > pRatioToCounts(10)) {
+				calibReady = true;
+				pState = 6;
+			} else if (pCalc) {
 				pState = 5;
 			}
 			return;
 
-		// P-ONLY CONTROLLER - UPDATE
+
+		// CALIBRATE - TODO DOCUMENTATION
 		case 5:
+			// Calculate PID output
+			pPID.calc(pEnc.read());
+
+			// Set primary duty cycle
+			pMot.setDutyCycle(pPID.get());
+
+			// State Changes'
+			pState = 4;
+			return;
+
+		// P-ONLY CONTROLLER - REST
+		case 6:
+			// State Changes
+			if (pCalc) {
+				pState = 7;
+			}
+			return;
+
+		// P-ONLY CONTROLLER - UPDATE
+		case 7:
 			// Update primary setpoint and calculate PID output
 			pPID.setSetpoint(pSetpoint);
 			pPID.calc(pEnc.read());
@@ -320,7 +348,7 @@ void primary() {
 			pCalc = false;
 
 			// State Changes
-			pState = 4;
+			pState = 6;
 			return;
 	}
 }
@@ -380,10 +408,10 @@ void secondary() {
 			}
 			return;
 
-		// WAIT FOR USER READY
+		// CALIBRATE - TODO DOCUMENTATION
 		case 3:
 			// State Changes
-			if (eSpeed > CALIB_ESPEED) {
+			if (calibReady) {
 				sState = 4;
 			}
 			return;
