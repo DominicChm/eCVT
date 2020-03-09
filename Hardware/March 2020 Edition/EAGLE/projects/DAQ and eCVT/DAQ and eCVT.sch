@@ -12697,13 +12697,11 @@ Source: www.kingbright.com</description>
 <part name="U$17" library="ME507" deviceset="NC" device=""/>
 <part name="+3V2" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="+3V3" device=""/>
 <part name="U$22" library="ME507" deviceset="NC" device=""/>
-<part name="+3V3" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="+3V3" device=""/>
 <part name="GND3" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="GND" device=""/>
 <part name="GND2" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="GND" device=""/>
 <part name="U$3" library="ME507" deviceset="NC" device=""/>
 <part name="+3V1" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="+3V3" device=""/>
 <part name="U$40" library="ME507" deviceset="NC" device=""/>
-<part name="+3V4" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="+3V3" device=""/>
 <part name="GND1" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="GND" device=""/>
 <part name="GND5" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="GND" device=""/>
 <part name="GND6" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="GND" device=""/>
@@ -12749,7 +12747,7 @@ Source: www.kingbright.com</description>
 <part name="GND17" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="GND" device=""/>
 <part name="U$31" library="Teensy" deviceset="TEENSY_3.5_BAJA" device=""/>
 <part name="U$33" library="Teensy" deviceset="TEENSY_3.5_BAJA" device=""/>
-<part name="FRAME4" library="ME 507" deviceset="TITLEBLOCK_LET_L" device=""/>
+<part name="FRAME3" library="ME 507" deviceset="TITLEBLOCK_LET_L" device=""/>
 <part name="LEVEL_SHIFT" library="Quad. Level Shifter" deviceset="CD40109BNSR" device=""/>
 <part name="P+16" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="+12V" device=""/>
 <part name="+3V11" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="+3V3" device=""/>
@@ -12790,6 +12788,8 @@ Source: www.kingbright.com</description>
 <part name="R2" library="rcl" library_urn="urn:adsk.eagle:library:334" deviceset="R-US_" device="0204/7" package3d_urn="urn:adsk.eagle:package:23498/2"/>
 <part name="R4" library="rcl" library_urn="urn:adsk.eagle:library:334" deviceset="R-US_" device="0204/7" package3d_urn="urn:adsk.eagle:package:23498/2"/>
 <part name="R3" library="rcl" library_urn="urn:adsk.eagle:library:334" deviceset="R-US_" device="0204/7" package3d_urn="urn:adsk.eagle:package:23498/2"/>
+<part name="+3V4" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="+3V3" device=""/>
+<part name="+3V3" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="+3V3" device=""/>
 </parts>
 <sheets>
 <sheet>
@@ -12814,9 +12814,6 @@ Source: www.kingbright.com</description>
 <attribute name="VALUE" x="101.6" y="134.62" size="1.778" layer="96" rot="MR90"/>
 </instance>
 <instance part="U$22" gate="A" x="86.36" y="93.98" smashed="yes"/>
-<instance part="+3V3" gate="G$1" x="38.1" y="96.52" smashed="yes" rot="MR180">
-<attribute name="VALUE" x="35.56" y="101.6" size="1.778" layer="96" rot="MR270"/>
-</instance>
 <instance part="GND3" gate="1" x="40.64" y="142.24" smashed="yes" rot="R180">
 <attribute name="VALUE" x="43.18" y="144.78" size="1.778" layer="96" rot="R180"/>
 </instance>
@@ -12828,9 +12825,6 @@ Source: www.kingbright.com</description>
 <attribute name="VALUE" x="215.9" y="134.62" size="1.778" layer="96" rot="MR90"/>
 </instance>
 <instance part="U$40" gate="A" x="200.66" y="93.98" smashed="yes"/>
-<instance part="+3V4" gate="G$1" x="134.62" y="106.68" smashed="yes">
-<attribute name="VALUE" x="132.08" y="101.6" size="1.778" layer="96" rot="R90"/>
-</instance>
 <instance part="GND1" gate="1" x="154.94" y="142.24" smashed="yes" rot="R180">
 <attribute name="VALUE" x="157.48" y="144.78" size="1.778" layer="96" rot="R180"/>
 </instance>
@@ -12864,6 +12858,12 @@ Source: www.kingbright.com</description>
 <instance part="U$32" gate="A" x="160.02" y="78.74" smashed="yes" rot="R180"/>
 <instance part="U$31" gate="G$1" x="50.8" y="76.2" smashed="yes"/>
 <instance part="U$33" gate="G$1" x="165.1" y="76.2" smashed="yes"/>
+<instance part="+3V4" gate="G$1" x="134.62" y="106.68" smashed="yes">
+<attribute name="VALUE" x="132.08" y="101.6" size="1.778" layer="96" rot="R90"/>
+</instance>
+<instance part="+3V3" gate="G$1" x="38.1" y="96.52" smashed="yes" rot="MR180">
+<attribute name="VALUE" x="35.56" y="101.6" size="1.778" layer="96" rot="MR270"/>
+</instance>
 </instances>
 <busses>
 </busses>
@@ -12918,6 +12918,18 @@ Source: www.kingbright.com</description>
 <pinref part="+3V1" gate="G$1" pin="+3V3"/>
 <wire x1="213.36" y1="132.08" x2="213.36" y2="137.16" width="0.1524" layer="91"/>
 <pinref part="U$33" gate="G$1" pin="3V3_LO"/>
+</segment>
+<segment>
+<wire x1="160.02" y1="101.6" x2="134.62" y2="101.6" width="0.1524" layer="91"/>
+<pinref part="U$33" gate="G$1" pin="3V3"/>
+<wire x1="134.62" y1="101.6" x2="134.62" y2="104.14" width="0.1524" layer="91"/>
+<pinref part="+3V4" gate="G$1" pin="+3V3"/>
+</segment>
+<segment>
+<wire x1="45.72" y1="101.6" x2="38.1" y2="101.6" width="0.1524" layer="91"/>
+<wire x1="38.1" y1="101.6" x2="38.1" y2="99.06" width="0.1524" layer="91"/>
+<pinref part="U$31" gate="G$1" pin="3V3"/>
+<pinref part="+3V3" gate="G$1" pin="+3V3"/>
 </segment>
 </net>
 <net name="DAQ_ECVT_MOSI" class="0">
@@ -13295,14 +13307,6 @@ Source: www.kingbright.com</description>
 <pinref part="U$31" gate="G$1" pin="12/MISO"/>
 </segment>
 </net>
-<net name="N$2" class="0">
-<segment>
-<wire x1="45.72" y1="101.6" x2="38.1" y2="101.6" width="0.1524" layer="91"/>
-<pinref part="+3V3" gate="G$1" pin="+3V3"/>
-<wire x1="38.1" y1="101.6" x2="38.1" y2="99.06" width="0.1524" layer="91"/>
-<pinref part="U$31" gate="G$1" pin="3V3"/>
-</segment>
-</net>
 <net name="N$3" class="0">
 <segment>
 <pinref part="U$4" gate="A" pin="D"/>
@@ -13397,14 +13401,6 @@ Source: www.kingbright.com</description>
 <segment>
 <pinref part="U$56" gate="A" pin="D"/>
 <pinref part="U$31" gate="G$1" pin="VIN"/>
-</segment>
-</net>
-<net name="N$19" class="0">
-<segment>
-<wire x1="160.02" y1="101.6" x2="134.62" y2="101.6" width="0.1524" layer="91"/>
-<pinref part="+3V4" gate="G$1" pin="+3V3"/>
-<wire x1="134.62" y1="104.14" x2="134.62" y2="101.6" width="0.1524" layer="91"/>
-<pinref part="U$33" gate="G$1" pin="3V3"/>
 </segment>
 </net>
 <net name="N$20" class="0">
@@ -13847,9 +13843,9 @@ Source: www.kingbright.com</description>
 <plain>
 </plain>
 <instances>
-<instance part="FRAME4" gate="G$3" x="5.08" y="0" smashed="yes"/>
-<instance part="FRAME4" gate="G$1" x="0" y="0" smashed="yes"/>
-<instance part="FRAME4" gate="G$2" x="147.32" y="0" smashed="yes">
+<instance part="FRAME3" gate="G$3" x="5.08" y="0" smashed="yes"/>
+<instance part="FRAME3" gate="G$1" x="0" y="0" smashed="yes"/>
+<instance part="FRAME3" gate="G$2" x="147.32" y="0" smashed="yes">
 <attribute name="LAST_DATE_TIME" x="160.02" y="11.43" size="2.54" layer="94"/>
 <attribute name="SHEET" x="189.23" y="6.35" size="2.54" layer="94"/>
 <attribute name="DRAWING_NAME" x="240.665" y="3.81" size="2.54" layer="94" align="bottom-right"/>
@@ -14319,12 +14315,6 @@ Source: www.kingbright.com</description>
 <label x="142.24" y="111.76" size="1.27" layer="95" rot="R180" xref="yes"/>
 </segment>
 </net>
-<net name="N$21" class="0">
-<segment>
-<pinref part="U$30" gate="A" pin="D"/>
-<pinref part="LEVEL_SHIFT" gate="A" pin="NC"/>
-</segment>
-</net>
 <net name="SENC_CHI" class="0">
 <segment>
 <wire x1="99.06" y1="162.56" x2="93.98" y2="162.56" width="0.1524" layer="91"/>
@@ -14494,9 +14484,48 @@ Source: www.kingbright.com</description>
 <wire x1="167.64" y1="68.58" x2="172.72" y2="68.58" width="0.1524" layer="91"/>
 </segment>
 </net>
+<net name="N$1" class="0">
+<segment>
+<pinref part="LEVEL_SHIFT" gate="A" pin="NC"/>
+<pinref part="U$30" gate="A" pin="D"/>
+</segment>
+</net>
 </nets>
 </sheet>
 </sheets>
+<errors>
+<approved hash="206,2,68.58,147.32,+3V3,,,,,"/>
+<approved hash="206,2,33.02,144.78,+3V3,,,,,"/>
+<approved hash="208,1,99.06,137.16,+3V3,sup,,,,"/>
+<approved hash="208,1,213.36,137.16,+3V3,sup,,,,"/>
+<approved hash="208,1,134.62,104.14,+3V3,sup,,,,"/>
+<approved hash="208,1,38.1,99.06,+3V3,sup,,,,"/>
+<approved hash="208,2,33.02,99.06,+3V3,sup,,,,"/>
+<approved hash="208,2,182.88,109.22,+3V3,sup,,,,"/>
+<approved hash="208,2,68.58,147.32,+3V3,out,,,,"/>
+<approved hash="208,2,88.9,165.1,+3V3,sup,,,,"/>
+<approved hash="208,2,182.88,154.94,+3V3,sup,,,,"/>
+<approved hash="208,2,33.02,144.78,+3V3,out,,,,"/>
+<approved hash="208,2,27.94,142.24,+3V3,sup,,,,"/>
+<approved hash="208,3,142.24,127,+3V3,sup,,,,"/>
+<approved hash="208,3,223.52,129.54,+3V3,sup,,,,"/>
+<approved hash="208,3,218.44,104.14,+3V3,sup,,,,"/>
+<approved hash="208,3,167.64,83.82,+3V3,sup,,,,"/>
+<approved hash="208,3,66.04,83.82,+3V3,sup,,,,"/>
+<approved hash="106,3,35.56,162.56,PENC_CHI,,,,,"/>
+<approved hash="106,3,35.56,160.02,PENC_CHI/,,,,,"/>
+<approved hash="106,3,99.06,162.56,SENC_CHI,,,,,"/>
+<approved hash="106,3,99.06,160.02,SENC_CHI/,,,,,"/>
+<approved hash="113,1,74.709,17.559,FRAME1,,,,,"/>
+<approved hash="113,2,74.709,17.559,FRAME2,,,,,"/>
+<approved hash="113,3,74.7014,17.5514,FRAME3,,,,,"/>
+<approved hash="113,2,193.04,153.49,R5,,,,,"/>
+<approved hash="113,2,207.01,152.078,LED1,,,,,"/>
+<approved hash="113,3,60.96,67.4903,R1,,,,,"/>
+<approved hash="113,3,49.7103,60.96,R2,,,,,"/>
+<approved hash="113,3,151.31,60.96,R4,,,,,"/>
+<approved hash="113,3,162.56,67.4903,R3,,,,,"/>
+</errors>
 </schematic>
 </drawing>
 <compatibility>
