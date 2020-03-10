@@ -14522,8 +14522,8 @@ Source: www.kingbright.com</description>
 <approved hash="106,3,35.56,160.02,PENC_CHI/,,,,,"/>
 <approved hash="106,3,99.06,162.56,SENC_CHI,,,,,"/>
 <approved hash="106,3,99.06,160.02,SENC_CHI/,,,,,"/>
-<approved hash="113,1,74.709,17.559,FRAME1,,,,,"/>
-<approved hash="113,2,74.709,17.559,FRAME2,,,,,"/>
+<approved hash="113,1,74.7014,17.5514,FRAME1,,,,,"/>
+<approved hash="113,2,74.7014,17.5514,FRAME2,,,,,"/>
 <approved hash="113,3,74.7014,17.5514,FRAME3,,,,,"/>
 <approved hash="113,2,193.04,153.49,R5,,,,,"/>
 <approved hash="113,2,207.01,152.078,LED1,,,,,"/>
