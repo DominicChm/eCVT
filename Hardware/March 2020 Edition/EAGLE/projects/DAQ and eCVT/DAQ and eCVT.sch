@@ -14494,6 +14494,12 @@ Source: www.kingbright.com</description>
 </sheet>
 </sheets>
 <errors>
+<approved hash="104,2,187.96,106.68,XBEE,VCC,+3V3,,,"/>
+<approved hash="104,3,147.32,124.46,LEVEL_SHIFT,VCC,+3V3,,,"/>
+<approved hash="104,3,147.32,106.68,LEVEL_SHIFT,VSS,GND,,,"/>
+<approved hash="103,3,213.36,114.3,LEVEL_SHIFT,NC,N$1,,,"/>
+<approved hash="104,3,213.36,124.46,LEVEL_SHIFT,VDD,+12V,,,"/>
+<approved hash="104,3,198.12,162.56,DIFF_LINE_REC,VCC,+5V,,,"/>
 <approved hash="206,2,68.58,147.32,+3V3,,,,,"/>
 <approved hash="206,2,33.02,144.78,+3V3,,,,,"/>
 <approved hash="208,1,99.06,137.16,+3V3,sup,,,,"/>
