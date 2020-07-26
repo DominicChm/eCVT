@@ -13,6 +13,6 @@
 const int8_t  ECVT_DATA_SIZE = 37;		// Bytes
 const int8_t START_DATA_SIZE = 2;		// Bytes
 const int8_t CHECK_DATA_SIZE = 2;		// Bytes
-const int8_t START_BYTE_VAL  = 0x80;    // 1000 0000
+const int8_t START_BYTE_VAL  = 0xAA;    // 1010 1010
 
 #endif

@@ -19,7 +19,7 @@
 /* ** CONFIG ** */
 
 #include "WiringDec2019.h"
-// #include "WiringMar2019.h"
+// #include "WiringMar2020.h"
 #include "Communication.h"
 
 
@@ -32,8 +32,8 @@
 	sPID will only work with P-Only or PD control. Do NOT use the integral term.
 	TODO PID DOCUMENTATION: EFFECT OF CTRL_PERIOD. **/
 PIDController ePID(0.5, 0.2, 0);		// Ratio Percent / Revolutions per Minute (%/RPM)
-PIDController pPID(0.03, 0, 0);			// Duty Cycle Percent / Encoder Counts (%/Count)
-PIDController sPID(0.03, 0, 0);			// Duty Cycle Percent / Encoder Counts (%/Count)
+PIDController pPID(0.03,  0, 0);		// Duty Cycle Percent / Encoder Counts (%/Count)
+PIDController sPID(0.03,  0, 0);		// Duty Cycle Percent / Encoder Counts (%/Count)
 
 // Hall Effect Sensors
 EngineSpeed engineSpeed( 8);
@@ -52,7 +52,7 @@ Motor sMot(S_MOT_INA, S_MOT_INB, S_MOT_PWM);
 // eCVT Shift Curve
 /* TODO DISENGAGEMENT SPEED */
 const int16_t ENGAGE_SPEED = 2400;		// Revolutions per Minute (RPM)
-const int16_t SHIFT_SPEED  = 3200;		// Revolutions per Minute (RPM)
+const int16_t  SHIFT_SPEED = 3200;		// Revolutions per Minute (RPM)
 
 // eCVT Sheave Offset
 /** This constant is used to account for mechanical imperfections and adjust belt

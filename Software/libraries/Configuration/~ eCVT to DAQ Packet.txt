@@ -43,5 +43,5 @@ CHECK	2
 
 
 /* VAR */			/* VAL */
-START				0X8080
+START				0xAAAA
 CHECK				CRC-16
