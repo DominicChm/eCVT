@@ -544,7 +544,7 @@ void dashboardLEDs() {
 
 	// Update previous and current ratios
 	prevRatio = currRatio;
-	currRatio = pPID.get();
+	currRatio = ePID.get();
 
 	switch (state) {
 
