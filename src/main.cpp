@@ -468,6 +468,7 @@ void hallEffectSensors() {
 			// Read rear wheel speed
 			cli();
 			rwSpeed = rWheelsSpeed.read();
+			sei();
 
 			// // Read front left wheel speed
 			// cli();
