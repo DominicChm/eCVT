@@ -423,7 +423,7 @@ void secondary() {
 			sPID.calc(sEnc.read());
 
 			// Set secondary duty cycle
-			if (rwSpeed != 0) {
+			if (rwSpeed == 0) {
 				sMot.setDutyCycle(min(MAX_STATIC_DUTYCYCLE, sPID.get()));
 			} else {
 				sMot.setDutyCycle(sPID.get());
