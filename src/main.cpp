@@ -651,93 +651,93 @@ void dashboardLEDs() {
 
 
 
-// void communication() {
+void communication() {
 
-// 	static int8_t state = 0;
+	static int8_t state = 0;
 
-// 	// Structure of Data
-// 	static struct Data {
-// 		uint32_t time;
-// 		// eCVT
-// 		int8_t  eState;
-// 		int16_t eSpeed;
-// 		int16_t ePID;
-// 		int16_t eP;
-// 		int16_t eI;
-// 		int16_t eD;
-// 		// Primary
-// 		int8_t  pState;
-// 		int32_t pSet;
-// 		int32_t pEnc;
-// 		int16_t pPID;
-// 		// Secondary
-// 		int8_t  sState;
-// 		int32_t sSet;
-// 		int32_t sEnc;
-// 		int16_t sPID;
-// 	} data;
+	// Structure of Data
+	static struct Data {
+		uint32_t time;
+		// eCVT
+		int8_t  eState;
+		int16_t eSpeed;
+		int16_t ePID;
+		int16_t eP;
+		int16_t eI;
+		int16_t eD;
+		// Primary
+		int8_t  pState;
+		int32_t pSet;
+		int32_t pEnc;
+		int16_t pPID;
+		// Secondary
+		int8_t  sState;
+		int32_t sSet;
+		int32_t sEnc;
+		int16_t sPID;
+	} data;
 
-// 	static int8_t numBytesWritten = 0;
+	static int8_t numBytesWritten = 0;
 
-// 	switch (state) {
+	switch (state) {
 
-// 		// INITIALIZE
-// 		case 0:
-// 			// Timer Interrupt Setup
-// 			commTimer.begin(commISR, COMM_PERIOD);
+		// INITIALIZE
+		case 0:
+			// Timer Interrupt Setup
+			commTimer.begin(commISR, COMM_PERIOD);
 
-// 			// State Changes
-// 			state = 1;
-// 			return;
+			// State Changes
+			state = 1;
+			return;
 
-// 		// WRITE START DATA
-// 		case 1:
-// 			// Write start data
-// 			if (comm) {
-// 				Serial.write(START_BYTE_VAL);
-// 				numBytesWritten++;
-// 			}
+		// WRITE START DATA
+		case 1:
+			// Write start data
+			if (comm) {
+				Serial.write(START_BYTE_VAL);
+				numBytesWritten++;
+			}
 
-// 			// State Changes
-// 			if (numBytesWritten >= 2) {
-// 				state = 2;
-// 			}
-// 			return;
+			// State Changes
+			if (numBytesWritten >= 2) {
+				state = 2;
+			}
+			return;
 
-// 		// STORE ECVT DATA
-// 		case 2:
-// 			// Store time data
-// 			data.time = micros();
+		// STORE ECVT DATA
+		case 2:
+			// Store time data
+			data.time = micros();
 
-// 			// Store eCVT task data
-// 			data.eState = eState;
-// 			data.eSpeed = eSpeed;
-// 			data.ePID = ePID.get();
-// 			data.eP = ePID.getP();
-// 			data.eI = ePID.getI();
-// 			data.eD = ePID.getD();
+			// Store eCVT task data
+			data.eState = eState;
+			data.eSpeed = eSpeed;
+			data.ePID = ePID.get();
+			data.eP = ePID.getP();
+			data.eI = ePID.getI();
+			data.eD = ePID.getD();
 
-// 			// Store primary task data
-// 			data.pState = pState;
-// 			data.pSet = pSetpoint;
-// 			data.pEnc = pEnc.read();
-// 			data.pPID = pPID.get();
+			// Store primary task data
+			data.pState = pState;
+			data.pSet = pSetpoint;
+			data.pEnc = pEnc.read();
+			data.pPID = pPID.get();
 
-// 			// Store secondary task data
-// 			data.pState = pState;
-// 			data.pSet = pSetpoint;
-// 			data.pEnc = pEnc.read();
-// 			data.pPID = pPID.get();
+			// Store secondary task data
+			data.pState = pState;
+			data.pSet = pSetpoint;
+			data.pEnc = pEnc.read();
+			data.pPID = pPID.get();
 
-// 			// State Changes
-// 			state = 3;
-// 			return;
+			// State Changes
+			state = 3;
+			return;
 		
-// 		// WRITE ECVT DATA
-// 		case 3:
-// 			return;
-// 	}
-// }
+		// WRITE ECVT DATA
+		case 3:
+			return;
+	}
+}
 
 
 
