@@ -260,8 +260,6 @@ void eCVT() {
 	}
 }
 
-
-
 void primary() {
 
 	static uint32_t pCalTime;			// Milliseconds (ms)
@@ -356,8 +354,6 @@ void primary() {
 			return;
 	}
 }
-
-
 
 void secondary() {
 
@@ -454,8 +450,6 @@ void secondary() {
 	}
 }
 
-
-
 void hallEffectSensors() {
 
 	static int8_t state = 0;
@@ -502,8 +496,6 @@ void hallEffectSensors() {
 
 }
 
-
-
 void launchControl() {
 
 	static int8_t state = 0;
@@ -547,8 +539,6 @@ void launchControl() {
 			return;
 	}
 }
-
-
 
 void dashboardLEDs() {
 
@@ -648,8 +638,6 @@ void dashboardLEDs() {
 			return;
 	}
 }
-
-
 
 void communication() {
 
