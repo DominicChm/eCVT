@@ -112,6 +112,22 @@ int32_t sSetpoint = 0;					// Encoder Counts (~1/3606 of a revolution)
 
 
 
+/* ** TEMP ** */
+// (function declarations)
+void eCVT();
+void primary();
+void secondary();
+void hallEffectSensors();
+
+void  engineSpeedISR();
+void rWheelsSpeedISR();
+void ctrlISR();
+void commISR();
+int32_t pRatioToCounts(int16_t ratio);
+int32_t sRatioToCounts(int16_t ratio);
+
+
+
 /* ** MAIN ** */
 
 void setup() {
