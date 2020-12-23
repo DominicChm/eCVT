@@ -1,6 +1,6 @@
 /*
  *	WheelSpeed.cpp - Library for measuring wheel speed.
- *	Created by Rahul Goyal, July 1 2019.
+ *	Created by Rahul Goyal, July 2019.
  *	Released to Cal Poly Baja SAE. ;)
  */
 
