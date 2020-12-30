@@ -1,6 +1,8 @@
 #ifndef FSMVars_h
 #define FSMVars_h
 
+#include <Arduino.h>
+
 class FSMVars {
    public:
       FSMVars();
