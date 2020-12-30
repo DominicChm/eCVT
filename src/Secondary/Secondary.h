@@ -1,7 +1,7 @@
 #ifndef Secondary_h
 #define Secondary_h
 
-#include "Clutch.h"
+#include "Clutch/Clutch.h"
 
 class Secondary: public Clutch {
    public:

@@ -1,7 +1,7 @@
 #ifndef Primary_h
 #define Primary_h
 
-#include "Clutch.h"
+#include "Clutch/Clutch.h"
 
 class Primary: public Clutch {
    public:
