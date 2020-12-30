@@ -3,7 +3,7 @@
 
 #include <Arduino.h>
 #include "ControlLoop.h"
-// #include "LookupTables.h"
+#include "LookupTables.h"
 
 class Engine: public ControlLoop {
    public:

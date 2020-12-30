@@ -70,7 +70,7 @@ int8_t Engine::getState() {
    return (int8_t) state;
 }
 
-/*
+
 int32_t Engine::pRatioToCounts(int16_t ratio) {
    if(ratio < 0) {
       return pLookup[0];
@@ -89,4 +89,3 @@ int32_t Engine::sRatioToCounts(int16_t ratio) {
    }
    return sLookup[ratio];
 }
-*/
