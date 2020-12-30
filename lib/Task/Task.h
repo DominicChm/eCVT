@@ -9,7 +9,6 @@ class Task {
       Task(FSMVars fsm);
 
       virtual void run() = 0;
-      virtual int8_t getState() = 0;
 
    protected:
       FSMVars fsm;
