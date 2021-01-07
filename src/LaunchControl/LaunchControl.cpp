@@ -5,7 +5,11 @@ const int16_t LC_ENGINESPEED_LO = 2000; // Revolutions per Minute (RPM)
 const int16_t LC_ENGINESPEED_HI = 3000; // Revolutions per Minute (RPM)
 
 
-LaunchControl::LaunchControl(FSMVars fsm): Task(fsm) {}
+LaunchControl::LaunchControl(FSMVars fsm, int8_t LAUNCH_BUTTON, int8_t FBRAKE_PRESSURE, int8_t RBRAKE_PRESSURE): Task(fsm) {
+    this->LAUNCH_BUTTON = LAUNCH_BUTTON;
+    this->FBRAKE_PRESSURE = FBRAKE_PRESSURE;
+    this->RBRAKE_PRESSURE = RBRAKE_PRESSURE;
+}
 
 
 void LaunchControl::run() {

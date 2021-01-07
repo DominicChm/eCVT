@@ -2,18 +2,20 @@
 #define LaunchControl_h
 
 #include "Task.h"
-#include "WiringDec2019.h"  // NEED TO REMOVE
 
 class LaunchControl: public Task {
     public:
         enum State {INITIALIZE, ECVT_ENABLED, ECVT_DISABLED};
 
-        LaunchControl(FSMVars fsm);
+        LaunchControl(FSMVars fsm, int8_t LAUNCH_BUTTON, int8_t FBRAKE_PRESSURE, int8_t RBRAKE_PRESSURE);
 
         void run();
 
     private:
         State state;
+        int8_t LAUNCH_BUTTON;
+        int8_t FBRAKE_PRESSURE;
+        int8_t RBRAKE_PRESSURE;
 };
 
 #endif
