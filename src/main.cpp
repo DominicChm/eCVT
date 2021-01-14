@@ -169,6 +169,13 @@ void setup() {
 	pinMode(LAUNCH_BUTTON, INPUT_PULLUP);
 	pinMode(UPSHIFT_LED, OUTPUT);
 	pinMode(BKSHIFT_LED, OUTPUT);
+
+	// **FROM HALL EFFECT TASK **
+	attachInterrupt(digitalPinToInterrupt( ENGINE_SPEED_PIN),  engineSpeedISR, RISING);
+	attachInterrupt(digitalPinToInterrupt(RWHEELS_SPEED_PIN), rWheelsSpeedISR, RISING);
+	// attachInterrupt(digitalPinToInterrupt(FLWHEEL_SPEED_PIN), flWheelSpeedISR, RISING);
+	// attachInterrupt(digitalPinToInterrupt(FRWHEEL_SPEED_PIN), frWheelSpeedISR, RISING);
+            
 }
 
 void loop() {
