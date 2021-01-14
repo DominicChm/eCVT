@@ -26,6 +26,9 @@
 
 /* ** SYSTEM ** */
 
+//FSM Variables
+FSMVars fsm;
+
 // PID Controllers
 /** ePID will only work with PI or PID control. The integral term is necessary.
 	pPID will only work with P-Only or PD control. Do NOT use the integral term.
@@ -36,8 +39,8 @@ PIDController pPID(0.03,  0, 0);		// Duty Cycle Percent / Encoder Counts (%/Coun
 PIDController sPID(0.03,  0, 0);		// Duty Cycle Percent / Encoder Counts (%/Count)
 
 // Hall Effect Sensors
-EngineSpeed engineSpeed( 8);
-WheelSpeed rWheelsSpeed(24);
+EngineSpeed engineSpeed(fsm, 8);
+WheelSpeed rWheelsSpeed(fsm, 24);
 // WheelSpeed flWheelSpeed(24);
 // WheelSpeed frWheelSpeed(24);
 

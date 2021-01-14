@@ -7,13 +7,14 @@
 #ifndef WheelSpeed_h
 #define WheelSpeed_h
 
+#include "Sensor.h"
 #include <Arduino.h>
 
-class WheelSpeed {
+class WheelSpeed: public Sensor {
 
 	public:
 		// Constructor
-		WheelSpeed(int8_t triggers);
+		WheelSpeed(FSMVars fsm, int8_t triggers);
 
 		// Methods
 		void calc();

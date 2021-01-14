@@ -8,12 +8,13 @@
 #define EngineSpeed_h
 
 #include <Arduino.h>
+#include "Sensor.h"
 
-class EngineSpeed {
+class EngineSpeed: public Sensor {
 
 	public:
 		// Constructor
-		EngineSpeed(int8_t triggers);
+		EngineSpeed(FSMVars fsm, int8_t triggers);
 
 		// Methods
 		void calc();

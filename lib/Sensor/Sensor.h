@@ -7,7 +7,7 @@ class Sensor {
     public:
         Sensor(FSMVars fsm);
 
-        virtual void read() = 0;
+        virtual int16_t read() = 0;
 
     protected:
         FSMVars fsm;

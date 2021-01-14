@@ -12,7 +12,7 @@ const uint32_t TIMEOUT = 1000000;
 // Constructor
 /** This constructor accepts the number of triggers per revolution and stores
 	it. prevTime and currTime are initialized to the system time. **/
-WheelSpeed::WheelSpeed(int8_t triggers) {
+WheelSpeed::WheelSpeed(FSMVars fsm, int8_t triggers): Sensor(fsm) {
 	// Initialize variables
 	this->triggers = triggers;
 	prevTime = micros();
