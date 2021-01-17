@@ -5,12 +5,9 @@
 
 class Sensor {
     public:
-        Sensor(FSMVars fsm);
+        Sensor();
 
         virtual int16_t read() = 0;
-
-    protected:
-        FSMVars fsm;
 };
 
 #endif

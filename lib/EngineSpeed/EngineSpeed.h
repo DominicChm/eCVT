@@ -14,7 +14,7 @@ class EngineSpeed: public Sensor {
 
 	public:
 		// Constructor
-		EngineSpeed(FSMVars fsm, int8_t triggers);
+		EngineSpeed(int8_t triggers);
 
 		// Methods
 		void calc();

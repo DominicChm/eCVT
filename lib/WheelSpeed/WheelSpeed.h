@@ -14,7 +14,7 @@ class WheelSpeed: public Sensor {
 
 	public:
 		// Constructor
-		WheelSpeed(FSMVars fsm, int8_t triggers);
+		WheelSpeed(int8_t triggers);
 
 		// Methods
 		void calc();
