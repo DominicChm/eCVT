@@ -1,6 +1,6 @@
 #include "LaunchControl.h"
 
-const int16_t LC_BRKPRESSURE    = 1640; // 13-but /adc (1640/8191 ~= 1/5)
+const int16_t LC_BRKPRESSURE    = 1640; // 13-bit /adc (1640/8191 ~= 1/5)
 const int16_t LC_ENGINESPEED_LO = 2000; // Revolutions per Minute (RPM)
 const int16_t LC_ENGINESPEED_HI = 3000; // Revolutions per Minute (RPM)
 
