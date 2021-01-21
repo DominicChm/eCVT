@@ -1,3 +1,9 @@
+/*
+ *	Task.h - Abstract class header for tasks.
+ *	Created by Shaina Bagri, January 2021.
+ *	Released to Cal Poly Baja SAE. ;)
+ */
+
 #ifndef Task_h
 #define Task_h
 
