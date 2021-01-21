@@ -1,3 +1,12 @@
+/*
+ * eCVT.cpp - Main code to control eCVT.
+ * Created by Rahul Goyal, July 2019.
+ * Maintained by Rahul Goyal, 2019-21.
+ * Maintained by Shaina Bagri, 2020-21.
+ * Released to Cal Poly Baja SAE. ;)
+ */
+
+
 // #define DEBUG
 #define INFO
 
