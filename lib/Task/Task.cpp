@@ -8,5 +8,5 @@
 
 
 Task::Task(FSMVars fsm) {
-   this->fsm = fsm;
+    this->fsm = fsm;
 }

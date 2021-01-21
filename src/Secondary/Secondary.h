@@ -4,15 +4,15 @@
 #include "Clutch/Clutch.h"
 
 class Secondary: public Clutch {
-   public:
-      Secondary(FSMVars fsm, PIDController pid, Encoder enc, Motor mot);
+    public:
+        Secondary(FSMVars fsm, PIDController pid, Encoder enc, Motor mot);
 
-      int16_t getClutchSpeed();
-      bool getCalc();
-      void resetCalc();
-      int32_t getSetpoint();
-      void setPIDOutput(int16_t pid);
-      int16_t getPIDOutput();
+        int16_t getClutchSpeed();
+        bool getCalc();
+        void resetCalc();
+        int32_t getSetpoint();
+        void setPIDOutput(int16_t pid);
+        int16_t getPIDOutput();
 };
 
 #endif

@@ -11,14 +11,14 @@
 #include "PIDController.h"
 
 class ControlLoop: public Task {
-   public:
-      ControlLoop(FSMVars fsm, PIDController pid);
+    public:
+        ControlLoop(FSMVars fsm, PIDController pid);
 
-      virtual void run() = 0;
-      PIDController getPID();
+        virtual void run() = 0;
+        PIDController getPID();
 
-   protected:
-      PIDController pid;      // Ratio Percent / Revolutions per Minute (%/RPM)
+    protected:
+        PIDController pid;      // Ratio Percent / Revolutions per Minute (%/RPM)
 };
 
 #endif

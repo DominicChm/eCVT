@@ -2,34 +2,34 @@
 
 
 Primary::Primary(FSMVars fsm, PIDController pid, Encoder enc, Motor mot):
-   Clutch(fsm, pid, enc, mot) {};
+    Clutch(fsm, pid, enc, mot) {};
 
 
 int16_t Primary::getClutchSpeed() {
-   return fsm.eSpeed;
+    return fsm.eSpeed;
 }
 
 
 bool Primary::getCalc() {
-   return fsm.pCalc;
+    return fsm.pCalc;
 }
 
 
 void Primary::resetCalc() {
-   fsm.pCalc = false;
+    fsm.pCalc = false;
 }
 
 
 int32_t Primary::getSetpoint() {
-   return fsm.pSetpoint;
+    return fsm.pSetpoint;
 }
 
 
 void Primary::setPIDOutput(int16_t pid) {
-   fsm.pPIDOutput = pid;
+    fsm.pPIDOutput = pid;
 }
 
 
 int16_t Primary::getPIDOutput() {
-   return fsm.pPIDOutput;
+    return fsm.pPIDOutput;
 }

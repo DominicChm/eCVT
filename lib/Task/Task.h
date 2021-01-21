@@ -8,16 +8,16 @@
 #define Task_h
 
 #include <Arduino.h>
-#include "FSMVars.h"
+#include "../src/FSMVars/FSMVars.h"
 
 class Task {
-   public:
-      Task(FSMVars fsm);
+    public:
+        Task(FSMVars fsm);
 
-      virtual void run() = 0;
+        virtual void run() = 0;
 
-   protected:
-      FSMVars fsm;
+    protected:
+        FSMVars fsm;
 };
 
 #endif

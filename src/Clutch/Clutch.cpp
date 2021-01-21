@@ -15,69 +15,69 @@ Clutch::Clutch(FSMVars fsm, PIDController pid, Encoder enc, Motor mot):
 
 
 void Clutch::run() {
-   switch(state) {
-      case INITIALIZE:
-         mot.begin();
-         mot.setDutyCycle(0);
+    switch(state) {
+        case INITIALIZE:
+            mot.begin();
+            mot.setDutyCycle(0);
 
-         pid.setSetpoint(0);
-         pid.setLoSat(-100);
-         pid.setHiSat( 100);
-         pid.reset();
+            pid.setSetpoint(0);
+            pid.setLoSat(-100);
+            pid.setHiSat( 100);
+            pid.reset();
 
-         state = CALIBRATE_OPEN_SHEAVES;
-         return;
+            state = CALIBRATE_OPEN_SHEAVES;
+            return;
       
-      case CALIBRATE_OPEN_SHEAVES:
-         mot.setDutyCycle(-CALIB_DUTYCYCLE);
-         calTime = millis();
+        case CALIBRATE_OPEN_SHEAVES:
+            mot.setDutyCycle(-CALIB_DUTYCYCLE);
+            calTime = millis();
 
-         state = CALIBRATE_ZERO_ENCODER;
-         return;
+            state = CALIBRATE_ZERO_ENCODER;
+            return;
 
-      case CALIBRATE_ZERO_ENCODER:
-         if(millis() - calTime > CALIB_DELAY) {
+        case CALIBRATE_ZERO_ENCODER:
+            if(millis() - calTime > CALIB_DELAY) {
             enc.write(0);
             mot.setDutyCycle(0);
             state = CALIBRATE_WAIT_USER;
-         }
-         return;
+            }
+            return;
 
-      case CALIBRATE_WAIT_USER:
-         if(fsm.eSpeed > CALIB_ESPEED) {
-            state = PCONTROLLER_REST;
-         }
-         return;
+        case CALIBRATE_WAIT_USER:
+            if(fsm.eSpeed > CALIB_ESPEED) {
+                state = PCONTROLLER_REST;
+            }
+            return;
     
-      case PCONTROLLER_REST:
-         if(getCalc()) {
-            state = PCONTROLLER_UPDATE;
-         }
-         return;
+        case PCONTROLLER_REST:
+            if(getCalc()) {
+                state = PCONTROLLER_UPDATE;
+            }
+            return;
 
-      case PCONTROLLER_UPDATE:
-         pid.setSetpoint(getSetpoint());
-         pid.calc(enc.read());      // *** Move to ISR Function...
+        case PCONTROLLER_UPDATE:
+            pid.setSetpoint(getSetpoint());
+            pid.calc(enc.read());      // *** Move to ISR Function...
 
-         setPIDOutput(pid.get());
-         if(getClutchSpeed()==0) {
-            mot.setDutyCycle(min(MAX_STATIC_DUTYCYCLE, getPIDOutput()));
-         } else {
-            mot.setDutyCycle(getPIDOutput());
-         }
+            setPIDOutput(pid.get());
+            if(getClutchSpeed()==0) {
+                mot.setDutyCycle(min(MAX_STATIC_DUTYCYCLE, getPIDOutput()));
+            } else {
+                mot.setDutyCycle(getPIDOutput());
+            }
 
-         resetCalc();
-         state = PCONTROLLER_REST;
-         return;
-   }
+            resetCalc();
+            state = PCONTROLLER_REST;
+            return;
+    }
 }
 
 
 int8_t Clutch::getState() {
-   return (int8_t) state;
+    return (int8_t) state;
 }
 
 
 Encoder Clutch::getEnc() {
-   return enc;
+    return enc;
 }

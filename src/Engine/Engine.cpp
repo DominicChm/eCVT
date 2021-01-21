@@ -18,74 +18,74 @@ const int32_t SHEAVE_OFFSET = 1000;     // Encoder Counts (1/3606 of a revolutio
 
 
 Engine::Engine(FSMVars fsm, PIDController pid):
-   ControlLoop(fsm, pid) {}
+    ControlLoop(fsm, pid) {}
 
 
 void Engine::run() {
-   switch(state) {
-      case INITIALIZE:
-         pid.setSetpoint(SHIFT_SPEED);
-         pid.setLoSat(  0);
-         pid.setHiSat(100);
-         pid.reset();
-
-         //ctrlTimer.begin(ctrlISR, CTRL_PERIOD);
-
-         state = DISENGAGED;
-         return;
-
-      case DISENGAGED:
-         fsm.pSetpoint = 0;
-         fsm.sSetpoint = sRatioToCounts(100);
-
-         if(fsm.eSpeed > ENGAGE_SPEED && fsm.run) {
+    switch(state) {
+        case INITIALIZE:
+            pid.setSetpoint(SHIFT_SPEED);
+            pid.setLoSat(  0);
+            pid.setHiSat(100);
             pid.reset();
-            state = ENGAGED_REST;
-         }
-         return;
-
-      case ENGAGED_REST:
-         if(fsm.eSpeed < ENGAGE_SPEED || !fsm.run) {
+  
+            //ctrlTimer.begin(ctrlISR, CTRL_PERIOD);
+  
             state = DISENGAGED;
-         } else if(fsm.eCalc) {
-            state = ENGAGED_UPDATEPID;
-         }
-         return;
-
-      case ENGAGED_UPDATEPID:
-         pid.calc(fsm.eSpeed);
-
-         fsm.ePIDOutput = pid.get();
-         fsm.pSetpoint = pRatioToCounts(fsm.ePIDOutput) + SHEAVE_OFFSET;
-         fsm.sSetpoint = sRatioToCounts(fsm.ePIDOutput) + SHEAVE_OFFSET;
-
-         fsm.eCalc = false;
-         state = ENGAGED_REST;
-         return;
-   }
+            return;
+  
+        case DISENGAGED:
+            fsm.pSetpoint = 0;
+            fsm.sSetpoint = sRatioToCounts(100);
+  
+            if(fsm.eSpeed > ENGAGE_SPEED && fsm.run) {
+                pid.reset();
+                state = ENGAGED_REST;
+            }
+            return;
+  
+        case ENGAGED_REST:
+            if(fsm.eSpeed < ENGAGE_SPEED || !fsm.run) {
+                state = DISENGAGED;
+            } else if(fsm.eCalc) {
+                state = ENGAGED_UPDATEPID;
+            }
+           return;
+  
+        case ENGAGED_UPDATEPID:
+            pid.calc(fsm.eSpeed);
+  
+            fsm.ePIDOutput = pid.get();
+            fsm.pSetpoint = pRatioToCounts(fsm.ePIDOutput) + SHEAVE_OFFSET;
+            fsm.sSetpoint = sRatioToCounts(fsm.ePIDOutput) + SHEAVE_OFFSET;
+   
+            fsm.eCalc = false;
+            state = ENGAGED_REST;
+            return;
+    }
 }
 
 
 int8_t Engine::getState() {
-   return (int8_t) state;
+    return (int8_t) state;
 }
 
 
 int32_t Engine::pRatioToCounts(int16_t ratio) {
-   if(ratio < 0) {
-      return pLookup[0];
-   } else if(ratio > 100) {
-      return pLookup[100];
-   }
-   return pLookup[ratio];
+    if(ratio < 0) {
+        return pLookup[0];
+    } else if(ratio > 100) {
+        return pLookup[100];
+    }
+    return pLookup[ratio];
 }
 
 
 int32_t Engine::sRatioToCounts(int16_t ratio) {
-   if(ratio < 0) {
-      return sLookup[0];
-   } else if(ratio > 100) {
-      return sLookup[100];
-   }
-   return sLookup[ratio];
+    if(ratio < 0) {
+        return sLookup[0];
+    } else if(ratio > 100) {
+        return sLookup[100];
+    }
+    return sLookup[ratio];
 }
