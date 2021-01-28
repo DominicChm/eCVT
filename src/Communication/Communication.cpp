@@ -15,7 +15,6 @@ Communication::Communication(FSMVars fsm, Engine engine, Primary primary, Second
 void Communication::run() {
     switch(state) {
         case INITIALIZE:
-            // commTimer.begin(commISR, COMM_PERIOD);
             state = WRITE_START_DATA;
             return;
         
@@ -55,4 +54,4 @@ void Communication::run() {
 }
 
 
-// void Communication::commISR() { fsm.comm = true; }
+

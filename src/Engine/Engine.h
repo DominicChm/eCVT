@@ -16,7 +16,6 @@ class Engine: public ControlLoop {
  
     private:
         State state;
-        void ctrlISR();
         int32_t pRatioToCounts(int16_t ratio);
         int32_t sRatioToCounts(int16_t ratio);
 };

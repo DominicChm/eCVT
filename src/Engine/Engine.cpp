@@ -29,8 +29,6 @@ void Engine::run() {
             pid.setHiSat(100);
             pid.reset();
   
-            //ctrlTimer.begin(ctrlISR, CTRL_PERIOD);
-  
             state = DISENGAGED;
             return;
   

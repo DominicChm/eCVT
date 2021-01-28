@@ -13,7 +13,6 @@ class Communication: public Task {
         Communication(FSMVars fsm, Engine engine, Primary primary, Secondary secondary);
 
         void run();
-        // void commISR();
 
     private:
         State state;
@@ -21,7 +20,6 @@ class Communication: public Task {
         Engine engine;
         Primary primary;
         Secondary secondary;
-        // IntervalTimer commTimer;
 
         struct Data {
             uint32_t time;
@@ -40,9 +38,6 @@ class Communication: public Task {
             int32_t sEnc;
             int16_t sPID;
         } data;
-
-    // Interval Timer
-    // const uint32_t COMM_PERIOD = 10000;      // Microseconds (us)
 };
 
 #endif

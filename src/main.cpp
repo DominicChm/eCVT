@@ -136,6 +136,9 @@ void setup() {
 	fsm.pPIDOutput = 0;
 	fsm.sPIDOutput = 0;
 
+    //  Timers
+    commTimer.begin(commISR, COMM_PERIOD);
+    ctrlTimer.begin(ctrlISR, CTRL_PERIOD);
 
 	// **FROM HALL EFFECT TASK **
 	attachInterrupt(digitalPinToInterrupt( ENGINE_SPEED_PIN),  engineSpeedISR, RISING);
