@@ -8,7 +8,7 @@
 #define Task_h
 
 #include <Arduino.h>
-#include "../src/FSMVars/FSMVars.h"
+#include "./FSMVars/FSMVars.h"
 
 class Task {
     public:

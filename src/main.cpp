@@ -16,12 +16,12 @@
 #include <Encoder.h>
 #include "EngineSpeed.h"
 #include "WheelSpeed.h"
-#include "FSMVars.h"
+#include "./FSMVars/FSMVars.h"
 #include "./Primary/Primary.h"
 #include "./Secondary/Secondary.h"
 #include "./Engine/Engine.h"
 #include "./Communication/Communication.h"
-#include "./DashboardLED/DashboardLED.h"
+#include "./DashboardLEDs/DashboardLEDs.h"
 #include "./HallEffectTask/HallEffectTask.h"
 #include "./LaunchControl/LaunchControl.h"
 
@@ -70,7 +70,7 @@ Primary primary(fsm, pPID, pEnc, pMot);
 Secondary secondary(fsm, sPID, sEnc, sMot);
 HallEffectTask hallEffectTask(fsm, engineSpeed, rWheelsSpeed);
 LaunchControl launchControl(fsm, LAUNCH_BUTTON, FBRAKE_PRESSURE, RBRAKE_PRESSURE);
-DashboardLED dashboardLED(fsm, UPSHIFT_LED, BKSHIFT_LED);
+DashboardLEDs dashboardLEDs(fsm, UPSHIFT_LED, BKSHIFT_LED);
 Communication communication(fsm, engine, primary, secondary);
 
 
@@ -161,7 +161,7 @@ void loop() {
 	// Bonus Tasks
 	launchControl.run();
 	// ecvtstatusLED.run();
-	dashboardLED.run();
+	dashboardLEDs.run();
 	communication.run();
 }
 

@@ -1,7 +1,7 @@
 #ifndef LaunchControl_h
 #define LaunchControl_h
 
-#include "Task.h"
+#include "./Task/Task.h"
 
 class LaunchControl: public Task {
     public:

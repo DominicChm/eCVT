@@ -1,7 +1,7 @@
 #ifndef Clutch_h
 #define Clutch_h
 
-#include "ControlLoop.h"
+#include "./ControlLoop/ControlLoop.h"
 #include "Motor.h"
 #include <Encoder.h>
 

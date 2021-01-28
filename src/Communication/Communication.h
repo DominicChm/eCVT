@@ -1,7 +1,7 @@
 #ifndef Communication_h
 #define Communication_h
 
-#include "Task.h"
+#include "./Task/Task.h"
 #include "Engine/Engine.h"
 #include "Primary/Primary.h"
 #include "Secondary/Secondary.h"

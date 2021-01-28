@@ -1,9 +1,9 @@
-#include "DashboardLED.h"
+#include "DashboardLEDs.h"
 
 const uint32_t FLASH_PERIOD = 500;      // Milliseconds (ms)
 
 
-DashboardLED::DashboardLED(FSMVars fsm, int8_t UPSHIFT_LED, int8_t BKSHIFT_LED): Task(fsm) {
+DashboardLEDs::DashboardLEDs(FSMVars fsm, int8_t UPSHIFT_LED, int8_t BKSHIFT_LED): Task(fsm) {
     prevRatio = 0;
     currRatio = fsm.ePIDOutput;
     prevTime = 0;
@@ -12,7 +12,7 @@ DashboardLED::DashboardLED(FSMVars fsm, int8_t UPSHIFT_LED, int8_t BKSHIFT_LED):
 }
 
 
-void DashboardLED::run() {
+void DashboardLEDs::run() {
     prevRatio = currRatio;
     currRatio = fsm.ePIDOutput;
 

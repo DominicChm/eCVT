@@ -1,7 +1,7 @@
 #ifndef HallEffectTask_h
 #define HallEffectTask_h
 
-#include "Task.h"
+#include "./Task/Task.h"
 #include "EngineSpeed.h"
 #include "WheelSpeed.h"
 
