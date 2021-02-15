@@ -1,3 +1,9 @@
+/*
+ *  LookupTables.h - Lookup table arrays.
+ *  Created by Rahul Goyal, December 2019.
+ *  Released to Cal Poly Baja SAE. ;)
+ */
+
 #ifndef LookupTables_h
 #define LookupTables_h
 

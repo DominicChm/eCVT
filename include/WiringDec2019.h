@@ -1,7 +1,7 @@
 /*
- * WiringDec2019.h - DAQ and eCVT wiring configuration.
- * Created by Rahul Goyal, December 1, 2019.
- * Released to Cal Poly Baja SAE. ;)
+ *  WiringDec2019.h - DAQ and eCVT wiring configuration.
+ *  Created by Rahul Goyal, December 2019.
+ *  Released to Cal Poly Baja SAE. ;)
  */
 
 #ifndef WiringDec2019_h

@@ -1,7 +1,7 @@
 /*
- *	Sensor.h - Abstract class header for sensors.
- *	Created by Shaina Bagri, January 2021.
- *	Released to Cal Poly Baja SAE. ;)
+ *  Sensor.h - Abstract class header for sensors.
+ *  Created by Shaina Bagri, January 2021.
+ *  Released to Cal Poly Baja SAE. ;)
  */
 
 #ifndef Sensor_h
