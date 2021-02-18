@@ -5,9 +5,16 @@
 
 class LaunchControl: public Task {
     public:
-        enum State {INITIALIZE, ECVT_ENABLED, ECVT_DISABLED};
+        enum State {
+            INITIALIZE,
+            ECVT_ENABLED,
+            ECVT_DISABLED};
 
-        LaunchControl(FSMVars fsm, int8_t LAUNCH_BUTTON, int8_t FBRAKE_PRESSURE, int8_t RBRAKE_PRESSURE);
+        LaunchControl(
+            FSMVars fsm,
+            int8_t LAUNCH_BUTTON,
+            int8_t FBRAKE_PRESSURE,
+            int8_t RBRAKE_PRESSURE);
 
         void run();
 

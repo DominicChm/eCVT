@@ -1,11 +1,12 @@
 #include "LaunchControl.h"
 
-const int16_t LC_BRKPRESSURE    = 1640; // 13-bit /adc (1640/8191 ~= 1/5)
+const int16_t LC_BRKPRESSURE    = 1640; // 13-bit ADC (1640/8191 ~= 1/5)
 const int16_t LC_ENGINESPEED_LO = 2000; // Revolutions per Minute (RPM)
 const int16_t LC_ENGINESPEED_HI = 3000; // Revolutions per Minute (RPM)
 
 
-LaunchControl::LaunchControl(FSMVars fsm, int8_t LAUNCH_BUTTON, int8_t FBRAKE_PRESSURE, int8_t RBRAKE_PRESSURE): Task(fsm) {
+LaunchControl::LaunchControl(FSMVars fsm, int8_t LAUNCH_BUTTON, int8_t FBRAKE_PRESSURE, int8_t RBRAKE_PRESSURE):
+    Task(fsm) {
     this->LAUNCH_BUTTON = LAUNCH_BUTTON;
     this->FBRAKE_PRESSURE = FBRAKE_PRESSURE;
     this->RBRAKE_PRESSURE = RBRAKE_PRESSURE;
