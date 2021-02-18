@@ -18,7 +18,7 @@ const int32_t SHEAVE_OFFSET = 1000;     // Encoder Counts (1/3606 of a revolutio
 
 
 Engine::Engine(FSMVars fsm, PIDController pid):
-    ControlLoop(fsm, pid) {}
+    ControlLoop(fsm, pid) { }
 
 
 void Engine::run() {

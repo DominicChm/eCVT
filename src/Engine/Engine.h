@@ -7,7 +7,11 @@
 
 class Engine: public ControlLoop {
     public:
-        enum State {INITIALIZE, DISENGAGED, ENGAGED_REST, ENGAGED_UPDATEPID};
+        enum State {
+            INITIALIZE,
+            DISENGAGED,
+            ENGAGED_REST,
+            ENGAGED_UPDATEPID};
 
         Engine(FSMVars fsm, PIDController pid);
 
