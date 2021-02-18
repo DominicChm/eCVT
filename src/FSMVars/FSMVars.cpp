@@ -7,4 +7,4 @@
 #include "FSMVars.h"
 
 
-FSMVars::FSMVars() {}
+FSMVars::FSMVars() { }
