@@ -1,9 +1,3 @@
-/*
- *	ControlLoop.h - Abstract class header for control loops.
- *	Created by Shaina Bagri, January 2021.
- *	Released to Cal Poly Baja SAE. ;)
- */
-
 #ifndef ControlLoop_h
 #define ControlLoop_h
 
@@ -13,7 +7,7 @@
 class ControlLoop: public Task {
     public:
         ControlLoop(FSMVars fsm, PIDController pid);
-
+        
         virtual void run() = 0;
         virtual int8_t getState() = 0;
         PIDController getPID();
