@@ -1,9 +1,9 @@
 #include "Communication.h"
 
-const int8_t   ECVT_DATA_SIZE = 37;       // Bytes
-const int8_t   START_DATA_SIZE = 2;       // Bytes
-const int8_t   CHECK_DATA_SIZE = 2;       // Bytes
-const int8_t START_BYTE_VAL = 0xAA;       // 1010 1010
+const int8_t ECVT_DATA_SIZE = 37;       // Bytes
+const int8_t START_DATA_SIZE = 2;       // Bytes
+const int8_t CHECK_DATA_SIZE = 2;       // Bytes
+const int8_t START_BYTE_VAL = 0xAA;     // 1010 1010
 
 
 Communication::Communication(FSMVars fsm, Engine engine, Primary primary, Secondary secondary):

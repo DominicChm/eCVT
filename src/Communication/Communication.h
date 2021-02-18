@@ -8,9 +8,17 @@
 
 class Communication: public Task {
     public:
-        enum State {INITIALIZE, WRITE_START_DATA, STORE_ECVT_DATA, WRITE_ECVT_DATA};
+        enum State {
+            INITIALIZE,
+            WRITE_START_DATA,
+            STORE_ECVT_DATA,
+            WRITE_ECVT_DATA};
 
-        Communication(FSMVars fsm, Engine engine, Primary primary, Secondary secondary);
+        Communication(
+            FSMVars fsm,
+            Engine engine,
+            Primary primary,
+            Secondary secondary);
 
         void run();
 
