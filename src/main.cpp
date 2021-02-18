@@ -1,5 +1,5 @@
 /*
- * eCVT.cpp - Main code to control eCVT.
+ * main.cpp - Main code to control eCVT.
  * Created by Rahul Goyal, July 2019.
  * Maintained by Rahul Goyal, 2019-21.
  * Maintained by Shaina Bagri, 2020-21.
@@ -10,24 +10,27 @@
 // #define DEBUG
 #define INFO
 
+// Libraries
 #include <Arduino.h>
 #include "PIDController.h"
 #include "Motor.h"
 #include <Encoder.h>
 #include "EngineSpeed.h"
 #include "WheelSpeed.h"
+
+// FSM Tasks
 #include "./FSMVars/FSMVars.h"
+#include "./Engine/Engine.h"
 #include "./Primary/Primary.h"
 #include "./Secondary/Secondary.h"
-#include "./Engine/Engine.h"
-#include "./Communication/Communication.h"
-#include "./DashboardLEDs/DashboardLEDs.h"
 #include "./HallEffectTask/HallEffectTask.h"
 #include "./LaunchControl/LaunchControl.h"
-
+#include "./DashboardLEDs/DashboardLEDs.h"
+#include "./Communication/Communication.h"
 
 
 /* ** WIRING ** */
+
 /** _RULE: Do NOT include elsewhere. Pass I/O values/objects as parameters. **/
 #include "WiringDec2019.h"
 /*
@@ -36,8 +39,6 @@
 
 
 /* ** SYSTEM ** */
-
-FSMVars fsm;
 
 /** ePID will only work with PI or PID control. The integral term is necessary.
 	pPID will only work with P-Only or PD control. Do NOT use the integral term.
@@ -64,9 +65,9 @@ const uint32_t CTRL_PERIOD = 10000;		// Microseconds (us)
 const uint32_t COMM_PERIOD = 10000;		// Microseconds (us)
 
 
-
 /* ** FINITE STATE MACHINE ** */
 
+FSMVars fsm;
 Engine engine(fsm, ePID);
 Primary primary(fsm, pPID, pEnc, pMot);
 Secondary secondary(fsm, sPID, sEnc, sMot);
@@ -76,13 +77,12 @@ DashboardLEDs dashboardLEDs(fsm, UPSHIFT_LED, BKSHIFT_LED);
 Communication communication(fsm, engine, primary, secondary);
 
 
+/* ** INTERRUPT SERVICE ROUTINES ** */
 
-/* ** TEMP ** */
 void  engineSpeedISR();
 void rWheelsSpeedISR();
 void ctrlISR();
 void commISR();
-
 
 
 /* ** MAIN ** */
@@ -124,6 +124,16 @@ void setup() {
 	pinMode(UPSHIFT_LED, OUTPUT);
 	pinMode(BKSHIFT_LED, OUTPUT);
 
+	// Pin Interrupt Setup
+	attachInterrupt(digitalPinToInterrupt( ENGINE_SPEED_PIN),  engineSpeedISR, RISING);
+	attachInterrupt(digitalPinToInterrupt(RWHEELS_SPEED_PIN), rWheelsSpeedISR, RISING);
+	// attachInterrupt(digitalPinToInterrupt(FLWHEEL_SPEED_PIN), flWheelSpeedISR, RISING);
+	// attachInterrupt(digitalPinToInterrupt(FRWHEEL_SPEED_PIN), frWheelSpeedISR, RISING);
+
+	// Timer Interrupt Setup
+	commTimer.begin(commISR, COMM_PERIOD);
+	ctrlTimer.begin(ctrlISR, CTRL_PERIOD);
+
 	// FSM Variables Setup
 	fsm.run   =  true;
 	fsm.eCalc = false;
@@ -137,21 +147,9 @@ void setup() {
 	fsm.ePIDOutput = 0;
 	fsm.pPIDOutput = 0;
 	fsm.sPIDOutput = 0;
-
-    //  Timers
-    commTimer.begin(commISR, COMM_PERIOD);
-    ctrlTimer.begin(ctrlISR, CTRL_PERIOD);
-
-	// **FROM HALL EFFECT TASK **
-	attachInterrupt(digitalPinToInterrupt( ENGINE_SPEED_PIN),  engineSpeedISR, RISING);
-	attachInterrupt(digitalPinToInterrupt(RWHEELS_SPEED_PIN), rWheelsSpeedISR, RISING);
-	// attachInterrupt(digitalPinToInterrupt(FLWHEEL_SPEED_PIN), flWheelSpeedISR, RISING);
-	// attachInterrupt(digitalPinToInterrupt(FRWHEEL_SPEED_PIN), frWheelSpeedISR, RISING);
-            
 }
 
 void loop() {
-
 	// Debugging
 	#ifdef DEBUG
 	Serial.println();
@@ -164,11 +162,12 @@ void loop() {
 	hallEffectTask.run();
 
 	// Bonus Tasks
-	launchControl.run();
+	// launchControl.run();
 	// ecvtstatusLED.run();
-	dashboardLEDs.run();
-	communication.run();
+	// dashboardLEDs.run();
+	// communication.run();
 }
+
 
 /* **INTERRUPT SERVICE ROUTINES** */
 
