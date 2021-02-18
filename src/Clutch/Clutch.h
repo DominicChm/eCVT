@@ -7,9 +7,19 @@
 
 class Clutch: public ControlLoop {
     public:
-        enum State {INITIALIZE, CALIBRATE_OPEN_SHEAVES, CALIBRATE_ZERO_ENCODER, CALIBRATE_WAIT_USER, PCONTROLLER_REST, PCONTROLLER_UPDATE};
+        enum State {
+            INITIALIZE,
+            CALIBRATE_OPEN_SHEAVES,
+            CALIBRATE_ZERO_ENCODER,
+            CALIBRATE_WAIT_USER,
+            PCONTROLLER_REST,
+            PCONTROLLER_UPDATE};
 
-        Clutch(FSMVars fsm, PIDController pid, Encoder enc, Motor mot);
+        Clutch(
+            FSMVars fsm,
+            PIDController pid,
+            Encoder enc,
+            Motor mot);
 
         void run();
         Encoder getEnc();
@@ -26,7 +36,7 @@ class Clutch: public ControlLoop {
         State state;
         Encoder enc;
         Motor mot;
-        uint32_t calTime;      // Milliseconds (ms)
+        uint32_t calTime;       // Milliseconds (ms)
 };
 
 #endif
