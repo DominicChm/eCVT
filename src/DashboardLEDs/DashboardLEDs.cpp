@@ -23,12 +23,12 @@ void DashboardLEDs::run() {
             return;
 
         case HUB_STATE:
-            if(!fsm.run) {
+            if (!fsm.run) {
                 prevTime = millis();
                 state = FLASH_BKSHIFT;
-            } else if(currRatio > prevRatio) {
+            } else if (currRatio > prevRatio) {
                 state = BKSHIFT_ON;
-            } else if(currRatio < prevRatio) {
+            } else if (currRatio < prevRatio) {
                 state = UPSHIFT_ON;
             } else {
                 state = BOTH_LEDS_ON;
@@ -56,9 +56,9 @@ void DashboardLEDs::run() {
         case FLASH_BKSHIFT:
             digitalWrite(BKSHIFT_LED, HIGH);
             digitalWrite(UPSHIFT_LED, LOW);
-            if(fsm.run) {
+            if (fsm.run) {
                 state = HUB_STATE;
-            } else if(millis() - prevTime > FLASH_PERIOD) {
+            } else if (millis() - prevTime > FLASH_PERIOD) {
                 prevTime += FLASH_PERIOD;
                 state = FLASH_UPSHIFT;
             }
@@ -67,9 +67,9 @@ void DashboardLEDs::run() {
         case FLASH_UPSHIFT:
             digitalWrite(BKSHIFT_LED, LOW);
             digitalWrite(UPSHIFT_LED, HIGH);
-            if(fsm.run) {
+            if (fsm.run) {
                 state = HUB_STATE;
-            } else if(millis() - prevTime > FLASH_PERIOD) {
+            } else if (millis() - prevTime > FLASH_PERIOD) {
                 prevTime += FLASH_PERIOD;
                 state = FLASH_BKSHIFT;
             }

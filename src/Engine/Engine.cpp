@@ -36,16 +36,16 @@ void Engine::run() {
             fsm.pSetpoint = 0;
             fsm.sSetpoint = sRatioToCounts(100);
   
-            if(fsm.eSpeed > ENGAGE_SPEED && fsm.run) {
+            if (fsm.eSpeed > ENGAGE_SPEED && fsm.run) {
                 pid.reset();
                 state = ENGAGED_REST;
             }
             return;
   
         case ENGAGED_REST:
-            if(fsm.eSpeed < ENGAGE_SPEED || !fsm.run) {
+            if (fsm.eSpeed < ENGAGE_SPEED || !fsm.run) {
                 state = DISENGAGED;
-            } else if(fsm.eCalc) {
+            } else if (fsm.eCalc) {
                 state = ENGAGED_UPDATEPID;
             }
            return;
@@ -70,9 +70,9 @@ int8_t Engine::getState() {
 
 
 int32_t Engine::pRatioToCounts(int16_t ratio) {
-    if(ratio < 0) {
+    if (ratio < 0) {
         return pLookup[0];
-    } else if(ratio > 100) {
+    } else if (ratio > 100) {
         return pLookup[100];
     }
     return pLookup[ratio];
@@ -80,9 +80,9 @@ int32_t Engine::pRatioToCounts(int16_t ratio) {
 
 
 int32_t Engine::sRatioToCounts(int16_t ratio) {
-    if(ratio < 0) {
+    if (ratio < 0) {
         return sLookup[0];
-    } else if(ratio > 100) {
+    } else if (ratio > 100) {
         return sLookup[100];
     }
     return sLookup[ratio];

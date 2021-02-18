@@ -36,7 +36,7 @@ void Clutch::run() {
             return;
 
         case CALIBRATE_ZERO_ENCODER:
-            if(millis() - calTime > CALIB_DELAY) {
+            if (millis() - calTime > CALIB_DELAY) {
             enc.write(0);
             mot.setDutyCycle(0);
             state = CALIBRATE_WAIT_USER;
@@ -44,13 +44,13 @@ void Clutch::run() {
             return;
 
         case CALIBRATE_WAIT_USER:
-            if(fsm.eSpeed > CALIB_ESPEED) {
+            if (fsm.eSpeed > CALIB_ESPEED) {
                 state = PCONTROLLER_REST;
             }
             return;
     
         case PCONTROLLER_REST:
-            if(getCalc()) {
+            if (getCalc()) {
                 state = PCONTROLLER_UPDATE;
             }
             return;
@@ -60,7 +60,7 @@ void Clutch::run() {
             pid.calc(enc.read());
 
             setPIDOutput(pid.get());
-            if(getClutchSpeed() == 0) {
+            if (getClutchSpeed() == 0) {
                 mot.setDutyCycle(min(MAX_STATIC_DUTYCYCLE, getPIDOutput()));
             } else {
                 mot.setDutyCycle(getPIDOutput());

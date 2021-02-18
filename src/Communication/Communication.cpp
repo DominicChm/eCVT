@@ -19,11 +19,11 @@ void Communication::run() {
             return;
         
         case WRITE_START_DATA:
-            if(fsm.comm) {
+            if (fsm.comm) {
                 Serial.write(START_BYTE_VAL);
                 numBytesWritten++;
             }
-            if(numBytesWritten >= 2) {
+            if (numBytesWritten >= 2) {
                 state = STORE_ECVT_DATA;
             }
             return;

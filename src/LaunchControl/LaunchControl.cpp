@@ -20,7 +20,7 @@ void LaunchControl::run() {
             return;
         
         case ECVT_ENABLED:
-            if(!digitalRead(LAUNCH_BUTTON) &&
+            if (!digitalRead(LAUNCH_BUTTON) &&
                 analogRead(FBRAKE_PRESSURE) > LC_BRKPRESSURE &&
                 analogRead(RBRAKE_PRESSURE) > LC_BRKPRESSURE &&
                 fsm.eSpeed < LC_ENGINESPEED_LO) {
@@ -30,7 +30,7 @@ void LaunchControl::run() {
             return;
         
         case ECVT_DISABLED:
-            if(digitalRead(LAUNCH_BUTTON) &&
+            if (digitalRead(LAUNCH_BUTTON) &&
                 analogRead(FBRAKE_PRESSURE) < LC_BRKPRESSURE &&
                 analogRead(RBRAKE_PRESSURE) < LC_BRKPRESSURE &&
                 fsm.eSpeed > LC_ENGINESPEED_HI) {
