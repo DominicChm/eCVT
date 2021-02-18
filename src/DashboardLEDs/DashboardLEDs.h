@@ -5,9 +5,19 @@
 
 class DashboardLEDs: public Task {
     public:
-        enum State {INITIALIZE, HUB_STATE, BKSHIFT_ON, UPSHIFT_ON, BOTH_LEDS_ON, FLASH_BKSHIFT, FLASH_UPSHIFT};
+        enum State {
+            INITIALIZE,
+            HUB_STATE,
+            BKSHIFT_ON,
+            UPSHIFT_ON,
+            BOTH_LEDS_ON,
+            FLASH_BKSHIFT,
+            FLASH_UPSHIFT};
 
-        DashboardLEDs(FSMVars fsm, int8_t UPSHIFT_LED, int8_t BKSHIFT_LED);
+        DashboardLEDs(
+            FSMVars fsm,
+            int8_t UPSHIFT_LED,
+            int8_t BKSHIFT_LED);
 
         void run();
     
