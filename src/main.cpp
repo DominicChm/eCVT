@@ -27,10 +27,12 @@
 
 
 
-/* ** CONFIG ** */
-
+/* ** WIRING ** */
+/** _RULE: Do NOT include elsewhere. Pass I/O values/objects as parameters. **/
 #include "WiringDec2019.h"
-// #include "WiringMar2020.h"
+/*
+#include "WiringMar2020.h"
+*/
 
 
 /* ** SYSTEM ** */
