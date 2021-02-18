@@ -7,9 +7,10 @@
 #ifndef WheelSpeed_h
 #define WheelSpeed_h
 
+#include "Sensor.h"
 #include <Arduino.h>
 
-class WheelSpeed {
+class WheelSpeed: public Sensor {
 
 	public:
 		// Constructor

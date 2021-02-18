@@ -8,8 +8,9 @@
 #define EngineSpeed_h
 
 #include <Arduino.h>
+#include "Sensor.h"
 
-class EngineSpeed {
+class EngineSpeed: public Sensor {
 
 	public:
 		// Constructor
