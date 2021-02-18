@@ -2,7 +2,7 @@
 
 
 HallEffectTask::HallEffectTask(FSMVars fsm, EngineSpeed engineSpeed, WheelSpeed rWheelsSpeed):
-    Task(fsm), engineSpeed(engineSpeed), rWheelsSpeed(rWheelsSpeed) {}
+    Task(fsm), engineSpeed(engineSpeed), rWheelsSpeed(rWheelsSpeed) { }
 
 
 void HallEffectTask::run() {
