@@ -41,12 +41,12 @@
 /* ** SYSTEM ** */
 
 /** ePID will only work with PI or PID control. The integral term is necessary.
-	pPID will only work with P-Only or PD control. Do NOT use the integral term.
-	sPID will only work with P-Only or PD control. Do NOT use the integral term.
-	TODO PID DOCUMENTATION: EFFECT OF CTRL_PERIOD. **/
-PIDController ePID(0.5, 0.2, 0);		// Ratio Percent / Revolutions per Minute (%/RPM)
-PIDController pPID(0.03,  0, 0);		// Duty Cycle Percent / Encoder Counts (%/Count)
-PIDController sPID(0.03,  0, 0);		// Duty Cycle Percent / Encoder Counts (%/Count)
+    pPID will only work with P-Only or PD control. Do NOT use the integral term.
+    sPID will only work with P-Only or PD control. Do NOT use the integral term.
+    TODO PID DOCUMENTATION: EFFECT OF CTRL_PERIOD. **/
+PIDController ePID(0.5, 0.2, 0);        // Ratio Percent / Revolutions per Minute (%/RPM)
+PIDController pPID(0.03,  0, 0);        // Duty Cycle Percent / Encoder Counts (%/Count)
+PIDController sPID(0.03,  0, 0);        // Duty Cycle Percent / Encoder Counts (%/Count)
 
 EngineSpeed engineSpeed( 8);
 WheelSpeed rWheelsSpeed(24);
@@ -61,8 +61,8 @@ Motor sMot(S_MOT_INA, S_MOT_INB, S_MOT_PWM);
 
 IntervalTimer ctrlTimer;
 IntervalTimer commTimer;
-const uint32_t CTRL_PERIOD = 10000;		// Microseconds (us)
-const uint32_t COMM_PERIOD = 10000;		// Microseconds (us)
+const uint32_t CTRL_PERIOD = 10000;     // Microseconds (us)
+const uint32_t COMM_PERIOD = 10000;     // Microseconds (us)
 
 
 /* ** FINITE STATE MACHINE ** */
@@ -89,83 +89,83 @@ void commISR();
 
 void setup() {
 
-	// Serial Monitor
-	#ifdef INFO
-	Serial.begin(9600);
-	while (!Serial) { }	// Wait for serial port to connect. Needed for native USB only.
-	#endif
+    // Serial Monitor
+    #ifdef INFO
+    Serial.begin(9600);
+    while (!Serial) { } // Wait for serial port to connect. Needed for native USB only.
+    #endif
 
-	// Bench Testing
-	#ifdef INFO
-	Serial.println("Connect the motor wires!");
-	Serial.println("Delaying for 2 seconds..");
-	delay(2000);
-	Serial.println("GO!");
-	#endif
+    // Bench Testing
+    #ifdef INFO
+    Serial.println("Connect the motor wires!");
+    Serial.println("Delaying for 2 seconds..");
+    delay(2000);
+    Serial.println("GO!");
+    #endif
 
-	// Hall Effect Sensor Setup
-	pinMode( ENGINE_SPEED_PIN, INPUT);
-	pinMode(RWHEELS_SPEED_PIN, INPUT);
-	// pinMode(FLWHEEL_SPEED_PIN, INPUT);
-	// pinMode(FRWHEEL_SPEED_PIN, INPUT);
+    // Hall Effect Sensor Setup
+    pinMode( ENGINE_SPEED_PIN, INPUT);
+    pinMode(RWHEELS_SPEED_PIN, INPUT);
+    // pinMode(FLWHEEL_SPEED_PIN, INPUT);
+    // pinMode(FRWHEEL_SPEED_PIN, INPUT);
 
-	// Encoder Setup
-	/* Handled by Encoder constructor! */
+    // Encoder Setup
+    /* Handled by Encoder constructor! */
 
-	// Motor Setup
-	/* Handled by Motor begin() function! */
+    // Motor Setup
+    /* Handled by Motor begin() function! */
 
-	// Pressure Transducer Setup
-	pinMode(FBRAKE_PRESSURE, INPUT);
-	pinMode(RBRAKE_PRESSURE, INPUT);
+    // Pressure Transducer Setup
+    pinMode(FBRAKE_PRESSURE, INPUT);
+    pinMode(RBRAKE_PRESSURE, INPUT);
 
-	// Dashboard Setup
-	pinMode(LAUNCH_BUTTON, INPUT_PULLUP);
-	pinMode(UPSHIFT_LED, OUTPUT);
-	pinMode(BKSHIFT_LED, OUTPUT);
+    // Dashboard Setup
+    pinMode(LAUNCH_BUTTON, INPUT_PULLUP);
+    pinMode(UPSHIFT_LED, OUTPUT);
+    pinMode(BKSHIFT_LED, OUTPUT);
 
-	// Pin Interrupt Setup
-	attachInterrupt(digitalPinToInterrupt( ENGINE_SPEED_PIN),  engineSpeedISR, RISING);
-	attachInterrupt(digitalPinToInterrupt(RWHEELS_SPEED_PIN), rWheelsSpeedISR, RISING);
-	// attachInterrupt(digitalPinToInterrupt(FLWHEEL_SPEED_PIN), flWheelSpeedISR, RISING);
-	// attachInterrupt(digitalPinToInterrupt(FRWHEEL_SPEED_PIN), frWheelSpeedISR, RISING);
+    // Pin Interrupt Setup
+    attachInterrupt(digitalPinToInterrupt( ENGINE_SPEED_PIN),  engineSpeedISR, RISING);
+    attachInterrupt(digitalPinToInterrupt(RWHEELS_SPEED_PIN), rWheelsSpeedISR, RISING);
+    // attachInterrupt(digitalPinToInterrupt(FLWHEEL_SPEED_PIN), flWheelSpeedISR, RISING);
+    // attachInterrupt(digitalPinToInterrupt(FRWHEEL_SPEED_PIN), frWheelSpeedISR, RISING);
 
-	// Timer Interrupt Setup
-	commTimer.begin(commISR, COMM_PERIOD);
-	ctrlTimer.begin(ctrlISR, CTRL_PERIOD);
+    // Timer Interrupt Setup
+    commTimer.begin(commISR, COMM_PERIOD);
+    ctrlTimer.begin(ctrlISR, CTRL_PERIOD);
 
-	// FSM Variables Setup
-	fsm.run   =  true;
-	fsm.eCalc = false;
-	fsm.pCalc = false;
-	fsm.sCalc = false;
-	fsm.comm  = false;
-	fsm.eSpeed 	   = 0;					// Revolutions per Minute (RPM)
-	fsm.rwSpeed    = 0;					// Revolutions per Minute (RPM)
-	fsm.pSetpoint  = 0;					// Encoder Counts (~1/3606 of a revolution)
-	fsm.sSetpoint  = 0;					// Encoder Counts (~1/3606 of a revolution)
-	fsm.ePIDOutput = 0;
-	fsm.pPIDOutput = 0;
-	fsm.sPIDOutput = 0;
+    // FSM Variables Setup
+    fsm.run   =  true;
+    fsm.eCalc = false;
+    fsm.pCalc = false;
+    fsm.sCalc = false;
+    fsm.comm  = false;
+    fsm.eSpeed     = 0;                 // Revolutions per Minute (RPM)
+    fsm.rwSpeed    = 0;                 // Revolutions per Minute (RPM)
+    fsm.pSetpoint  = 0;                 // Encoder Counts (~1/3606 of a revolution)
+    fsm.sSetpoint  = 0;                 // Encoder Counts (~1/3606 of a revolution)
+    fsm.ePIDOutput = 0;
+    fsm.pPIDOutput = 0;
+    fsm.sPIDOutput = 0;
 }
 
 void loop() {
-	// Debugging
-	#ifdef DEBUG
-	Serial.println();
-	#endif
+    // Debugging
+    #ifdef DEBUG
+    Serial.println();
+    #endif
 
-	// Essential Tasks
-	engine.run();
-	primary.run();
-	secondary.run();
-	hallEffectTask.run();
+    // Essential Tasks
+    engine.run();
+    primary.run();
+    secondary.run();
+    hallEffectTask.run();
 
-	// Bonus Tasks
-	// launchControl.run();
-	// ecvtstatusLED.run();
-	// dashboardLEDs.run();
-	// communication.run();
+    // Bonus Tasks
+    // launchControl.run();
+    // ecvtstatusLED.run();
+    // dashboardLEDs.run();
+    // communication.run();
 }
 
 
@@ -179,9 +179,9 @@ void rWheelsSpeedISR() { rWheelsSpeed.calc(); }
 
 // Timers
 void ctrlISR() {
-	fsm.eCalc = true;
-	fsm.pCalc = true;
-	fsm.sCalc = true;
+    fsm.eCalc = true;
+    fsm.pCalc = true;
+    fsm.sCalc = true;
 }
 
 void commISR() { fsm.comm = true; }
