@@ -5,8 +5,12 @@
 
 class Primary: public Clutch {
     public:
-        Primary(FSMVars fsm, PIDController pid, Encoder enc, Motor mot);
-  
+        Primary(
+            FSMVars fsm,
+            PIDController pid,
+            Encoder enc,
+            Motor mot);
+
         int16_t getClutchSpeed();
         bool getCalc();
         void resetCalc();

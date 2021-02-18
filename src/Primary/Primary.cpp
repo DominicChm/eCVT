@@ -2,7 +2,7 @@
 
 
 Primary::Primary(FSMVars fsm, PIDController pid, Encoder enc, Motor mot):
-    Clutch(fsm, pid, enc, mot) {};
+    Clutch(fsm, pid, enc, mot) { };
 
 
 int16_t Primary::getClutchSpeed() {
