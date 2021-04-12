@@ -72,7 +72,7 @@ Engine engine(fsm, ePID);
 Primary primary(fsm, pPID, pEnc, pMot);
 Secondary secondary(fsm, sPID, sEnc, sMot);
 HallEffectTask hallEffectTask(fsm, engineSpeed, rWheelsSpeed);
-LaunchControl launchControl(fsm, LAUNCH_BUTTON, FBRAKE_PRESSURE, RBRAKE_PRESSURE);
+LaunchControl launchControl(fsm, LAUNCH_BUTTON);
 DashboardLEDs dashboardLEDs(fsm, UPSHIFT_LED, BKSHIFT_LED);
 Communication communication(fsm, engine, primary, secondary);
 
