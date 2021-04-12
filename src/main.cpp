@@ -24,6 +24,7 @@
 #include "./Primary/Primary.h"
 #include "./Secondary/Secondary.h"
 #include "./HallEffectTask/HallEffectTask.h"
+#include "./PressureTransducerTask/PressureTransducerTask.h"
 #include "./LaunchControl/LaunchControl.h"
 #include "./DashboardLEDs/DashboardLEDs.h"
 #include "./Communication/Communication.h"
@@ -53,6 +54,9 @@ WheelSpeed rWheelsSpeed(24);
 // WheelSpeed flWheelSpeed(24);
 // WheelSpeed frWheelSpeed(24);
 
+BrakePressure fBrakePressure(FBRAKE_PRESSURE);
+BrakePressure rBrakePressure(RBRAKE_PRESSURE);
+
 Encoder pEnc(P_ENC_A, P_ENC_B);
 Encoder sEnc(S_ENC_A, S_ENC_B);
 
@@ -72,6 +76,7 @@ Engine engine(fsm, ePID);
 Primary primary(fsm, pPID, pEnc, pMot);
 Secondary secondary(fsm, sPID, sEnc, sMot);
 HallEffectTask hallEffectTask(fsm, engineSpeed, rWheelsSpeed);
+PressureTransducerTask pressureTransducerTask(fsm, fBrakePressure, rBrakePressure);
 LaunchControl launchControl(fsm, LAUNCH_BUTTON);
 DashboardLEDs dashboardLEDs(fsm, UPSHIFT_LED, BKSHIFT_LED);
 Communication communication(fsm, engine, primary, secondary);
@@ -162,6 +167,7 @@ void loop() {
     primary.run();
     secondary.run();
     hallEffectTask.run();
+    pressureTransducerTask.run();
 
     // Bonus Tasks
     // launchControl.run();
