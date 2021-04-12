@@ -140,13 +140,15 @@ void setup() {
     fsm.pCalc = false;
     fsm.sCalc = false;
     fsm.comm  = false;
-    fsm.eSpeed     = 0;                 // Revolutions per Minute (RPM)
-    fsm.rwSpeed    = 0;                 // Revolutions per Minute (RPM)
-    fsm.pSetpoint  = 0;                 // Encoder Counts (~1/3606 of a revolution)
-    fsm.sSetpoint  = 0;                 // Encoder Counts (~1/3606 of a revolution)
-    fsm.ePIDOutput = 0;
-    fsm.pPIDOutput = 0;
-    fsm.sPIDOutput = 0;
+    fsm.eSpeed         = 0;             // Revolutions per Minute (RPM)
+    fsm.rwSpeed        = 0;             // Revolutions per Minute (RPM)
+    fsm.fBrakePressure = 0;             // 13-bit ADC (0-8191)
+    fsm.rBrakePressure = 0;             // 13-bit ADC (0-8191)
+    fsm.pSetpoint      = 0;             // Encoder Counts (~1/3606 of a revolution)
+    fsm.sSetpoint      = 0;             // Encoder Counts (~1/3606 of a revolution)
+    fsm.ePIDOutput     = 0;
+    fsm.pPIDOutput     = 0;
+    fsm.sPIDOutput     = 0;
 }
 
 void loop() {

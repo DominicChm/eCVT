@@ -20,12 +20,13 @@ class FSMVars {
         volatile bool comm;
         int16_t eSpeed;
         int16_t rwSpeed;
+        int16_t fBrakePressure;
+        int16_t rBrakePressure;
         int32_t pSetpoint;
         int32_t sSetpoint;
         int16_t ePIDOutput;
         int16_t pPIDOutput;
         int16_t sPIDOutput;
-
 };
 
 #endif
