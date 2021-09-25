@@ -6,7 +6,6 @@
  * Released to Cal Poly Baja SAE. ;)
  */
 
-
 // #define DEBUG
 #define INFO
 
@@ -29,7 +28,6 @@
 #include "./DashboardLEDs/DashboardLEDs.h"
 #include "./Communication/Communication.h"
 
-
 /* ** WIRING ** */
 
 /** _RULE: Do NOT include elsewhere. Pass I/O values/objects as parameters. **/
@@ -38,18 +36,17 @@
 #include "WiringMar2020.h"
 */
 
-
 /* ** SYSTEM ** */
 
 /** ePID will only work with PI or PID control. The integral term is necessary.
     pPID will only work with P-Only or PD control. Do NOT use the integral term.
     sPID will only work with P-Only or PD control. Do NOT use the integral term.
     TODO PID DOCUMENTATION: EFFECT OF CTRL_PERIOD. **/
-PIDController ePID(0.5, 0.2, 0);        // Ratio Percent / Revolutions per Minute (%/RPM)
-PIDController pPID(0.03,  0, 0);        // Duty Cycle Percent / Encoder Counts (%/Count)
-PIDController sPID(0.03,  0, 0);        // Duty Cycle Percent / Encoder Counts (%/Count)
+PIDController ePID(0.5, 0.2, 0); // Ratio Percent / Revolutions per Minute (%/RPM)
+PIDController pPID(0.03, 0, 0);  // Duty Cycle Percent / Encoder Counts (%/Count)
+PIDController sPID(0.03, 0, 0);  // Duty Cycle Percent / Encoder Counts (%/Count)
 
-EngineSpeed engineSpeed( 8);
+EngineSpeed engineSpeed(8);
 WheelSpeed rWheelsSpeed(24);
 // WheelSpeed flWheelSpeed(24);
 // WheelSpeed frWheelSpeed(24);
@@ -65,9 +62,8 @@ Motor sMot(S_MOT_INA, S_MOT_INB, S_MOT_PWM);
 
 IntervalTimer ctrlTimer;
 IntervalTimer commTimer;
-const uint32_t CTRL_PERIOD = 10000;     // Microseconds (us)
-const uint32_t COMM_PERIOD = 10000;     // Microseconds (us)
-
+const uint32_t CTRL_PERIOD = 10000; // Microseconds (us)
+const uint32_t COMM_PERIOD = 10000; // Microseconds (us)
 
 /* ** FINITE STATE MACHINE ** */
 
@@ -81,35 +77,36 @@ LaunchControl launchControl(fsm, LAUNCH_BUTTON);
 DashboardLEDs dashboardLEDs(fsm, UPSHIFT_LED, BKSHIFT_LED);
 Communication communication(fsm, engine, primary, secondary);
 
-
 /* ** INTERRUPT SERVICE ROUTINES ** */
 
-void  engineSpeedISR();
+void engineSpeedISR();
 void rWheelsSpeedISR();
 void ctrlISR();
 void commISR();
 
-
 /* ** MAIN ** */
 
-void setup() {
+void setup()
+{
 
-    // Serial Monitor
-    #ifdef INFO
+// Serial Monitor
+#ifdef INFO
     Serial.begin(9600);
-    while (!Serial) { } // Wait for serial port to connect. Needed for native USB only.
-    #endif
+    while (!Serial)
+    {
+    } // Wait for serial port to connect. Needed for native USB only.
+#endif
 
-    // Bench Testing
-    #ifdef INFO
+// Bench Testing
+#ifdef INFO
     Serial.println("Connect the motor wires!");
     Serial.println("Delaying for 2 seconds..");
     delay(2000);
     Serial.println("GO!");
-    #endif
+#endif
 
     // Hall Effect Sensor Setup
-    pinMode( ENGINE_SPEED_PIN, INPUT);
+    pinMode(ENGINE_SPEED_PIN, INPUT);
     pinMode(RWHEELS_SPEED_PIN, INPUT);
     // pinMode(FLWHEEL_SPEED_PIN, INPUT);
     // pinMode(FRWHEEL_SPEED_PIN, INPUT);
@@ -130,7 +127,7 @@ void setup() {
     pinMode(BKSHIFT_LED, OUTPUT);
 
     // Pin Interrupt Setup
-    attachInterrupt(digitalPinToInterrupt( ENGINE_SPEED_PIN),  engineSpeedISR, RISING);
+    attachInterrupt(digitalPinToInterrupt(ENGINE_SPEED_PIN), engineSpeedISR, RISING);
     attachInterrupt(digitalPinToInterrupt(RWHEELS_SPEED_PIN), rWheelsSpeedISR, RISING);
     // attachInterrupt(digitalPinToInterrupt(FLWHEEL_SPEED_PIN), flWheelSpeedISR, RISING);
     // attachInterrupt(digitalPinToInterrupt(FRWHEEL_SPEED_PIN), frWheelSpeedISR, RISING);
@@ -140,27 +137,28 @@ void setup() {
     ctrlTimer.begin(ctrlISR, CTRL_PERIOD);
 
     // FSM Variables Setup
-    fsm.run   =  true;
+    fsm.run = true;
     fsm.eCalc = false;
     fsm.pCalc = false;
     fsm.sCalc = false;
-    fsm.comm  = false;
-    fsm.eSpeed         = 0;             // Revolutions per Minute (RPM)
-    fsm.rwSpeed        = 0;             // Revolutions per Minute (RPM)
-    fsm.fBrakePressure = 0;             // 13-bit ADC (0-8191)
-    fsm.rBrakePressure = 0;             // 13-bit ADC (0-8191)
-    fsm.pSetpoint      = 0;             // Encoder Counts (~1/3606 of a revolution)
-    fsm.sSetpoint      = 0;             // Encoder Counts (~1/3606 of a revolution)
-    fsm.ePIDOutput     = 0;
-    fsm.pPIDOutput     = 0;
-    fsm.sPIDOutput     = 0;
+    fsm.comm = false;
+    fsm.eSpeed = 0;         // Revolutions per Minute (RPM)
+    fsm.rwSpeed = 0;        // Revolutions per Minute (RPM)
+    fsm.fBrakePressure = 0; // 13-bit ADC (0-8191)
+    fsm.rBrakePressure = 0; // 13-bit ADC (0-8191)
+    fsm.pSetpoint = 0;      // Encoder Counts (~1/3606 of a revolution)
+    fsm.sSetpoint = 0;      // Encoder Counts (~1/3606 of a revolution)
+    fsm.ePIDOutput = 0;
+    fsm.pPIDOutput = 0;
+    fsm.sPIDOutput = 0;
 }
 
-void loop() {
-    // Debugging
-    #ifdef DEBUG
+void loop()
+{
+// Debugging
+#ifdef DEBUG
     Serial.println();
-    #endif
+#endif
 
     // Essential Tasks
     engine.run();
@@ -176,17 +174,17 @@ void loop() {
     // communication.run();
 }
 
-
 /* **INTERRUPT SERVICE ROUTINES** */
 
 // Hall Effect Sensors
-void  engineSpeedISR() {  engineSpeed.calc(); }
+void engineSpeedISR() { engineSpeed.calc(); }
 void rWheelsSpeedISR() { rWheelsSpeed.calc(); }
 // void flWheelSpeedISR() { flWheelSpeed.calc(); }
 // void frWheelSpeedISR() { frWheelSpeed.calc(); }
 
 // Timers
-void ctrlISR() {
+void ctrlISR()
+{
     fsm.eCalc = true;
     fsm.pCalc = true;
     fsm.sCalc = true;

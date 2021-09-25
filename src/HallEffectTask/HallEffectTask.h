@@ -5,25 +5,28 @@
 #include "EngineSpeed.h"
 #include "WheelSpeed.h"
 
-class HallEffectTask: public Task {
-    public:
-        enum State {
-            INITIALIZE,
-            UPDATE};
+class HallEffectTask : public Task
+{
+public:
+    enum State
+    {
+        INITIALIZE,
+        UPDATE
+    };
 
-        HallEffectTask(
-            FSMVars fsm,
-            EngineSpeed engineSpeed,
-            WheelSpeed rWheelsSpeed);
+    HallEffectTask(
+        FSMVars fsm,
+        EngineSpeed engineSpeed,
+        WheelSpeed rWheelsSpeed);
 
-        void run();
-        void engineSpeedISR();
-        void rWheelsSpeedISR();
+    void run();
+    void engineSpeedISR();
+    void rWheelsSpeedISR();
 
-    private:
-        State state;
-        EngineSpeed engineSpeed;
-        WheelSpeed rWheelsSpeed;
+private:
+    State state;
+    EngineSpeed engineSpeed;
+    WheelSpeed rWheelsSpeed;
 };
 
 #endif

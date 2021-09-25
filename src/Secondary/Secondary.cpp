@@ -1,35 +1,33 @@
 #include "Secondary.h"
 
+Secondary::Secondary(FSMVars fsm, PIDController pid, Encoder enc, Motor mot) : Clutch(fsm, pid, enc, mot){};
 
-Secondary::Secondary(FSMVars fsm, PIDController pid, Encoder enc, Motor mot):
-    Clutch(fsm, pid, enc, mot) { };
-
-
-int16_t Secondary::getClutchSpeed() {
+int16_t Secondary::getClutchSpeed()
+{
     return fsm.rwSpeed;
 }
 
-
-bool Secondary::getCalc() {
+bool Secondary::getCalc()
+{
     return fsm.sCalc;
 }
 
-
-void Secondary::resetCalc() {
+void Secondary::resetCalc()
+{
     fsm.sCalc = false;
 }
 
-
-int32_t Secondary::getSetpoint() {
+int32_t Secondary::getSetpoint()
+{
     return fsm.sSetpoint;
 }
 
-
-void Secondary::setPIDOutput(int16_t pid) {
+void Secondary::setPIDOutput(int16_t pid)
+{
     fsm.sPIDOutput = pid;
 }
 
-
-int16_t Secondary::getPIDOutput() {
+int16_t Secondary::getPIDOutput()
+{
     return fsm.sPIDOutput;
 }
