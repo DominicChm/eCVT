@@ -9,21 +9,21 @@
 
 #include <Arduino.h>
 
-class Motor {
+class Motor
+{
+public:
+	// Constructor
+	Motor(int8_t INA, int8_t INB, int8_t PWM);
 
-	public:
-		// Constructor
-		Motor(int8_t INA, int8_t INB, int8_t PWM);
+	// Methods
+	void begin();
+	void setDutyCycle(int16_t dutyCycle);
 
-		// Methods
-		void begin();
-		void setDutyCycle(int16_t dutyCycle);
-
-	private:
-		int8_t INA;
-		int8_t INB;
-		int8_t PWM;
-		bool negative;
+private:
+	int8_t INA;
+	int8_t INB;
+	int8_t PWM;
+	bool negative;
 };
 
 #endif

@@ -10,21 +10,21 @@
 #include "Sensor.h"
 #include <Arduino.h>
 
-class WheelSpeed: public Sensor {
+class WheelSpeed : public Sensor
+{
+public:
+	// Constructor
+	WheelSpeed(int8_t triggers);
 
-	public:
-		// Constructor
-		WheelSpeed(int8_t triggers);
+	// Methods
+	void calc();
+	int16_t read();
 
-		// Methods
-		void calc();
-		int16_t read();
+private:
+	int8_t triggers;
 
-	private:
-		int8_t triggers;
-		
-		volatile uint32_t prevTime;
-		volatile uint32_t currTime;
+	volatile uint32_t prevTime;
+	volatile uint32_t currTime;
 };
 
 #endif

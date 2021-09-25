@@ -8,7 +8,8 @@
 #include "PIDController.h"
 
 // Constructor
-PIDController::PIDController(float Kp, float Ki, float Kd) {
+PIDController::PIDController(float Kp, float Ki, float Kd)
+{
 	this->Kp = Kp;
 	this->Ki = Ki;
 	this->Kd = Kd;
@@ -25,13 +26,15 @@ void PIDController::setLoSat(int8_t loSat) { this->loSat = loSat; }
 void PIDController::setHiSat(int8_t hiSat) { this->hiSat = hiSat; }
 
 // Interrupt Service Routine Method
-void PIDController::calc(int32_t measurement) {
+void PIDController::calc(int32_t measurement)
+{
 	// Store previous error
 	prev = error;
 	// P
 	error = setpoint - measurement;
 	// I
-	if (!saturated) {
+	if (!saturated)
+	{
 		integral += error;
 	}
 	// D
@@ -39,7 +42,8 @@ void PIDController::calc(int32_t measurement) {
 }
 
 // Get output
-int16_t PIDController::get() {
+int16_t PIDController::get()
+{
 	// Calculate output
 	output = Kp * error + Ki * integral + Kd * derivative;
 	// Test if saturated
@@ -49,22 +53,26 @@ int16_t PIDController::get() {
 }
 
 // Get output contribution from proportional term
-int16_t PIDController::getP() {
+int16_t PIDController::getP()
+{
 	return Kp * error;
 }
 
 // Get output contribution from integral term
-int16_t PIDController::getI() {
+int16_t PIDController::getI()
+{
 	return Ki * integral;
 }
 
 // Get output contribution from derivative term
-int16_t PIDController::getD() {
+int16_t PIDController::getD()
+{
 	return Kd * derivative;
 }
 
 // Reset integral and derivative
-void PIDController::reset() {
+void PIDController::reset()
+{
 	integral = 0;
 	derivative = 0;
 }

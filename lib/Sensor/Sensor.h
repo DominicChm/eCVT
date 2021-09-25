@@ -9,11 +9,12 @@
 
 #include <Arduino.h>
 
-class Sensor {
-    public:
-        Sensor();
+class Sensor
+{
+public:
+    Sensor();
 
-        virtual int16_t read() = 0;
+    virtual int16_t read() = 0;
 };
 
 #endif
