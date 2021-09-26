@@ -33,10 +33,7 @@ void PIDController::calc(int32_t measurement)
 	// P
 	error = setpoint - measurement;
 	// I
-	if (!saturated)
-	{
-		integral += error;
-	}
+	integral += saturated ? 0 : error;
 	// D
 	derivative = error - prev;
 }
@@ -52,23 +49,10 @@ int16_t PIDController::get()
 	return output;
 }
 
-// Get output contribution from proportional term
-int16_t PIDController::getP()
-{
-	return Kp * error;
-}
-
-// Get output contribution from integral term
-int16_t PIDController::getI()
-{
-	return Ki * integral;
-}
-
-// Get output contribution from derivative term
-int16_t PIDController::getD()
-{
-	return Kd * derivative;
-}
+// Get output contribution
+int16_t PIDController::getP() { return Kp * error; }
+int16_t PIDController::getI() { return Ki * integral; }
+int16_t PIDController::getD() { return Kd * derivative; }
 
 // Reset integral and derivative
 void PIDController::reset()
