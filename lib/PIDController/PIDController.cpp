@@ -28,8 +28,8 @@ void PIDController::setHiSat(int8_t hiSat) { this->hiSat = hiSat; }
 // Interrupt Service Routine Method
 void PIDController::calc(int32_t measurement)
 {
-	// Store previous error
-	prev = error;
+	int32_t prev = error;
+
 	// P
 	error = setpoint - measurement;
 	// I
@@ -45,7 +45,7 @@ void PIDController::calc(int32_t measurement)
 int16_t PIDController::get()
 {
 	// Calculate output
-	output = Kp * error + Ki * integral + Kd * derivative;
+	int16_t output = Kp * error + Ki * integral + Kd * derivative;
 	// Test if saturated
 	saturated = output < loSat || output > hiSat;
 	// Return output

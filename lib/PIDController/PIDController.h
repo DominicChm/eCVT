@@ -32,7 +32,7 @@ public:
 
 private:
 	int32_t setpoint = 0;
-	int32_t prev = 0;
+
 	int32_t error = 0;
 	int32_t integral = 0;
 	int32_t derivative = 0;
@@ -44,8 +44,6 @@ private:
 	float Kp;
 	float Ki;
 	float Kd;
-
-	int16_t output = 0;
 };
 
 #endif
