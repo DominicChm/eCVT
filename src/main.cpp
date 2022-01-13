@@ -14,6 +14,7 @@
 #include "PIDController.h"
 #include "Motor.h"
 #include <Encoder.h>
+#include "LoadCell.h"
 #include "EngineSpeed.h"
 #include "WheelSpeed.h"
 
@@ -42,20 +43,24 @@
     pPID will only work with P-Only or PD control. Do NOT use the integral term.
     sPID will only work with P-Only or PD control. Do NOT use the integral term.
     TODO PID DOCUMENTATION: EFFECT OF CTRL_PERIOD. **/
-PIDController ePID(0.5, 0.2, 0); // Ratio Percent / Revolutions per Minute (%/RPM)
-PIDController pPID(0.03, 0, 0);  // Duty Cycle Percent / Encoder Counts (%/Count)
-PIDController sPID(0.03, 0, 0);  // Duty Cycle Percent / Encoder Counts (%/Count)
+PIDController ePID(0.5, 0.2, 0);   // Ratio Percent / Revolutions per Minute (%/RPM)
+PIDController pEncPID(0.03, 0, 0); // Duty Cycle Percent / Encoder Counts (%/Count)
+PIDController sEncPID(0.03, 0, 0); // Duty Cycle Percent / Encoder Counts (%/Count)
+PIDController sLcPID(0.03, 0, 0);  // Duty Cycle Percent / Load Cell Force (%/lb)
 
 EngineSpeed engineSpeed(8);
 WheelSpeed rWheelsSpeed(24);
 // WheelSpeed flWheelSpeed(24);
 // WheelSpeed frWheelSpeed(24);
 
-BrakePressure fBrakePressure(FBRAKE_PRESSURE);
-BrakePressure rBrakePressure(RBRAKE_PRESSURE);
-
 Encoder pEnc(P_ENC_A, P_ENC_B);
 Encoder sEnc(S_ENC_A, S_ENC_B);
+
+LoadCell pLC(0, 0, 0);
+LoadCell sLC(0, 0, 0);
+
+BrakePressure fBrakePressure(FBRAKE_PRESSURE);
+BrakePressure rBrakePressure(RBRAKE_PRESSURE);
 
 Motor pMot(P_MOT_INA, P_MOT_INB, P_MOT_PWM);
 Motor sMot(S_MOT_INA, S_MOT_INB, S_MOT_PWM);
@@ -65,12 +70,13 @@ IntervalTimer commTimer;
 const uint32_t CTRL_PERIOD = 10000; // Microseconds (us)
 const uint32_t COMM_PERIOD = 10000; // Microseconds (us)
 
-/* ** FINITE STATE MACHINE ** */
+/* ** FINITE STATE MACHINES ** */
 
 FSMVars fsm;
+
 Engine engine(fsm, ePID);
-Primary primary(fsm, pPID, pEnc, pMot);
-Secondary secondary(fsm, sPID, sEnc, sMot);
+Primary primary(fsm, pEncPID, pEnc, pLC, pMot);
+Secondary secondary(fsm, sEncPID, sLcPID, sEnc, sLC, sMot);
 HallEffectTask hallEffectTask(fsm, engineSpeed, rWheelsSpeed);
 PressureTransducerTask pressureTransducerTask(fsm, fBrakePressure, rBrakePressure);
 LaunchControl launchControl(fsm, LAUNCH_BUTTON);
@@ -114,14 +120,19 @@ void setup()
     // Encoder Setup
     /* Handled by Encoder constructor! */
 
-    // Motor Setup
-    /* Handled by Motor begin() function! */
+    // Load Cell Setup
+    /* Handled by LoadCell begin() function! */
 
-    // Pressure Transducer Setup
+    // Brake Pressure Setup
+    // TODO: Move to BrakePressure constructor
     pinMode(FBRAKE_PRESSURE, INPUT);
     pinMode(RBRAKE_PRESSURE, INPUT);
 
+    // Motor Setup
+    /* Handled by Motor begin() function! */
+
     // Dashboard Setup
+    // TODO: Move to Dashboard FSM
     pinMode(LAUNCH_BUTTON, INPUT_PULLUP);
     pinMode(UPSHIFT_LED, OUTPUT);
     pinMode(BKSHIFT_LED, OUTPUT);
@@ -137,6 +148,7 @@ void setup()
     ctrlTimer.begin(ctrlISR, CTRL_PERIOD);
 
     // FSM Variables Setup
+    // TODO: Move to FSMVars
     fsm.run = true;
     fsm.eCalc = false;
     fsm.pCalc = false;
@@ -148,6 +160,7 @@ void setup()
     fsm.rBrakePressure = 0; // 13-bit ADC (0-8191)
     fsm.pSetpoint = 0;      // Encoder Counts (~1/3606 of a revolution)
     fsm.sSetpoint = 0;      // Encoder Counts (~1/3606 of a revolution)
+    fsm.cSetpoint = 0;      // Clamping Force Pounds (lb)
     fsm.ePIDOutput = 0;
     fsm.pPIDOutput = 0;
     fsm.sPIDOutput = 0;

@@ -14,7 +14,7 @@ const int16_t SHIFT_SPEED = 3200;  // Revolutions per Minute (RPM)
     indicates decreased clamping. The effective change in clamping is determined by
     P * SHEAVE_OFFSET = VOLTS, where P is the proportional gain for the respective clutch and
     VOLTS is the voltage applied to the motor at the ideal sheave position. **/
-const int32_t SHEAVE_OFFSET = 1000; // Encoder Counts (1/3606 of a revolution)
+const int32_t SHEAVE_OFFSET = 0; // Encoder Counts (1/3606 of a revolution)
 
 Engine::Engine(FSMVars fsm, PIDController pid) : ControlLoop(fsm, pid) {}
 
@@ -59,6 +59,7 @@ void Engine::run()
         fsm.ePIDOutput = pid.get();
         fsm.pSetpoint = pRatioToCounts(fsm.ePIDOutput) + SHEAVE_OFFSET;
         fsm.sSetpoint = sRatioToCounts(fsm.ePIDOutput) + SHEAVE_OFFSET;
+        fsm.cSetpoint = sRatioToForce(fsm.ePIDOutput);
 
         fsm.eCalc = false;
         state = ENGAGED_REST;
@@ -95,4 +96,19 @@ int32_t Engine::sRatioToCounts(int16_t ratio)
         return sLookup[100];
     }
     return sLookup[ratio];
+}
+
+/** TODO: Lookup Table **/
+int32_t Engine::sRatioToForce(int16_t ratio)
+{
+    return 0;
+    // if (ratio < 0)
+    // {
+    //     return cLookup[0];
+    // }
+    // else if (ratio > 100)
+    // {
+    //     return cLookup[100];
+    // }
+    // return cLookup[ratio];
 }

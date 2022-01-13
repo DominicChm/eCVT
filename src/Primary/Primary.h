@@ -11,6 +11,7 @@ public:
         FSMVars fsm,
         PIDController pid,
         Encoder enc,
+        LoadCell lc,
         Motor mot);
 
     bool getCalc();

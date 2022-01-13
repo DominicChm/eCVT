@@ -9,8 +9,10 @@ class Secondary : public Clutch
 public:
     Secondary(
         FSMVars fsm,
-        PIDController pid,
+        PIDController encController,
+        PIDController lcController,
         Encoder enc,
+        LoadCell lc,
         Motor mot);
 
     bool getCalc();
@@ -18,7 +20,8 @@ public:
     void updateController();
 
 private:
-    PIDController pid;
+    PIDController encPID;
+    PIDController lcPID;
 };
 
 #endif

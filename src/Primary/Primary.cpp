@@ -1,6 +1,7 @@
 #include "Primary.h"
 
-Primary::Primary(FSMVars fsm, PIDController pid, Encoder enc, Motor mot) : Clutch(fsm, enc, mot), pid(pid){};
+Primary::Primary(FSMVars fsm, PIDController pid, Encoder enc, LoadCell lc, Motor mot)
+    : Clutch(fsm, enc, lc, mot), pid(pid){};
 
 bool Primary::getCalc()
 {

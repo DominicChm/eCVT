@@ -4,6 +4,7 @@
 #include "./Task/Task.h"
 #include "Motor.h"
 #include <Encoder.h>
+#include "LoadCell.h"
 
 class Clutch : public Task
 {
@@ -21,6 +22,7 @@ public:
     Clutch(
         FSMVars fsm,
         Encoder enc,
+        LoadCell lc,
         Motor mot);
 
     void run();
@@ -34,6 +36,7 @@ public:
 protected:
     State state;
     Encoder enc;
+    LoadCell lc;
     Motor mot;
     uint32_t calTime;                       // Milliseconds (ms)
     const int8_t MAX_STATIC_DUTYCYCLE = 25; // Magnitude of Duty Cycle Percent (%)

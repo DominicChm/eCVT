@@ -25,6 +25,7 @@ public:
     int16_t rBrakePressure;
     int32_t pSetpoint;
     int32_t sSetpoint;
+    int32_t cSetpoint;
     int16_t ePIDOutput;
     int16_t pPIDOutput;
     int16_t sPIDOutput;

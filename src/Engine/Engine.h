@@ -25,6 +25,7 @@ private:
     State state;
     int32_t pRatioToCounts(int16_t ratio);
     int32_t sRatioToCounts(int16_t ratio);
+    int32_t sRatioToForce(int16_t ratio);
 };
 
 #endif
