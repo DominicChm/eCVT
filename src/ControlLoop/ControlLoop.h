@@ -4,6 +4,7 @@
 #include "./Task/Task.h"
 #include "PIDController.h"
 
+// TODO: DELETE
 class ControlLoop : public Task
 {
 public:
@@ -14,7 +15,7 @@ public:
     PIDController getPID();
 
 protected:
-    PIDController pid; // Ratio Percent / Revolutions per Minute (%/RPM)
+    PIDController pid;
 };
 
 #endif

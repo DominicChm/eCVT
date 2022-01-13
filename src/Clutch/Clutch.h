@@ -1,11 +1,11 @@
 #ifndef Clutch_h
 #define Clutch_h
 
-#include "./ControlLoop/ControlLoop.h"
+#include "./Task/Task.h"
 #include "Motor.h"
 #include <Encoder.h>
 
-class Clutch : public ControlLoop
+class Clutch : public Task
 {
 public:
     enum State
@@ -14,13 +14,12 @@ public:
         CALIBRATE_OPEN_SHEAVES,
         CALIBRATE_ZERO_ENCODER,
         CALIBRATE_WAIT_USER,
-        PCONTROLLER_REST,
-        PCONTROLLER_UPDATE
+        CONTROLLER_REST,
+        CONTROLLER_UPDATE
     };
 
     Clutch(
         FSMVars fsm,
-        PIDController pid,
         Encoder enc,
         Motor mot);
 
@@ -28,18 +27,16 @@ public:
     Encoder getEnc();
     int8_t getState();
 
-    virtual int16_t getClutchSpeed() = 0;
     virtual bool getCalc() = 0;
-    virtual void resetCalc() = 0;
-    virtual int32_t getSetpoint() = 0;
-    virtual void setPIDOutput(int16_t pid) = 0;
-    virtual int16_t getPIDOutput() = 0;
+    virtual void initializeController() = 0;
+    virtual void updateController() = 0;
 
 protected:
     State state;
     Encoder enc;
     Motor mot;
-    uint32_t calTime; // Milliseconds (ms)
+    uint32_t calTime;                       // Milliseconds (ms)
+    const int8_t MAX_STATIC_DUTYCYCLE = 25; // Magnitude of Duty Cycle Percent (%)
 };
 
 #endif
