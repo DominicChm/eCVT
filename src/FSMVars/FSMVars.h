@@ -14,21 +14,22 @@ class FSMVars
 public:
     FSMVars();
 
+    // Interrupts
     volatile bool run;
     volatile bool eCalc;
     volatile bool pCalc;
     volatile bool sCalc;
     volatile bool comm;
+    // Sensors
     int16_t eSpeed;
     int16_t rwSpeed;
     int16_t fBrakePressure;
     int16_t rBrakePressure;
-    int32_t pSetpoint;
-    int32_t sSetpoint;
-    int32_t cSetpoint;
-    int16_t ePIDOutput;
-    int16_t pPIDOutput;
-    int16_t sPIDOutput;
+    // Control
+    bool engaged;
+    int16_t ePIDOutput; // Ratio Percent
+    int16_t pPIDOutput; // Duty Cycle Percent
+    int16_t sPIDOutput; // Duty Cycle Percent
 };
 
 #endif

@@ -3,9 +3,10 @@
 const int16_t ENGAGE_SPEED = 2400; // Revolutions per Minute (RPM)
 const int16_t SHIFT_SPEED = 3200;  // Revolutions per Minute (RPM)
 
+// TODO: UPDATE DOCUMENTATION (load cell replaces sheave offset)
 // eCVT Sheave Offset
-/** This constant accounts for mechanical imperfections and ajusts belt clamping force. Examples
-    of mechanical imperfection include:
+/** This constant accounts for mechanical imperfections and adjusts belt clamping force.
+    Examples of mechanical imperfections include:
        1. belt wear
        2. deflection
        3. manufacturing tolerances
@@ -14,7 +15,7 @@ const int16_t SHIFT_SPEED = 3200;  // Revolutions per Minute (RPM)
     indicates decreased clamping. The effective change in clamping is determined by
     P * SHEAVE_OFFSET = VOLTS, where P is the proportional gain for the respective clutch and
     VOLTS is the voltage applied to the motor at the ideal sheave position. **/
-const int32_t SHEAVE_OFFSET = 0; // Encoder Counts (1/3606 of a revolution)
+const int32_t SHEAVE_OFFSET = 0; // Encoder Counts (~1/3606 of a revolution)
 
 Engine::Engine(FSMVars fsm, PIDController pid) : ControlLoop(fsm, pid) {}
 
@@ -32,12 +33,11 @@ void Engine::run()
         return;
 
     case DISENGAGED:
-        fsm.pSetpoint = 0;
-        fsm.sSetpoint = sRatioToCounts(100);
-
+        fsm.engaged = false;
         if (fsm.eSpeed > ENGAGE_SPEED && fsm.run)
         {
             pid.reset();
+            fsm.engaged = true;
             state = ENGAGED_REST;
         }
         return;
@@ -55,11 +55,7 @@ void Engine::run()
 
     case ENGAGED_UPDATEPID:
         pid.calc(fsm.eSpeed);
-
         fsm.ePIDOutput = pid.get();
-        fsm.pSetpoint = pRatioToCounts(fsm.ePIDOutput) + SHEAVE_OFFSET;
-        fsm.sSetpoint = sRatioToCounts(fsm.ePIDOutput) + SHEAVE_OFFSET;
-        fsm.cSetpoint = sRatioToForce(fsm.ePIDOutput);
 
         fsm.eCalc = false;
         state = ENGAGED_REST;
@@ -70,45 +66,4 @@ void Engine::run()
 int8_t Engine::getState()
 {
     return (int8_t)state;
-}
-
-int32_t Engine::pRatioToCounts(int16_t ratio)
-{
-    if (ratio < 0)
-    {
-        return pLookup[0];
-    }
-    else if (ratio > 100)
-    {
-        return pLookup[100];
-    }
-    return pLookup[ratio];
-}
-
-int32_t Engine::sRatioToCounts(int16_t ratio)
-{
-    if (ratio < 0)
-    {
-        return sLookup[0];
-    }
-    else if (ratio > 100)
-    {
-        return sLookup[100];
-    }
-    return sLookup[ratio];
-}
-
-/** TODO: Lookup Table **/
-int32_t Engine::sRatioToForce(int16_t ratio)
-{
-    return 0;
-    // if (ratio < 0)
-    // {
-    //     return cLookup[0];
-    // }
-    // else if (ratio > 100)
-    // {
-    //     return cLookup[100];
-    // }
-    // return cLookup[ratio];
 }

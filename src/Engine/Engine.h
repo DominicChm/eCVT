@@ -3,7 +3,6 @@
 
 #include <Arduino.h>
 #include "./ControlLoop/ControlLoop.h"
-#include "LookupTables.h"
 
 class Engine : public ControlLoop
 {
@@ -23,9 +22,6 @@ public:
 
 private:
     State state;
-    int32_t pRatioToCounts(int16_t ratio);
-    int32_t sRatioToCounts(int16_t ratio);
-    int32_t sRatioToForce(int16_t ratio);
 };
 
 #endif

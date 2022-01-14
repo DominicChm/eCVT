@@ -5,6 +5,7 @@
 #include "Motor.h"
 #include <Encoder.h>
 #include "LoadCell.h"
+#include "LookupTables.h"
 
 class Clutch : public Task
 {

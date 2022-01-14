@@ -20,6 +20,8 @@ public:
 
 private:
     PIDController pid;
+
+    static int32_t pRatioToCounts(int16_t ratio);
 };
 
 #endif

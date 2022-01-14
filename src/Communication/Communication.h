@@ -32,22 +32,30 @@ private:
     Primary primary;
     Secondary secondary;
 
+    // TODO: Add load cell
     struct Data
     {
         uint32_t time;
+
+        // Engine
+        bool engaged;
         int8_t eState;
         int16_t eSpeed;
         int16_t ePID;
         int16_t eP;
         int16_t eI;
         int16_t eD;
+
+        // Primary
         int8_t pState;
-        int32_t pSet;
         int32_t pEnc;
+        // int32_t pLC;
         int16_t pPID;
+
+        // Secondary
         int8_t sState;
-        int32_t sSet;
         int32_t sEnc;
+        // int32_t sLC;
         int16_t sPID;
     } data;
 };

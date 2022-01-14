@@ -22,6 +22,9 @@ public:
 private:
     PIDController encPID;
     PIDController lcPID;
+
+    static int32_t sRatioToCounts(int16_t ratio);
+    static int32_t sRatioToForce(int16_t ratio);
 };
 
 #endif

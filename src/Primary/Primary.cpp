@@ -18,10 +18,22 @@ void Primary::initializeController()
 
 void Primary::updateController()
 {
-    pid.setSetpoint(fsm.pSetpoint);
-    pid.calc(enc.read());
+    // Disengaged: Encoder Count = 0
+    //  Low Ratio: Encoder Count = pRatioToCounts(100)
+    // High Ratio: Encoder Count = pRatioToCounts(0)
 
+    if (fsm.engaged)
+    {
+        pid.setSetpoint(pRatioToCounts(fsm.ePIDOutput));
+    }
+    else
+    {
+        pid.setSetpoint(0);
+    }
+
+    pid.calc(enc.read());
     fsm.pPIDOutput = pid.get();
+
     if (fsm.eSpeed == 0)
     {
         mot.setDutyCycle(min(MAX_STATIC_DUTYCYCLE, fsm.pPIDOutput));
@@ -32,4 +44,17 @@ void Primary::updateController()
     }
 
     fsm.pCalc = false;
+}
+
+int32_t Primary::pRatioToCounts(int16_t ratio)
+{
+    if (ratio < 0)
+    {
+        return pLookup[0];
+    }
+    else if (ratio > 100)
+    {
+        return pLookup[100];
+    }
+    return pLookup[ratio];
 }

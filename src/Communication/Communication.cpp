@@ -32,6 +32,7 @@ void Communication::run()
 
     case STORE_ECVT_DATA:
         data.time = micros();
+        data.engaged = fsm.engaged;
         data.eState = engine.getState();
         data.eSpeed = fsm.eSpeed;
         data.ePID = fsm.ePIDOutput;
@@ -39,11 +40,9 @@ void Communication::run()
         data.eI = engine.getPID().getI();
         data.eD = engine.getPID().getD();
         data.pState = primary.getState();
-        data.pSet = fsm.pSetpoint;
         data.pEnc = primary.getEnc().read();
         data.pPID = fsm.pPIDOutput;
         data.sState = secondary.getState();
-        data.sSet = fsm.sSetpoint;
         data.sEnc = secondary.getEnc().read();
         data.sPID = fsm.sPIDOutput;
 
