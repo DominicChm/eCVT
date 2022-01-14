@@ -5,9 +5,10 @@ const int8_t START_DATA_SIZE = 2;   // Bytes
 const int8_t CHECK_DATA_SIZE = 2;   // Bytes
 const int8_t START_BYTE_VAL = 0xAA; // 1010 1010
 
-Communication::Communication(FSMVars fsm, Engine engine, Primary primary, Secondary secondary) : Task(fsm), engine(engine), primary(primary), secondary(secondary)
+Communication::Communication(FSMVars fsm, Engine engine, Primary primary, Secondary secondary)
+    : Task(fsm), engine(engine), primary(primary), secondary(secondary)
 {
-    this->numBytesWritten = 0;
+    numBytesWritten = 0;
 }
 
 void Communication::run()
@@ -32,6 +33,7 @@ void Communication::run()
 
     case STORE_ECVT_DATA:
         data.time = micros();
+        // Engine
         data.engaged = fsm.engaged;
         data.eState = engine.getState();
         data.eSpeed = fsm.eSpeed;
@@ -39,11 +41,15 @@ void Communication::run()
         data.eP = engine.getPID().getP();
         data.eI = engine.getPID().getI();
         data.eD = engine.getPID().getD();
+        // Primary
         data.pState = primary.getState();
         data.pEnc = primary.getEnc().read();
+        data.pLC = primary.getLC().read();
         data.pPID = fsm.pPIDOutput;
+        // Secondary
         data.sState = secondary.getState();
         data.sEnc = secondary.getEnc().read();
+        data.sLC = secondary.getLC().read();
         data.sPID = fsm.sPIDOutput;
 
         state = WRITE_ECVT_DATA;

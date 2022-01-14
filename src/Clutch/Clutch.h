@@ -27,8 +27,9 @@ public:
         Motor mot);
 
     void run();
-    Encoder getEnc();
     int8_t getState();
+    Encoder getEnc();
+    LoadCell getLC();
 
     virtual bool getCalc() = 0;
     virtual void initializeController() = 0;
