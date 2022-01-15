@@ -40,24 +40,35 @@
 /* ** SYSTEM ** */
 
 /** ePID will only work with PI or PID control. The integral term is necessary.
-    pPID will only work with P-Only or PD control. Do NOT use the integral term.
-    sPID will only work with P-Only or PD control. Do NOT use the integral term.
-    TODO PID DOCUMENTATION: EFFECT OF CTRL_PERIOD. **/
+    pEncPID will only work with P-Only or PD control. Do NOT use the integral term.
+    sEncPID will only work with P-Only or PD control. Do NOT use the integral term.
+    sLcPID will work with P-Only, PI, PD, or PID control. A weak integral term is recommended.
+
+    P = Kp * error
+    I = Ki * error * dt
+    D = Kd * error / dt
+
+    For performance, the PIDController class assumes a constant dt.
+    (dt is integral/derivative delta time, defined by CTRL_PERIOD.)
+    Therefore:
+    - The   integral gain (Ki) must decrease linearly with CTRL_PERIOD.
+    - The derivative gain (Kd) must increase linearly with CTRL_PERIOD.
+**/
 PIDController ePID(0.5, 0.2, 0);   // Ratio Percent / Revolutions per Minute (%/RPM)
 PIDController pEncPID(0.03, 0, 0); // Duty Cycle Percent / Encoder Counts (%/Count)
 PIDController sEncPID(0.03, 0, 0); // Duty Cycle Percent / Encoder Counts (%/Count)
-PIDController sLcPID(0.03, 0, 0);  // Duty Cycle Percent / Load Cell Force (%/lb)
+PIDController sLcPID(0.2, 0, 0);   // Duty Cycle Percent / Load Cell Force (%/lb)
 
 EngineSpeed engineSpeed(8);
 WheelSpeed rWheelsSpeed(24);
 // WheelSpeed flWheelSpeed(24);
 // WheelSpeed frWheelSpeed(24);
 
-Encoder pEnc(P_ENC_A, P_ENC_B);
-Encoder sEnc(S_ENC_A, S_ENC_B);
+Encoder pEnc(P_ENC_A, P_ENC_B); // 1 Encoder Count = ~1/3606 Revolution
+Encoder sEnc(S_ENC_A, S_ENC_B); // 1 Encoder Count = ~1/3606 Revolution
 
-LoadCell pLC(0, 0, 0);
-LoadCell sLC(0, 0, 0);
+LoadCell pLC(0, 0, 0); // Load Cell Force = SHIFTLINK_TOP/SHIFTLINK_ALL * Clamping Force
+LoadCell sLC(0, 0, 0); // Load Cell Force = SHIFTLINK_TOP/SHIFTLINK_ALL * Clamping Force
 
 BrakePressure fBrakePressure(FBRAKE_PRESSURE);
 BrakePressure rBrakePressure(RBRAKE_PRESSURE);
@@ -98,9 +109,9 @@ void setup()
 // Serial Monitor
 #ifdef INFO
     Serial.begin(9600);
-    while (!Serial)
+    while (!Serial) // Wait for serial port to connect. Needed for native USB only.
     {
-    } // Wait for serial port to connect. Needed for native USB only.
+    }
 #endif
 
 // Bench Testing
