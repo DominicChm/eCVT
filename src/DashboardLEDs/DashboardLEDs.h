@@ -25,7 +25,7 @@ public:
     void run();
 
 private:
-    State state;
+    State state = INITIALIZE;
     int16_t prevRatio; // Ratio Percent (%)
     int16_t currRatio; // Ratio Percent (%)
     uint32_t prevTime; // Milliseconds (ms)

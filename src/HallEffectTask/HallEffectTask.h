@@ -24,7 +24,7 @@ public:
     void rWheelsSpeedISR();
 
 private:
-    State state;
+    State state = INITIALIZE;
     EngineSpeed engineSpeed;
     WheelSpeed rWheelsSpeed;
 };

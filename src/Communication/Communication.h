@@ -26,7 +26,7 @@ public:
     void run();
 
 private:
-    State state;
+    State state = INITIALIZE;
     int8_t numBytesWritten;
     Engine engine;
     Primary primary;

@@ -36,7 +36,7 @@ public:
     virtual void updateController() = 0;
 
 protected:
-    State state;
+    State state = INITIALIZE;
     Encoder enc;
     LoadCell lc;
     Motor mot;

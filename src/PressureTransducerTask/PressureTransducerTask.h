@@ -21,7 +21,7 @@ public:
     void run();
 
 private:
-    State state;
+    State state = INITIALIZE;
     BrakePressure fBrakePressure;
     BrakePressure rBrakePressure;
 };

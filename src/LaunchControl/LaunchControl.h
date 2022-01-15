@@ -18,7 +18,7 @@ public:
     void run();
 
 private:
-    State state;
+    State state = INITIALIZE;
     int8_t LAUNCH_BUTTON;
 };
 

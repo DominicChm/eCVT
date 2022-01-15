@@ -21,7 +21,7 @@ public:
     int8_t getState();
 
 private:
-    State state;
+    State state = INITIALIZE;
 };
 
 #endif
