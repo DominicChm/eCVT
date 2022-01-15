@@ -59,7 +59,7 @@ PIDController pEncPID(0.03, 0, 0); // Duty Cycle Percent / Encoder Counts (%/Cou
 PIDController sEncPID(0.03, 0, 0); // Duty Cycle Percent / Encoder Counts (%/Count)
 PIDController sLcPID(0.2, 0, 0);   // Duty Cycle Percent / Load Cell Force (%/lb)
 
-EngineSpeed engineSpeed(8);
+EngineSpeed engineSpeed(4);
 WheelSpeed rWheelsSpeed(24);
 // WheelSpeed flWheelSpeed(24);
 // WheelSpeed frWheelSpeed(24);
