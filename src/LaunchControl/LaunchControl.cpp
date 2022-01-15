@@ -19,8 +19,8 @@ void LaunchControl::run()
 
     case ECVT_ENABLED:
         if (!digitalRead(LAUNCH_BUTTON) &&
-            analogRead(fsm.fBrakePressure) > LC_BRKPRESSURE &&
-            analogRead(fsm.rBrakePressure) > LC_BRKPRESSURE &&
+            fsm.fBrakePressure > LC_BRKPRESSURE &&
+            fsm.rBrakePressure > LC_BRKPRESSURE &&
             fsm.eSpeed < LC_ENGINESPEED_LO)
         {
             fsm.run = false;
