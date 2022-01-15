@@ -8,7 +8,7 @@
 class LoadCell : public Sensor
 {
 public:
-    LoadCell(int8_t sck, int8_t sda, float calibration);
+    LoadCell(int8_t sck, int8_t sda, int32_t calibration);
 
     void begin();
     int16_t read();
