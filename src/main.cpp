@@ -32,10 +32,11 @@
 /* ** WIRING ** */
 
 /** _RULE: Do NOT include elsewhere. Pass I/O values/objects as parameters. **/
-#include "WiringDec2019.h"
 /*
+#include "WiringDec2019.h"
 #include "WiringMar2020.h"
 */
+#include "WiringDec2021.h"
 
 /* ** SYSTEM ** */
 
@@ -70,8 +71,8 @@ Encoder sEnc(S_ENC_A, S_ENC_B); // 1 Encoder Count = ~1/3606 Revolution
 LoadCell pLC(0, 0, 0); // Load Cell Force = SHIFTLINK_TOP/SHIFTLINK_ALL * Clamping Force
 LoadCell sLC(0, 0, 0); // Load Cell Force = SHIFTLINK_TOP/SHIFTLINK_ALL * Clamping Force
 
-BrakePressure fBrakePressure(FBRAKE_PRESSURE);
-BrakePressure rBrakePressure(RBRAKE_PRESSURE);
+// BrakePressure fBrakePressure(FBRAKE_PRESSURE);
+// BrakePressure rBrakePressure(RBRAKE_PRESSURE);
 
 Motor pMot(P_MOT_INA, P_MOT_INB, P_MOT_PWM);
 Motor sMot(S_MOT_INA, S_MOT_INB, S_MOT_PWM);
@@ -89,7 +90,7 @@ Engine engine(fsm, ePID);
 Primary primary(fsm, pEncPID, pEnc, pLC, pMot);
 Secondary secondary(fsm, sEncPID, sLcPID, sEnc, sLC, sMot);
 HallEffectTask hallEffectTask(fsm, engineSpeed, rWheelsSpeed);
-PressureTransducerTask pressureTransducerTask(fsm, fBrakePressure, rBrakePressure);
+// PressureTransducerTask pressureTransducerTask(fsm, fBrakePressure, rBrakePressure);
 LaunchControl launchControl(fsm, LAUNCH_BUTTON);
 DashboardLEDs dashboardLEDs(fsm, UPSHIFT_LED, BKSHIFT_LED);
 Communication communication(fsm, engine, primary, secondary);
@@ -136,8 +137,8 @@ void setup()
 
     // Brake Pressure Setup
     // TODO: Move to BrakePressure constructor
-    pinMode(FBRAKE_PRESSURE, INPUT);
-    pinMode(RBRAKE_PRESSURE, INPUT);
+    // pinMode(FBRAKE_PRESSURE, INPUT);
+    // pinMode(RBRAKE_PRESSURE, INPUT);
 
     // Motor Setup
     /* Handled by Motor begin() function! */
@@ -187,9 +188,9 @@ void loop()
     primary.run();
     secondary.run();
     hallEffectTask.run();
-    pressureTransducerTask.run();
 
     // Bonus Tasks
+    // pressureTransducerTask.run();
     // launchControl.run();
     // ecvtstatusLED.run();
     // dashboardLEDs.run();
