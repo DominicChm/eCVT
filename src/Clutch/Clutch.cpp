@@ -5,6 +5,9 @@ const uint32_t CALIB_DELAY = 10000; // Milliseconds (ms)
 const int16_t CALIB_ESPEED = 2000;  // Revolutions per Minute (RPM)
 const int8_t CALIB_DUTYCYCLE = 10;  // Magnitude of Duty Cycle Percent (%)
 
+/* This constant defines the max allowable load cell force (NOT clamping force). */
+const int16_t MAX_LOADCELL_FORCE = 400; // Load Cell Force (lb)
+
 Clutch::Clutch(FSMVars fsm, Encoder enc, LoadCell lc, Motor mot)
     : Task(fsm), enc(enc), lc(lc), mot(mot)
 {
@@ -17,7 +20,7 @@ void Clutch::run()
     {
     case INITIALIZE:
         mot.begin();
-        mot.setDutyCycle(0);
+        setMotorDutyCycle(0);
 
         initializeController();
 
@@ -25,7 +28,7 @@ void Clutch::run()
         return;
 
     case CALIBRATE_OPEN_SHEAVES:
-        mot.setDutyCycle(-CALIB_DUTYCYCLE);
+        setMotorDutyCycle(-CALIB_DUTYCYCLE);
         calTime = millis();
 
         state = CALIBRATE_ZERO_ENCODER;
@@ -35,7 +38,7 @@ void Clutch::run()
         if (millis() - calTime > CALIB_DELAY)
         {
             enc.write(0);
-            mot.setDutyCycle(0);
+            setMotorDutyCycle(0);
             state = CALIBRATE_WAIT_USER;
         }
         return;
@@ -59,6 +62,15 @@ void Clutch::run()
         state = CONTROLLER_REST;
         return;
     }
+}
+
+void Clutch::setMotorDutyCycle(int16_t dutyCycle)
+{
+    if (lc.read() > MAX_LOADCELL_FORCE)
+    {
+        dutyCycle = 0;
+    }
+    mot.setDutyCycle(dutyCycle);
 }
 
 int8_t Clutch::getState()

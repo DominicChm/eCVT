@@ -36,12 +36,18 @@ public:
     virtual void updateController() = 0;
 
 protected:
-    State state = INITIALIZE;
     Encoder enc;
     LoadCell lc;
-    Motor mot;
-    uint32_t calTime;                       // Milliseconds (ms)
+
     const int8_t MAX_STATIC_DUTYCYCLE = 25; // Magnitude of Duty Cycle Percent (%)
+
+    void setMotorDutyCycle(int16_t dutyCycle);
+
+private:
+    State state = INITIALIZE;
+    Motor mot;
+
+    uint32_t calTime; // Milliseconds (ms)
 };
 
 #endif

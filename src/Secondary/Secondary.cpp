@@ -51,11 +51,11 @@ void Secondary::updateController()
     fsm.sPIDOutput = encPID.get() + lcPID.get();
     if (fsm.rwSpeed == 0)
     {
-        mot.setDutyCycle(min(MAX_STATIC_DUTYCYCLE, fsm.sPIDOutput));
+        setMotorDutyCycle(min(MAX_STATIC_DUTYCYCLE, fsm.sPIDOutput));
     }
     else
     {
-        mot.setDutyCycle(fsm.sPIDOutput);
+        setMotorDutyCycle(fsm.sPIDOutput);
     }
 
     fsm.sCalc = false;

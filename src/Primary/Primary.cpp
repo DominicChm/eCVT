@@ -36,11 +36,11 @@ void Primary::updateController()
 
     if (fsm.eSpeed == 0)
     {
-        mot.setDutyCycle(min(MAX_STATIC_DUTYCYCLE, fsm.pPIDOutput));
+        setMotorDutyCycle(min(MAX_STATIC_DUTYCYCLE, fsm.pPIDOutput));
     }
     else
     {
-        mot.setDutyCycle(fsm.pPIDOutput);
+        setMotorDutyCycle(fsm.pPIDOutput);
     }
 
     fsm.pCalc = false;
