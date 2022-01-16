@@ -17,7 +17,7 @@ private:
     int8_t sck;
     int8_t sda;
     int32_t calibration;
-    int32_t value;
+    int16_t value;
     HX711 lc;
 };
 

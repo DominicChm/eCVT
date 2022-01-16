@@ -46,12 +46,12 @@ private:
         // Primary
         int8_t pState;
         int32_t pEnc;
-        int32_t pLC;
+        int16_t pLC;
         int16_t pPID;
         // Secondary
         int8_t sState;
         int32_t sEnc;
-        int32_t sLC;
+        int16_t sLC;
         int16_t sPID;
     } data;
 };
