@@ -69,8 +69,9 @@ WheelSpeed rWheelsSpeed(24);
 Encoder pEnc(P_ENC_A, P_ENC_B); // 1 Encoder Count = ~1/3606 Revolution
 Encoder sEnc(S_ENC_A, S_ENC_B); // 1 Encoder Count = ~1/3606 Revolution
 
-LoadCell pLC(0, 0, 0); // Load Cell Force = SHIFTLINK_TOP/SHIFTLINK_ALL * Clamping Force
-LoadCell sLC(0, 0, 0); // Load Cell Force = SHIFTLINK_TOP/SHIFTLINK_ALL * Clamping Force
+int32_t LC_CALIBRATION = 10056;                   // HX711 Unit / Load Cell Force (#/lb)
+LoadCell pLC(P_LC_SCK, P_LC_SDA, LC_CALIBRATION); // Load Cell Force = SHIFTLINK_TOP/SHIFTLINK_ALL * Clamping Force
+LoadCell sLC(S_LC_SCK, S_LC_SDA, LC_CALIBRATION); // Load Cell Force = SHIFTLINK_TOP/SHIFTLINK_ALL * Clamping Force
 
 // BrakePressure fBrakePressure(FBRAKE_PRESSURE);
 // BrakePressure rBrakePressure(RBRAKE_PRESSURE);
