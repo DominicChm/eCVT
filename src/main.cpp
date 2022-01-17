@@ -168,6 +168,8 @@ void setup()
     fsm.comm = false;
     fsm.eSpeed = 0;         // Revolutions per Minute (RPM)
     fsm.rwSpeed = 0;        // Revolutions per Minute (RPM)
+    fsm.pLoadCellForce = 0; // Load Cell Force (lb)
+    fsm.sLoadCellForce = 0; // Load Cell Force (lb)
     fsm.fBrakePressure = 0; // 13-bit ADC (0-8191)
     fsm.rBrakePressure = 0; // 13-bit ADC (0-8191)
     fsm.engaged = false;

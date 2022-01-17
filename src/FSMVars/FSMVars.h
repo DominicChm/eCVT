@@ -23,6 +23,8 @@ public:
     // Sensors
     int16_t eSpeed;
     int16_t rwSpeed;
+    int16_t pLoadCellForce;
+    int16_t sLoadCellForce;
     int16_t fBrakePressure;
     int16_t rBrakePressure;
     // Control
