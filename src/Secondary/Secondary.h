@@ -14,14 +14,13 @@ public:
         Encoder enc,
         Motor mot);
 
-    bool getCalc();
-    void initializeController();
-    void updateController();
-
 private:
     PIDController encPID;
     PIDController lcPID;
 
+    bool getCalc();
+    void initializeController();
+    void updateController();
     int16_t readLoadCell();
 
     static int32_t sRatioToCounts(int16_t ratio);

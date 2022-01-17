@@ -29,14 +29,14 @@ public:
     int8_t getState();
     Encoder getEnc();
 
+protected:
+    const int8_t MAX_STATIC_DUTYCYCLE = 25; // Magnitude of Duty Cycle Percent (%)
+
+    Encoder enc;
+
     virtual bool getCalc() = 0;
     virtual void initializeController() = 0;
     virtual void updateController() = 0;
-
-protected:
-    Encoder enc;
-
-    const int8_t MAX_STATIC_DUTYCYCLE = 25; // Magnitude of Duty Cycle Percent (%)
 
     // TODO: Refactor
     virtual int16_t readLoadCell() = 0;
