@@ -4,8 +4,8 @@
  *  Released to Cal Poly Baja SAE. ;)
  */
 
-#ifndef LookupTables_h
-#define LookupTables_h
+#ifndef LookupTables2019_h
+#define LookupTables2019_h
 
 #include <Arduino.h>
 
