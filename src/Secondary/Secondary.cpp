@@ -1,8 +1,5 @@
 #include "Secondary.h"
 
-const int16_t DISENGAGED_CLAMPINGFORCE = 50;                      // lb
-const float SCALE_CLAMPINGFORCE_TO_LOADCELLFORCE = (float)6 / 11; // unitless
-
 Secondary::Secondary(FSMVars fsm, PIDController encPID, PIDController lcPID, Encoder enc, Motor mot)
     : Clutch(fsm, enc, mot), encPID(encPID), lcPID(lcPID){};
 
@@ -37,12 +34,12 @@ void Secondary::updateController()
     if (fsm.engaged)
     {
         encPID.setSetpoint(sRatioToCounts(fsm.ePIDOutput));
-        lcPID.setSetpoint(sRatioToForce(fsm.ePIDOutput) * SCALE_CLAMPINGFORCE_TO_LOADCELLFORCE);
+        lcPID.setSetpoint(sRatioToForce(fsm.ePIDOutput) * SCALE_CLAMPING_TO_LOADCELL);
     }
     else
     {
         encPID.setSetpoint(sRatioToCounts(100));
-        lcPID.setSetpoint(DISENGAGED_CLAMPINGFORCE * SCALE_CLAMPINGFORCE_TO_LOADCELLFORCE);
+        lcPID.setSetpoint(DISENGAGED_CLAMPINGFORCE * SCALE_CLAMPING_TO_LOADCELL);
     }
 
     encPID.calc(enc.read());
@@ -63,7 +60,7 @@ void Secondary::updateController()
 
 bool Secondary::isSafe()
 {
-    return fsm.sLoadCellForce < MAX_CLAMPING_FORCE * SCALE_CLAMPINGFORCE_TO_LOADCELLFORCE;
+    return fsm.sLoadCellForce < MAX_LOADCELL_FORCE;
 }
 
 int32_t Secondary::sRatioToCounts(int16_t ratio)
