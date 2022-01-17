@@ -24,6 +24,7 @@
 #include "./Primary/Primary.h"
 #include "./Secondary/Secondary.h"
 #include "./HallEffectTask/HallEffectTask.h"
+#include "./LoadCellTask/LoadCellTask.h"
 #include "./PressureTransducerTask/PressureTransducerTask.h"
 #include "./LaunchControl/LaunchControl.h"
 #include "./DashboardLEDs/DashboardLEDs.h"
@@ -87,9 +88,10 @@ const uint32_t COMM_PERIOD = 10000; // Microseconds (us)
 FSMVars fsm;
 
 Engine engine(fsm, ePID);
-Primary primary(fsm, pEncPID, pEnc, pLC, pMot);
-Secondary secondary(fsm, sEncPID, sLcPID, sEnc, sLC, sMot);
+Primary primary(fsm, pEncPID, pEnc, pMot);
+Secondary secondary(fsm, sEncPID, sLcPID, sEnc, sMot);
 HallEffectTask hallEffectTask(fsm, engineSpeed, rWheelsSpeed);
+LoadCellTask loadCellTask(fsm, pLC, sLC);
 // PressureTransducerTask pressureTransducerTask(fsm, fBrakePressure, rBrakePressure);
 LaunchControl launchControl(fsm, LAUNCH_BUTTON);
 DashboardLEDs dashboardLEDs(fsm, UPSHIFT_LED, BKSHIFT_LED);
@@ -190,6 +192,7 @@ void loop()
     primary.run();
     secondary.run();
     hallEffectTask.run();
+    loadCellTask.run();
 
     // Bonus Tasks
     // pressureTransducerTask.run();

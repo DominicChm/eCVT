@@ -1,7 +1,7 @@
 #include "Primary.h"
 
-Primary::Primary(FSMVars fsm, PIDController pid, Encoder enc, LoadCell lc, Motor mot)
-    : Clutch(fsm, enc, lc, mot), pid(pid){};
+Primary::Primary(FSMVars fsm, PIDController pid, Encoder enc, Motor mot)
+    : Clutch(fsm, enc, mot), pid(pid){};
 
 bool Primary::getCalc()
 {
@@ -44,6 +44,11 @@ void Primary::updateController()
     }
 
     fsm.pCalc = false;
+}
+
+int16_t Primary::readLoadCell()
+{
+    return fsm.pLoadCellForce;
 }
 
 int32_t Primary::pRatioToCounts(int16_t ratio)

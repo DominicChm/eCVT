@@ -23,13 +23,11 @@ public:
     Clutch(
         FSMVars fsm,
         Encoder enc,
-        LoadCell lc,
         Motor mot);
 
     void run();
     int8_t getState();
     Encoder getEnc();
-    LoadCell getLC();
 
     virtual bool getCalc() = 0;
     virtual void initializeController() = 0;
@@ -37,9 +35,11 @@ public:
 
 protected:
     Encoder enc;
-    LoadCell lc;
 
     const int8_t MAX_STATIC_DUTYCYCLE = 25; // Magnitude of Duty Cycle Percent (%)
+
+    // TODO: Refactor
+    virtual int16_t readLoadCell() = 0;
 
     void setMotorDutyCycle(int16_t dutyCycle);
 

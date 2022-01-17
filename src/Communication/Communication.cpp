@@ -44,12 +44,12 @@ void Communication::run()
         // Primary
         data.pState = primary.getState();
         data.pEnc = primary.getEnc().read();
-        data.pLC = primary.getLC().read();
+        data.pLC = fsm.pLoadCellForce;
         data.pPID = fsm.pPIDOutput;
         // Secondary
         data.sState = secondary.getState();
         data.sEnc = secondary.getEnc().read();
-        data.sLC = secondary.getLC().read();
+        data.sLC = fsm.sLoadCellForce;
         data.sPID = fsm.sPIDOutput;
 
         state = WRITE_ECVT_DATA;

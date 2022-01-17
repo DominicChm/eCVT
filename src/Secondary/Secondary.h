@@ -12,7 +12,6 @@ public:
         PIDController encController,
         PIDController lcController,
         Encoder enc,
-        LoadCell lc,
         Motor mot);
 
     bool getCalc();
@@ -22,6 +21,8 @@ public:
 private:
     PIDController encPID;
     PIDController lcPID;
+
+    int16_t readLoadCell();
 
     static int32_t sRatioToCounts(int16_t ratio);
     static int32_t sRatioToForce(int16_t ratio);

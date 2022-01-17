@@ -11,7 +11,6 @@ public:
         FSMVars fsm,
         PIDController pid,
         Encoder enc,
-        LoadCell lc,
         Motor mot);
 
     bool getCalc();
@@ -20,6 +19,8 @@ public:
 
 private:
     PIDController pid;
+
+    int16_t readLoadCell();
 
     static int32_t pRatioToCounts(int16_t ratio);
 };

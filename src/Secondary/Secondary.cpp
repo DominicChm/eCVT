@@ -3,8 +3,8 @@
 const int16_t DISENGAGED_CLAMPINGFORCE = 50;                      // lb
 const float SCALE_CLAMPINGFORCE_TO_LOADCELLFORCE = (float)6 / 11; // unitless
 
-Secondary::Secondary(FSMVars fsm, PIDController encPID, PIDController lcPID, Encoder enc, LoadCell lc, Motor mot)
-    : Clutch(fsm, enc, lc, mot), encPID(encPID), lcPID(lcPID){};
+Secondary::Secondary(FSMVars fsm, PIDController encPID, PIDController lcPID, Encoder enc, Motor mot)
+    : Clutch(fsm, enc, mot), encPID(encPID), lcPID(lcPID){};
 
 bool Secondary::getCalc()
 {
@@ -46,7 +46,7 @@ void Secondary::updateController()
     }
 
     encPID.calc(enc.read());
-    lcPID.calc(lc.read());
+    lcPID.calc(fsm.sLoadCellForce);
 
     fsm.sPIDOutput = encPID.get() + lcPID.get();
     if (fsm.rwSpeed == 0)
@@ -59,6 +59,11 @@ void Secondary::updateController()
     }
 
     fsm.sCalc = false;
+}
+
+int16_t Secondary::readLoadCell()
+{
+    return fsm.sLoadCellForce;
 }
 
 int32_t Secondary::sRatioToCounts(int16_t ratio)

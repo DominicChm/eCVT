@@ -8,8 +8,8 @@ const int8_t CALIB_DUTYCYCLE = 10;  // Magnitude of Duty Cycle Percent (%)
 /* This constant defines the max allowable load cell force (NOT clamping force). */
 const int16_t MAX_LOADCELL_FORCE = 400; // Load Cell Force (lb)
 
-Clutch::Clutch(FSMVars fsm, Encoder enc, LoadCell lc, Motor mot)
-    : Task(fsm), enc(enc), lc(lc), mot(mot)
+Clutch::Clutch(FSMVars fsm, Encoder enc, Motor mot)
+    : Task(fsm), enc(enc), mot(mot)
 {
     calTime = 0;
 }
@@ -66,7 +66,7 @@ void Clutch::run()
 
 void Clutch::setMotorDutyCycle(int16_t dutyCycle)
 {
-    if (lc.read() > MAX_LOADCELL_FORCE)
+    if (readLoadCell() > MAX_LOADCELL_FORCE)
     {
         dutyCycle = 0;
     }
@@ -81,9 +81,4 @@ int8_t Clutch::getState()
 Encoder Clutch::getEnc()
 {
     return enc;
-}
-
-LoadCell Clutch::getLC()
-{
-    return lc;
 }
