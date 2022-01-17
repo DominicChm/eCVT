@@ -61,9 +61,9 @@ void Secondary::updateController()
     fsm.sCalc = false;
 }
 
-int16_t Secondary::readLoadCell()
+bool Secondary::isSafe()
 {
-    return fsm.sLoadCellForce;
+    return fsm.sLoadCellForce < MAX_CLAMPING_FORCE * SCALE_CLAMPINGFORCE_TO_LOADCELLFORCE;
 }
 
 int32_t Secondary::sRatioToCounts(int16_t ratio)

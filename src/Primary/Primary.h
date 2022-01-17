@@ -19,7 +19,7 @@ private:
     bool getCalc();
     void initController();
     void updateController();
-    int16_t readLoadCell();
+    bool isSafe();
 
     static int32_t pRatioToCounts(int16_t ratio);
 };

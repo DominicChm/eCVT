@@ -21,7 +21,7 @@ private:
     bool getCalc();
     void initController();
     void updateController();
-    int16_t readLoadCell();
+    bool isSafe();
 
     static int32_t sRatioToCounts(int16_t ratio);
     static int32_t sRatioToForce(int16_t ratio);

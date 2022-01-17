@@ -1,5 +1,7 @@
 #include "Primary.h"
 
+const float SCALE_CLAMPINGFORCE_TO_LOADCELLFORCE = (float)6 / 11; // unitless
+
 Primary::Primary(FSMVars fsm, PIDController pid, Encoder enc, Motor mot)
     : Clutch(fsm, enc, mot), pid(pid){};
 
@@ -46,9 +48,9 @@ void Primary::updateController()
     fsm.pCalc = false;
 }
 
-int16_t Primary::readLoadCell()
+bool Primary::isSafe()
 {
-    return fsm.pLoadCellForce;
+    return fsm.pLoadCellForce < MAX_CLAMPING_FORCE * SCALE_CLAMPINGFORCE_TO_LOADCELLFORCE;
 }
 
 int32_t Primary::pRatioToCounts(int16_t ratio)

@@ -31,15 +31,14 @@ public:
 
 protected:
     const int8_t MAX_STATIC_DUTYCYCLE = 25; // Magnitude of Duty Cycle Percent (%)
+    const int16_t MAX_CLAMPING_FORCE = 750; // Clamping Force (lb)
 
     Encoder enc;
 
     virtual bool getCalc() = 0;
     virtual void initController() = 0;
     virtual void updateController() = 0;
-
-    // TODO: Refactor
-    virtual int16_t readLoadCell() = 0;
+    virtual bool isSafe() = 0;
 
     void setMotorDutyCycle(int16_t dutyCycle);
 

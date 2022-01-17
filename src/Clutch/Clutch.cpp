@@ -5,9 +5,6 @@ const uint32_t CALIB_DELAY = 10000; // Milliseconds (ms)
 const int16_t CALIB_ESPEED = 2000;  // Revolutions per Minute (RPM)
 const int8_t CALIB_DUTYCYCLE = 10;  // Magnitude of Duty Cycle Percent (%)
 
-/* This constant defines the max allowable load cell force (NOT clamping force). */
-const int16_t MAX_LOADCELL_FORCE = 400; // Load Cell Force (lb)
-
 Clutch::Clutch(FSMVars fsm, Encoder enc, Motor mot)
     : Task(fsm), enc(enc), mot(mot)
 {
@@ -66,7 +63,7 @@ void Clutch::run()
 
 void Clutch::setMotorDutyCycle(int16_t dutyCycle)
 {
-    if (readLoadCell() > MAX_LOADCELL_FORCE)
+    if (!isSafe())
     {
         dutyCycle = 0;
     }
