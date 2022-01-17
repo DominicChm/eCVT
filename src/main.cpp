@@ -6,8 +6,10 @@
  * Released to Cal Poly Baja SAE. ;)
  */
 
-// #define DEBUG
+/* Note: TEST AND DEBUG depend on INFO */
 #define INFO
+// #define TEST
+// #define DEBUG
 
 // Libraries
 #include <Arduino.h>
@@ -117,6 +119,46 @@ void ctrlISR()
 // Communication Timer
 void commISR() { fsm.comm = true; }
 
+/* ** TEST ** */
+
+#ifdef TEST
+/* Tests motor/encoder direction. */
+void runTest()
+{
+    Serial.println();
+    Serial.println("Test started.");
+
+    pEnc.write(0);
+    sEnc.write(0);
+    pMot.setDutyCycle(-10);
+    sMot.setDutyCycle(-10);
+
+    delay(1000);
+
+    pMot.setDutyCycle(0);
+    sMot.setDutyCycle(0);
+
+    Serial.println("Test finished.");
+
+    Serial.println();
+    Serial.print(" Primary  Encoder: ");
+    Serial.println(pEnc.read());
+    Serial.print("Secondary Encoder: ");
+    Serial.println(sEnc.read());
+
+    Serial.println();
+    Serial.println("Both clutch sheaves should have opened.");
+    Serial.println("Both encoder values should be negative.");
+
+    Serial.println();
+    Serial.println("Tip: first fix motor direction, then fix encoder direction.");
+
+    while (true) // Stop program
+    {
+    }
+}
+#endif
+
 /* ** MAIN ** */
 
 void setup()
@@ -173,6 +215,10 @@ void setup()
     // Timer Interrupt Setup
     commTimer.begin(commISR, COMM_PERIOD);
     ctrlTimer.begin(ctrlISR, CTRL_PERIOD);
+
+#ifdef TEST
+    runTest();
+#endif
 }
 
 void loop()
