@@ -15,23 +15,23 @@ public:
     FSMVars();
 
     // Interrupts
-    volatile bool run;
-    volatile bool eCalc;
-    volatile bool pCalc;
-    volatile bool sCalc;
-    volatile bool comm;
+    volatile bool run = true;
+    volatile bool eCalc = false;
+    volatile bool pCalc = false;
+    volatile bool sCalc = false;
+    volatile bool comm = false;
     // Sensors
-    int16_t eSpeed;
-    int16_t rwSpeed;
-    int16_t pLoadCellForce;
-    int16_t sLoadCellForce;
-    int16_t fBrakePressure;
-    int16_t rBrakePressure;
+    int16_t eSpeed = 0;         // Revolutions Per Minute (RPM)
+    int16_t rwSpeed = 0;        // Revolutions Per Minute (RPM)
+    int16_t pLoadCellForce = 0; // Load Cell Force (lb)
+    int16_t sLoadCellForce = 0; // Load Cell Force (lb)
+    int16_t fBrakePressure = 0; // Brake Pressure (psi)
+    int16_t rBrakePressure = 0; // Brake Pressure (psi)
     // Control
-    bool engaged;
-    int16_t ePIDOutput; // Ratio Percent
-    int16_t pPIDOutput; // Duty Cycle Percent
-    int16_t sPIDOutput; // Duty Cycle Percent
+    bool engaged = false;
+    int16_t ePIDOutput = 0; // Ratio Percent
+    int16_t pPIDOutput = 0; // Duty Cycle Percent
+    int16_t sPIDOutput = 0; // Duty Cycle Percent
 };
 
 #endif
