@@ -17,7 +17,7 @@ private:
     PIDController pid;
 
     bool getCalc();
-    void initializeController();
+    void initController();
     void updateController();
     int16_t readLoadCell();
 

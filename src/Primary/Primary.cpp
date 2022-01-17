@@ -8,7 +8,7 @@ bool Primary::getCalc()
     return fsm.pCalc;
 }
 
-void Primary::initializeController()
+void Primary::initController()
 {
     pid.setSetpoint(0);
     pid.setLoSat(-100);

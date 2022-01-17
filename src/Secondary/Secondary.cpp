@@ -11,7 +11,7 @@ bool Secondary::getCalc()
     return fsm.sCalc;
 }
 
-void Secondary::initializeController()
+void Secondary::initController()
 {
     // TODO: Saturate combined output
 

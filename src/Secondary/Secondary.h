@@ -19,7 +19,7 @@ private:
     PIDController lcPID;
 
     bool getCalc();
-    void initializeController();
+    void initController();
     void updateController();
     int16_t readLoadCell();
 

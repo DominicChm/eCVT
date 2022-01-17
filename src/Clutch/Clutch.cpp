@@ -22,7 +22,7 @@ void Clutch::run()
         mot.begin();
         setMotorDutyCycle(0);
 
-        initializeController();
+        initController();
 
         state = CALIBRATE_OPEN_SHEAVES;
         return;

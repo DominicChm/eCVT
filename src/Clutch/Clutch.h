@@ -35,7 +35,7 @@ protected:
     Encoder enc;
 
     virtual bool getCalc() = 0;
-    virtual void initializeController() = 0;
+    virtual void initController() = 0;
     virtual void updateController() = 0;
 
     // TODO: Refactor
