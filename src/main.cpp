@@ -100,10 +100,22 @@ Communication communication(fsm, engine, primary, secondary);
 
 /* ** INTERRUPT SERVICE ROUTINES ** */
 
-void engineSpeedISR();
-void rWheelsSpeedISR();
-void ctrlISR();
-void commISR();
+// Hall Effect Sensors
+void engineSpeedISR() { engineSpeed.calc(); }
+void rWheelsSpeedISR() { rWheelsSpeed.calc(); }
+// void flWheelSpeedISR() { flWheelSpeed.calc(); }
+// void frWheelSpeedISR() { frWheelSpeed.calc(); }
+
+// Control Loop Timer
+void ctrlISR()
+{
+    fsm.eCalc = true;
+    fsm.pCalc = true;
+    fsm.sCalc = true;
+}
+
+// Communication Timer
+void commISR() { fsm.comm = true; }
 
 /* ** MAIN ** */
 
@@ -184,21 +196,3 @@ void loop()
     // dashboardLEDs.run();
     // communication.run();
 }
-
-/* **INTERRUPT SERVICE ROUTINES** */
-
-// Hall Effect Sensors
-void engineSpeedISR() { engineSpeed.calc(); }
-void rWheelsSpeedISR() { rWheelsSpeed.calc(); }
-// void flWheelSpeedISR() { flWheelSpeed.calc(); }
-// void frWheelSpeedISR() { frWheelSpeed.calc(); }
-
-// Timers
-void ctrlISR()
-{
-    fsm.eCalc = true;
-    fsm.pCalc = true;
-    fsm.sCalc = true;
-}
-
-void commISR() { fsm.comm = true; }
