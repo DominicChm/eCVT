@@ -8,7 +8,7 @@
 
 /* Note: TEST AND DEBUG depend on INFO */
 #define INFO
-// #define TEST
+#define TEST
 // #define DEBUG
 
 // Libraries
@@ -122,11 +122,14 @@ void commISR() { fsm.comm = true; }
 /* ** TEST ** */
 
 #ifdef TEST
-/* Tests motor/encoder direction. */
+/* Tests motor/encoder direction and load cell readings. */
 void runTest()
 {
     Serial.println();
-    Serial.println("Test started.");
+    Serial.println("Motor/Encoder Test started.");
+
+    pMot.begin();
+    sMot.begin();
 
     pEnc.write(0);
     sEnc.write(0);
@@ -138,7 +141,7 @@ void runTest()
     pMot.setDutyCycle(0);
     sMot.setDutyCycle(0);
 
-    Serial.println("Test finished.");
+    Serial.println("Motor/Encoder Test finished.");
 
     Serial.println();
     Serial.print(" Primary  Encoder: ");
@@ -153,8 +156,23 @@ void runTest()
     Serial.println();
     Serial.println("Tip: first fix motor direction, then fix encoder direction.");
 
-    while (true) // Stop program
+    delay(1000);
+
+    Serial.println();
+    Serial.println("Load Cell Test started.");
+
+    pLC.begin();
+    sLC.begin();
+
+    while (true)
     {
+        Serial.println();
+        Serial.print(" Primary  Load Cell: ");
+        Serial.println(pLC.read());
+        // Serial.print("Secondary Load Cell: ");
+        // Serial.println(sLC.read());
+
+        delay(250);
     }
 }
 #endif
