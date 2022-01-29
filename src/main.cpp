@@ -7,8 +7,8 @@
  */
 
 /* Note: TEST AND DEBUG depend on INFO */
-#define INFO
-#define TEST
+//#define INFO
+//#define TEST
 // #define DEBUG
 
 // Libraries
@@ -83,9 +83,9 @@ Motor sMot(S_MOT_INA, S_MOT_INB, S_MOT_PWM);
 
 IntervalTimer ctrlTimer;
 IntervalTimer commTimer;
-const uint32_t CTRL_PERIOD = 10000; // Microseconds (us)
-const uint32_t COMM_PERIOD = 10000; // Microseconds (us)
-
+const uint32_t CTRL_PERIOD = 100000; // Microseconds (us)
+const uint32_t COMM_PERIOD = 1000000; // Microseconds (us)
+volatile bool writeFlag = false;
 /* ** FINITE STATE MACHINES ** */
 
 FSMVars fsm;
@@ -98,7 +98,7 @@ LoadCellTask loadCellTask(fsm, pLC, sLC);
 // PressureTransducerTask pressureTransducerTask(fsm, fBrakePressure, rBrakePressure);
 LaunchControl launchControl(fsm, LAUNCH_BUTTON);
 DashboardLEDs dashboardLEDs(fsm, UPSHIFT_LED, BKSHIFT_LED);
-Communication communication(fsm, engine, primary, secondary);
+Communication communication(fsm, engine, primary, secondary, &writeFlag);
 
 /* ** INTERRUPT SERVICE ROUTINES ** */
 
@@ -116,8 +116,13 @@ void ctrlISR()
     fsm.sCalc = true;
 }
 
+volatile bool LEDSTATE = false;
+
 // Communication Timer
-void commISR() { fsm.comm = true; }
+void commISR() {
+    digitalWrite(LED_BUILTIN, LEDSTATE);
+    LEDSTATE = !LEDSTATE;
+    writeFlag = true; }
 
 /* ** TEST ** */
 
@@ -231,12 +236,12 @@ void setup()
     // attachInterrupt(digitalPinToInterrupt(FRWHEEL_SPEED_PIN), frWheelSpeedISR, RISING);
 
     // Timer Interrupt Setup
-    commTimer.begin(commISR, COMM_PERIOD);
-    ctrlTimer.begin(ctrlISR, CTRL_PERIOD);
-
-#ifdef TEST
-    runTest();
-#endif
+    pinMode(LED_BUILTIN, OUTPUT);
+    digitalWrite(LED_BUILTIN, HIGH);
+    Serial.println("Start timers...");
+    if(!commTimer.begin(commISR, COMM_PERIOD))
+        Serial.println("COULDN'T START COMMUNICATIONS TIMER!!!!!");
+    //ctrlTimer.begin(ctrlISR, CTRL_PERIOD);
 }
 
 void loop()
@@ -247,16 +252,16 @@ void loop()
 #endif
 
     // Essential Tasks
-    engine.run();
-    primary.run();
-    secondary.run();
-    hallEffectTask.run();
-    loadCellTask.run();
+//    engine.run();
+//    primary.run();
+//    secondary.run();
+//    hallEffectTask.run();
+//    loadCellTask.run();
 
     // Bonus Tasks
     // pressureTransducerTask.run();
     // launchControl.run();
     // ecvtstatusLED.run();
     // dashboardLEDs.run();
-    // communication.run();
+     communication.run();
 }
