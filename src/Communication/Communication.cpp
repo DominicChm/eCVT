@@ -5,7 +5,7 @@ const int8_t START_DATA_SIZE = 2;   // Bytes
 const int8_t CHECK_DATA_SIZE = 2;   // Bytes
 const int8_t START_BYTE_VAL = 0xAA; // 1010 1010
 
-Communication::Communication(FSMVars fsm, Engine engine, Primary primary, Secondary secondary)
+Communication::Communication(FSMVars &fsm, Engine engine, Primary primary, Secondary secondary)
     : Task(fsm), engine(engine), primary(primary), secondary(secondary)
 {
     numBytesWritten = 0;

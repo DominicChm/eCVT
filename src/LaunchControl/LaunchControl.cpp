@@ -4,7 +4,7 @@ const int16_t LC_BRKPRESSURE = 1640;    // 13-bit ADC (1640/8191 ~= 1/5)
 const int16_t LC_ENGINESPEED_LO = 2000; // Revolutions per Minute (RPM)
 const int16_t LC_ENGINESPEED_HI = 3000; // Revolutions per Minute (RPM)
 
-LaunchControl::LaunchControl(FSMVars fsm, int8_t LAUNCH_BUTTON) : Task(fsm)
+LaunchControl::LaunchControl(FSMVars &fsm, int8_t LAUNCH_BUTTON) : Task(fsm)
 {
     this->LAUNCH_BUTTON = LAUNCH_BUTTON;
 }

@@ -17,7 +17,7 @@ const int16_t SHIFT_SPEED = 3200;  // Revolutions per Minute (RPM)
     VOLTS is the voltage applied to the motor at the ideal sheave position. **/
 const int32_t SHEAVE_OFFSET = 0; // Encoder Counts (~1/3606 of a revolution)
 
-Engine::Engine(FSMVars fsm, PIDController pid) : ControlLoop(fsm, pid) {}
+Engine::Engine(FSMVars &fsm, PIDController pid) : ControlLoop(fsm, pid) {}
 
 void Engine::run()
 {

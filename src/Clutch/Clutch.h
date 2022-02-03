@@ -22,7 +22,7 @@ public:
     };
 
     Clutch(
-        FSMVars fsm,
+        FSMVars &fsm,
         Encoder enc,
         Motor mot);
 

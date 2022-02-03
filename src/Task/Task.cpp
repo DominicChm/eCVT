@@ -6,7 +6,6 @@
 
 #include "Task.h"
 
-Task::Task(FSMVars fsm)
+Task::Task(FSMVars &fsm) : fsm(fsm)
 {
-    this->fsm = fsm;
 }

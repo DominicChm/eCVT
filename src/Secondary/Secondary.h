@@ -8,7 +8,7 @@ class Secondary : public Clutch
 {
 public:
     Secondary(
-        FSMVars fsm,
+        FSMVars &fsm,
         PIDController encController,
         PIDController lcController,
         Encoder enc,

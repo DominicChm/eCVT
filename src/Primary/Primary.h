@@ -8,7 +8,7 @@ class Primary : public Clutch
 {
 public:
     Primary(
-        FSMVars fsm,
+        FSMVars &fsm,
         PIDController pid,
         Encoder enc,
         Motor mot);

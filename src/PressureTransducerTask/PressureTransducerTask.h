@@ -14,7 +14,7 @@ public:
     };
 
     PressureTransducerTask(
-        FSMVars fsm,
+        FSMVars &fsm,
         BrakePressure fBrakePressure,
         BrakePressure rBrakePressure);
 

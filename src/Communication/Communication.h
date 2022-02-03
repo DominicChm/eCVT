@@ -18,7 +18,7 @@ public:
     };
 
     Communication(
-        FSMVars fsm,
+        FSMVars &fsm,
         Engine engine,
         Primary primary,
         Secondary secondary);
