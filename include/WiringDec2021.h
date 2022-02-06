@@ -17,8 +17,8 @@ const int8_t RWHEELS_SPEED_PIN = 6;
 /* Swap A and B pins to swap direction. */
 const int8_t P_ENC_A = 24;
 const int8_t P_ENC_B = 25;
-const int8_t S_ENC_A = 26;
-const int8_t S_ENC_B = 27;
+const int8_t S_ENC_A = 27;
+const int8_t S_ENC_B = 26;
 
 // Load Cells
 const int8_t P_LC_SCK = 13;
@@ -28,8 +28,8 @@ const int8_t S_LC_SDA = 15;
 
 // Motors
 /* Swap A and B pins to swap direction. */
-const int8_t P_MOT_INA = 36;
-const int8_t P_MOT_INB = 37;
+const int8_t P_MOT_INA = 37;
+const int8_t P_MOT_INB = 36;
 const int8_t P_MOT_PWM = 22;
 const int8_t S_MOT_INA = 20;
 const int8_t S_MOT_INB = 21;
