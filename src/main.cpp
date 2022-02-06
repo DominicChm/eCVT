@@ -8,7 +8,7 @@
 
 /* Note: TEST AND DEBUG depend on INFO */
 #define INFO
-#define TEST
+// #define TEST
 // #define DEBUG
 
 // Libraries
@@ -169,8 +169,8 @@ void runTest()
         Serial.println();
         Serial.print(" Primary  Load Cell: ");
         Serial.println(pLC.read());
-        // Serial.print("Secondary Load Cell: ");
-        // Serial.println(sLC.read());
+        Serial.print("Secondary Load Cell: ");
+        Serial.println(sLC.read());
 
         delay(250);
     }
