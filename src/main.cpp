@@ -55,7 +55,7 @@
     For performance, the PIDController class assumes a constant dt.
     (dt is integral/derivative delta time, defined by CTRL_PERIOD.)
     Therefore:
-    - The   integral gain (Ki) must decrease linearly with CTRL_PERIOD.
+    - The  integral  gain (Ki) must decrease linearly with CTRL_PERIOD.
     - The derivative gain (Kd) must increase linearly with CTRL_PERIOD.
 **/
 PIDController ePID(0.5, 0.2, 0);   // Ratio Percent / Revolutions per Minute (%/RPM)
