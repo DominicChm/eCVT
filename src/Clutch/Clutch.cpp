@@ -5,7 +5,7 @@ const uint32_t CALIB_DELAY = 10000; // Milliseconds (ms)
 const int16_t CALIB_ESPEED = 2000;  // Revolutions per Minute (RPM)
 const int8_t CALIB_DUTYCYCLE = 10;  // Magnitude of Duty Cycle Percent (%)
 
-Clutch::Clutch(FSMVars &fsm, Encoder enc, Motor mot)
+Clutch::Clutch(FSMVars &fsm, Encoder &enc, Motor mot)
     : Task(fsm), enc(enc), mot(mot)
 {
     calTime = 0;

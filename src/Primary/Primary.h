@@ -10,7 +10,7 @@ public:
     Primary(
         FSMVars &fsm,
         PIDController pid,
-        Encoder enc,
+        Encoder &enc,
         Motor mot);
 
 private:

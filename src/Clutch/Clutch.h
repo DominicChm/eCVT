@@ -23,7 +23,7 @@ public:
 
     Clutch(
         FSMVars &fsm,
-        Encoder enc,
+        Encoder &enc,
         Motor mot);
 
     void run();
@@ -34,7 +34,7 @@ protected:
     const int8_t MAX_STATIC_DUTYCYCLE = 25; // Magnitude of Duty Cycle Percent (%)
     const int16_t MAX_CLAMPING_FORCE = 750; // Clamping Force (lb)
 
-    Encoder enc;
+    Encoder &enc;
 
     virtual bool getCalc() = 0;
     virtual void initController() = 0;

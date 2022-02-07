@@ -1,6 +1,6 @@
 #include "Secondary.h"
 
-Secondary::Secondary(FSMVars &fsm, PIDController encPID, PIDController lcPID, Encoder enc, Motor mot)
+Secondary::Secondary(FSMVars &fsm, PIDController encPID, PIDController lcPID, Encoder &enc, Motor mot)
     : Clutch(fsm, enc, mot), encPID(encPID), lcPID(lcPID){};
 
 bool Secondary::getCalc()

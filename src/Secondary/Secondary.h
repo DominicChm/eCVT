@@ -11,7 +11,7 @@ public:
         FSMVars &fsm,
         PIDController encController,
         PIDController lcController,
-        Encoder enc,
+        Encoder &enc,
         Motor mot);
 
 private:
