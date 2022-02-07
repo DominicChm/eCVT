@@ -103,8 +103,8 @@ Communication communication(fsm, engine, primary, secondary);
 /* ** INTERRUPT SERVICE ROUTINES ** */
 
 // Hall Effect Sensors
-void engineSpeedISR() { engineSpeed.calc(); }
-void rWheelsSpeedISR() { rWheelsSpeed.calc(); }
+void engineSpeedISR() { hallEffectTask.engineSpeedISR(); }
+void rWheelsSpeedISR() { hallEffectTask.rWheelsSpeedISR(); }
 // void flWheelSpeedISR() { flWheelSpeed.calc(); }
 // void frWheelSpeedISR() { frWheelSpeed.calc(); }
 

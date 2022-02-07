@@ -31,3 +31,6 @@ void HallEffectTask::run()
         return;
     }
 }
+
+void HallEffectTask::engineSpeedISR() { engineSpeed.calc(); }
+void HallEffectTask::rWheelsSpeedISR() { rWheelsSpeed.calc(); }
