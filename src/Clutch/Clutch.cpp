@@ -1,9 +1,10 @@
 #include "Clutch.h"
 
 // Calibration
-const uint32_t CALIB_DELAY = 10000; // Milliseconds (ms)
-const int16_t CALIB_ESPEED = 2000;  // Revolutions per Minute (RPM)
-const int8_t CALIB_DUTYCYCLE = 10;  // Magnitude of Duty Cycle Percent (%)
+const int8_t CALIB_DUTYCYCLE = 10;    // Magnitude of Duty Cycle Percent (%)
+const int16_t CALIB_FORCE = 50;       // Clamping Force (lb)
+const int16_t CALIB_ESPEED = 2000;    // Revolutions per Minute (RPM)
+const uint32_t CALIB_TIMEOUT = 10000; // Milliseconds (ms)
 
 Clutch::Clutch(FSMVars &fsm, Encoder &enc, Motor mot)
     : Task(fsm), enc(enc), mot(mot)
@@ -32,11 +33,15 @@ void Clutch::run()
         return;
 
     case CALIBRATE_ZERO_ENCODER:
-        if (millis() - calTime > CALIB_DELAY)
+        if (getClampingForce() > CALIB_FORCE)
         {
             enc.write(0);
             setMotorDutyCycle(0);
             state = CALIBRATE_WAIT_USER;
+        }
+        if (millis() - calTime > CALIB_TIMEOUT)
+        {
+            state = ERROR;
         }
         return;
 
@@ -58,12 +63,16 @@ void Clutch::run()
         updateController();
         state = CONTROLLER_REST;
         return;
+
+    case ERROR:
+        setMotorDutyCycle(0);
+        return;
     }
 }
 
 void Clutch::setMotorDutyCycle(int16_t dutyCycle)
 {
-    if (!isSafe())
+    if (getClampingForce() > MAX_CLAMPING_FORCE)
     {
         dutyCycle = 0;
     }

@@ -1,5 +1,11 @@
 #include "Secondary.h"
 
+const float SHIFTLINK_TOP = 6.0;                                        // Vertical Displacement (in)
+const float SHIFTLINK_ALL = 11.0;                                       // Vertical Displacement (in)
+const float SCALE_LOADCELL_TO_CLAMPING = SHIFTLINK_ALL / SHIFTLINK_TOP; // Ratio (unitless)
+const float SCALE_CLAMPING_TO_LOADCELL = SHIFTLINK_TOP / SHIFTLINK_ALL; // Ratio (unitless)
+const int16_t DISENGAGED_CLAMPINGFORCE = 50;                            // Clamping Force (lb)
+
 Secondary::Secondary(FSMVars &fsm, Encoder &enc, Motor mot, PIDController encPID, PIDController lcPID)
     : Clutch(fsm, enc, mot), encPID(encPID), lcPID(lcPID){};
 
@@ -58,9 +64,9 @@ void Secondary::updateController()
     fsm.sCalc = false;
 }
 
-bool Secondary::isSafe()
+int16_t Secondary::getClampingForce()
 {
-    return fsm.sLoadCellForce < MAX_LOADCELL_FORCE;
+    return fsm.sLoadCellForce * SCALE_LOADCELL_TO_CLAMPING;
 }
 
 int32_t Secondary::sRatioToCounts(int16_t ratio)

@@ -18,7 +18,8 @@ public:
         CALIBRATE_ZERO_ENCODER,
         CALIBRATE_WAIT_USER,
         CONTROLLER_REST,
-        CONTROLLER_UPDATE
+        CONTROLLER_UPDATE,
+        ERROR
     };
 
     Clutch(
@@ -39,7 +40,7 @@ protected:
     virtual bool getCalc() = 0;
     virtual void initController() = 0;
     virtual void updateController() = 0;
-    virtual bool isSafe() = 0;
+    virtual int16_t getClampingForce() = 0;
 
     void setMotorDutyCycle(int16_t dutyCycle);
 

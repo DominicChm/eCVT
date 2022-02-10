@@ -14,17 +14,12 @@ public:
         PIDController pid);
 
 private:
-    const float SHIFTLINK_TOP = 6.0;                                                    // Vertical Displacement (in)
-    const float SHIFTLINK_ALL = 11.0;                                                   // Vertical Displacement (in)
-    const float SCALE_CLAMPING_TO_LOADCELL = SHIFTLINK_TOP / SHIFTLINK_ALL;             // Ratio (unitless)
-    const int16_t MAX_LOADCELL_FORCE = MAX_CLAMPING_FORCE * SCALE_CLAMPING_TO_LOADCELL; // Load Cell Force (lb)
-
     PIDController pid;
 
     bool getCalc();
     void initController();
     void updateController();
-    bool isSafe();
+    int16_t getClampingForce();
 
     static int32_t pRatioToCounts(int16_t ratio);
 };
