@@ -9,9 +9,9 @@ class Primary : public Clutch
 public:
     Primary(
         FSMVars &fsm,
-        PIDController pid,
         Encoder &enc,
-        Motor mot);
+        Motor mot,
+        PIDController pid);
 
 private:
     const float SHIFTLINK_TOP = 6.0;                                                    // Vertical Displacement (in)

@@ -91,8 +91,8 @@ const uint32_t COMM_PERIOD = 10000; // Microseconds (us)
 FSMVars fsm;
 
 Engine engine(fsm, ePID);
-Primary primary(fsm, pEncPID, pEnc, pMot);
-Secondary secondary(fsm, sEncPID, sLcPID, sEnc, sMot);
+Primary primary(fsm, pEnc, pMot, pEncPID);
+Secondary secondary(fsm, sEnc, sMot, sEncPID, sLcPID);
 HallEffectTask hallEffectTask(fsm, engineSpeed, rWheelsSpeed);
 LoadCellTask loadCellTask(fsm, pLC, sLC);
 // PressureTransducerTask pressureTransducerTask(fsm, fBrakePressure, rBrakePressure);

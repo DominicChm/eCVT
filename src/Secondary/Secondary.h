@@ -9,10 +9,10 @@ class Secondary : public Clutch
 public:
     Secondary(
         FSMVars &fsm,
-        PIDController encController,
-        PIDController lcController,
         Encoder &enc,
-        Motor mot);
+        Motor mot,
+        PIDController encController,
+        PIDController lcController);
 
 private:
     const float SHIFTLINK_TOP = 6.0;                                                    // Vertical Displacement (in)
