@@ -49,13 +49,9 @@ int16_t PIDController::get()
 
 	// Clamp output
 	if (output < loSat)
-	{
 		return loSat;
-	}
 	if (output > hiSat)
-	{
 		return hiSat;
-	}
 	return output;
 }
 

@@ -72,13 +72,9 @@ int16_t Secondary::getClampingForce()
 int32_t Secondary::sRatioToCounts(int16_t ratio)
 {
     if (ratio < 0)
-    {
         return sLookup[0];
-    }
     if (ratio > 100)
-    {
         return sLookup[100];
-    }
     return sLookup[ratio];
 }
 
@@ -86,12 +82,8 @@ int32_t Secondary::sRatioToCounts(int16_t ratio)
 int32_t Secondary::sRatioToForce(int16_t ratio)
 {
     if (ratio < 0)
-    {
         return cLookup[0];
-    }
     if (ratio > 100)
-    {
         return cLookup[100];
-    }
     return cLookup[ratio];
 }

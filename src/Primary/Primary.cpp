@@ -59,12 +59,8 @@ int16_t Primary::getClampingForce()
 int32_t Primary::pRatioToCounts(int16_t ratio)
 {
     if (ratio < 0)
-    {
         return pLookup[0];
-    }
     if (ratio > 100)
-    {
         return pLookup[100];
-    }
     return pLookup[ratio];
 }
