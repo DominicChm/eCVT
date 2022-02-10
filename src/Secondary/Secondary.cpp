@@ -69,7 +69,7 @@ int32_t Secondary::sRatioToCounts(int16_t ratio)
     {
         return sLookup[0];
     }
-    else if (ratio > 100)
+    if (ratio > 100)
     {
         return sLookup[100];
     }
@@ -83,7 +83,7 @@ int32_t Secondary::sRatioToForce(int16_t ratio)
     {
         return cLookup[0];
     }
-    else if (ratio > 100)
+    if (ratio > 100)
     {
         return cLookup[100];
     }

@@ -57,7 +57,7 @@ int32_t Primary::pRatioToCounts(int16_t ratio)
     {
         return pLookup[0];
     }
-    else if (ratio > 100)
+    if (ratio > 100)
     {
         return pLookup[100];
     }
