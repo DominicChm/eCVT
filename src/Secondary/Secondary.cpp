@@ -79,14 +79,13 @@ int32_t Secondary::sRatioToCounts(int16_t ratio)
 /** TODO: Lookup Table **/
 int32_t Secondary::sRatioToForce(int16_t ratio)
 {
-    return 0;
-    // if (ratio < 0)
-    // {
-    //     return cLookup[0];
-    // }
-    // else if (ratio > 100)
-    // {
-    //     return cLookup[100];
-    // }
-    // return cLookup[ratio];
+    if (ratio < 0)
+    {
+        return cLookup[0];
+    }
+    else if (ratio > 100)
+    {
+        return cLookup[100];
+    }
+    return cLookup[ratio];
 }
