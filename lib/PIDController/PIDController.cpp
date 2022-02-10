@@ -43,9 +43,19 @@ int16_t PIDController::get()
 {
 	// Calculate output
 	int16_t output = Kp * error + Ki * integral + Kd * derivative;
+
 	// Test if saturated
 	saturated = output < loSat || output > hiSat;
-	// Return output
+
+	// Clamp output
+	if (output < loSat)
+	{
+		return loSat;
+	}
+	if (output > hiSat)
+	{
+		return hiSat;
+	}
 	return output;
 }
 
