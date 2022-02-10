@@ -4,7 +4,8 @@
 const int8_t CALIB_DUTYCYCLE = 10;    // Magnitude of Duty Cycle Percent (%)
 const int16_t CALIB_FORCE = 50;       // Clamping Force (lb)
 const int16_t CALIB_ESPEED = 2000;    // Revolutions per Minute (RPM)
-const uint32_t CALIB_TIMEOUT = 10000; // Milliseconds (ms)
+const uint32_t CALIB_MINTIME = 250;   // Milliseconds (ms)
+const uint32_t CALIB_MAXTIME = 10000; // Milliseconds (ms)
 
 Clutch::Clutch(FSMVars &fsm, Encoder &enc, Motor mot)
     : Task(fsm), enc(enc), mot(mot)
@@ -33,13 +34,20 @@ void Clutch::run()
         return;
 
     case CALIBRATE_ZERO_ENCODER:
-        if (getClampingForce() > CALIB_FORCE)
+        if (millis() - calTime < CALIB_MINTIME)
+        {
+            return;
+        }
+
+        // Note: "clamping" force is negative when opening sheaves
+        if (-getClampingForce() > CALIB_FORCE)
         {
             enc.write(0);
             setMotorDutyCycle(0);
             state = CALIBRATE_WAIT_USER;
         }
-        if (millis() - calTime > CALIB_TIMEOUT)
+
+        if (millis() - calTime > CALIB_MAXTIME)
         {
             state = ERROR;
         }
@@ -72,7 +80,13 @@ void Clutch::run()
 
 void Clutch::setMotorDutyCycle(int16_t dutyCycle)
 {
-    if (getClampingForce() > MAX_CLAMPING_FORCE)
+    int16_t force = getClampingForce();
+
+    // Do not use Arduino's abs() function - it is a poorly written macro
+    // https://www.arduino.cc/reference/en/language/functions/math/abs/
+    force = force < 0 ? -force : force;
+
+    if (force > MAX_CLAMPING_FORCE)
     {
         dutyCycle = 0;
     }
