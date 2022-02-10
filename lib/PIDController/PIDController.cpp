@@ -22,8 +22,8 @@ void PIDController::setKd(float Kd) { this->Kd = Kd; }
 
 // Mutator Methods
 void PIDController::setSetpoint(int32_t setpoint) { this->setpoint = setpoint; }
-void PIDController::setLoSat(int8_t loSat) { this->loSat = loSat; }
-void PIDController::setHiSat(int8_t hiSat) { this->hiSat = hiSat; }
+void PIDController::setLoSat(int16_t loSat) { this->loSat = loSat; }
+void PIDController::setHiSat(int16_t hiSat) { this->hiSat = hiSat; }
 
 // Interrupt Service Routine Method
 void PIDController::calc(int32_t measurement)

@@ -20,8 +20,8 @@ public:
 	void setKi(float Ki);
 	void setKd(float Kd);
 	void setSetpoint(int32_t setpoint);
-	void setLoSat(int8_t loSat);
-	void setHiSat(int8_t hiSat);
+	void setLoSat(int16_t loSat);
+	void setHiSat(int16_t hiSat);
 
 	void calc(int32_t measurement);
 	int16_t get();
@@ -37,8 +37,8 @@ private:
 	int32_t integral = 0;
 	int32_t derivative = 0;
 
-	int8_t loSat = 0;
-	int8_t hiSat = 0;
+	int16_t loSat = 0;
+	int16_t hiSat = 0;
 	bool saturated = false;
 
 	float Kp;
