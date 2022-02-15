@@ -8,7 +8,7 @@
 class ControlLoop : public Task
 {
 public:
-    ControlLoop(FSMVars fsm, PIDController pid);
+    ControlLoop(FSMVars &fsm, PIDController pid);
 
     virtual void run() = 0;
     virtual int8_t getState() = 0;

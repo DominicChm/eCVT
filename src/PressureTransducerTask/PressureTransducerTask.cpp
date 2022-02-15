@@ -1,7 +1,7 @@
 #include "PressureTransducerTask.h"
 
-PressureTransducerTask::PressureTransducerTask(
-    FSMVars fsm, BrakePressure fBrakePressure, BrakePressure rBrakePressure) : Task(fsm), fBrakePressure(fBrakePressure), rBrakePressure(rBrakePressure) {}
+PressureTransducerTask::PressureTransducerTask(FSMVars &fsm, BrakePressure fBrakePressure, BrakePressure rBrakePressure)
+    : Task(fsm), fBrakePressure(fBrakePressure), rBrakePressure(rBrakePressure) {}
 
 void PressureTransducerTask::run()
 {

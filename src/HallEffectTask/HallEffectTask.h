@@ -15,7 +15,7 @@ public:
     };
 
     HallEffectTask(
-        FSMVars fsm,
+        FSMVars &fsm,
         EngineSpeed engineSpeed,
         WheelSpeed rWheelsSpeed);
 

@@ -13,7 +13,7 @@ public:
         ECVT_DISABLED
     };
 
-    LaunchControl(FSMVars fsm, int8_t LAUNCH_BUTTON);
+    LaunchControl(FSMVars &fsm, int8_t LAUNCH_BUTTON);
 
     void run();
 

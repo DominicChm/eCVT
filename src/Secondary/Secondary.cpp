@@ -1,6 +1,12 @@
 #include "Secondary.h"
 
-Secondary::Secondary(FSMVars fsm, PIDController encPID, PIDController lcPID, Encoder enc, Motor mot)
+const float SHIFTLINK_TOP = 6.0;                                             // Vertical Displacement (in)
+const float SHIFTLINK_ALL = 11.0;                                            // Vertical Displacement (in)
+const float SCALE_LOADCELL_TO_CLAMPING = -1 * SHIFTLINK_ALL / SHIFTLINK_TOP; // Ratio (unitless)
+const float SCALE_CLAMPING_TO_LOADCELL = -1 * SHIFTLINK_TOP / SHIFTLINK_ALL; // Ratio (unitless)
+const int16_t DISENGAGED_CLAMPINGFORCE = 50;                                 // Clamping Force (lb)
+
+Secondary::Secondary(FSMVars &fsm, Encoder &enc, Motor mot, PIDController encPID, PIDController lcPID)
     : Clutch(fsm, enc, mot), encPID(encPID), lcPID(lcPID){};
 
 bool Secondary::getCalc()
@@ -34,16 +40,16 @@ void Secondary::updateController()
     if (fsm.engaged)
     {
         encPID.setSetpoint(sRatioToCounts(fsm.ePIDOutput));
-        lcPID.setSetpoint(sRatioToForce(fsm.ePIDOutput) * SCALE_CLAMPING_TO_LOADCELL);
+        lcPID.setSetpoint(sRatioToForce(fsm.ePIDOutput));
     }
     else
     {
         encPID.setSetpoint(sRatioToCounts(100));
-        lcPID.setSetpoint(DISENGAGED_CLAMPINGFORCE * SCALE_CLAMPING_TO_LOADCELL);
+        lcPID.setSetpoint(DISENGAGED_CLAMPINGFORCE);
     }
 
     encPID.calc(enc.read());
-    lcPID.calc(fsm.sLoadCellForce);
+    lcPID.calc(fsm.sLoadCellForce * SCALE_LOADCELL_TO_CLAMPING);
 
     fsm.sPIDOutput = encPID.get() + lcPID.get();
     if (fsm.rwSpeed == 0)
@@ -58,35 +64,26 @@ void Secondary::updateController()
     fsm.sCalc = false;
 }
 
-bool Secondary::isSafe()
+int16_t Secondary::getClampingForce()
 {
-    return fsm.sLoadCellForce < MAX_LOADCELL_FORCE;
+    return fsm.sLoadCellForce * SCALE_LOADCELL_TO_CLAMPING;
 }
 
 int32_t Secondary::sRatioToCounts(int16_t ratio)
 {
     if (ratio < 0)
-    {
         return sLookup[0];
-    }
-    else if (ratio > 100)
-    {
+    if (ratio > 100)
         return sLookup[100];
-    }
     return sLookup[ratio];
 }
 
 /** TODO: Lookup Table **/
 int32_t Secondary::sRatioToForce(int16_t ratio)
 {
-    return 0;
-    // if (ratio < 0)
-    // {
-    //     return cLookup[0];
-    // }
-    // else if (ratio > 100)
-    // {
-    //     return cLookup[100];
-    // }
-    // return cLookup[ratio];
+    if (ratio < 0)
+        return cLookup[0];
+    if (ratio > 100)
+        return cLookup[100];
+    return cLookup[ratio];
 }

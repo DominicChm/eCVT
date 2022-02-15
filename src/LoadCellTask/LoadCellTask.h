@@ -14,7 +14,7 @@ public:
     };
 
     LoadCellTask(
-        FSMVars fsm,
+        FSMVars &fsm,
         LoadCell pLoadCell,
         LoadCell sLoadCell);
 

@@ -18,7 +18,7 @@ public:
     };
 
     DashboardLEDs(
-        FSMVars fsm,
+        FSMVars &fsm,
         int8_t UPSHIFT_LED,
         int8_t BKSHIFT_LED);
 

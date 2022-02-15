@@ -1,6 +1,11 @@
 #include "Primary.h"
 
-Primary::Primary(FSMVars fsm, PIDController pid, Encoder enc, Motor mot)
+const float SHIFTLINK_TOP = 6.0;                                        // Vertical Displacement (in)
+const float SHIFTLINK_ALL = 11.0;                                       // Vertical Displacement (in)
+const float SCALE_LOADCELL_TO_CLAMPING = SHIFTLINK_ALL / SHIFTLINK_TOP; // Ratio (unitless)
+const float SCALE_CLAMPING_TO_LOADCELL = SHIFTLINK_TOP / SHIFTLINK_ALL; // Ratio (unitless)
+
+Primary::Primary(FSMVars &fsm, Encoder &enc, Motor mot, PIDController pid)
     : Clutch(fsm, enc, mot), pid(pid){};
 
 bool Primary::getCalc()
@@ -46,20 +51,16 @@ void Primary::updateController()
     fsm.pCalc = false;
 }
 
-bool Primary::isSafe()
+int16_t Primary::getClampingForce()
 {
-    return fsm.pLoadCellForce < MAX_LOADCELL_FORCE;
+    return fsm.pLoadCellForce * SCALE_LOADCELL_TO_CLAMPING;
 }
 
 int32_t Primary::pRatioToCounts(int16_t ratio)
 {
     if (ratio < 0)
-    {
         return pLookup[0];
-    }
-    else if (ratio > 100)
-    {
+    if (ratio > 100)
         return pLookup[100];
-    }
     return pLookup[ratio];
 }

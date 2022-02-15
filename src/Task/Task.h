@@ -13,12 +13,12 @@
 class Task
 {
 public:
-    Task(FSMVars fsm);
+    Task(FSMVars &fsm);
 
     virtual void run() = 0;
 
 protected:
-    FSMVars fsm;
+    FSMVars &fsm;
 };
 
 #endif

@@ -19,10 +19,6 @@ int16_t LoadCell::read()
     if (lc.is_ready())
     {
         value = lc.read() / calibration;
-
-        // Do not use Arduino's abs() function - it is a poorly written macro
-        // https://www.arduino.cc/reference/en/language/functions/math/abs/
-        value = value > 0 ? value : -value;
     }
     return value;
 }

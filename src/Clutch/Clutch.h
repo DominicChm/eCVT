@@ -18,12 +18,13 @@ public:
         CALIBRATE_ZERO_ENCODER,
         CALIBRATE_WAIT_USER,
         CONTROLLER_REST,
-        CONTROLLER_UPDATE
+        CONTROLLER_UPDATE,
+        ERROR
     };
 
     Clutch(
-        FSMVars fsm,
-        Encoder enc,
+        FSMVars &fsm,
+        Encoder &enc,
         Motor mot);
 
     void run();
@@ -34,12 +35,12 @@ protected:
     const int8_t MAX_STATIC_DUTYCYCLE = 25; // Magnitude of Duty Cycle Percent (%)
     const int16_t MAX_CLAMPING_FORCE = 750; // Clamping Force (lb)
 
-    Encoder enc;
+    Encoder &enc;
 
     virtual bool getCalc() = 0;
     virtual void initController() = 0;
     virtual void updateController() = 0;
-    virtual bool isSafe() = 0;
+    virtual int16_t getClampingForce() = 0;
 
     void setMotorDutyCycle(int16_t dutyCycle);
 

@@ -15,7 +15,7 @@ public:
         ENGAGED_UPDATEPID
     };
 
-    Engine(FSMVars fsm, PIDController pid);
+    Engine(FSMVars &fsm, PIDController pid);
 
     void run();
     int8_t getState();

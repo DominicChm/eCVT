@@ -6,26 +6,34 @@
 #include "Primary/Primary.h"
 #include "Secondary/Secondary.h"
 
-class Communication : public Task {
+class Communication : public Task
+{
 public:
-    enum State {
+    enum State
+    {
         INITIALIZE,
         WRITE_START_DATA,
         STORE_ECVT_DATA,
-        WRITE_ECVT_DATA,
-        INIT_WRITE
+        WRITE_ECVT_DATA
     };
 
     Communication(
-            FSMVars fsm,
-            Engine engine,
-            Primary primary,
-            Secondary secondary,
-            volatile bool *writeFlag);
+        FSMVars &fsm,
+        Engine engine,
+        Primary primary,
+        Secondary secondary);
 
     void run();
 
-    struct Data {
+private:
+    State state = INITIALIZE;
+    int8_t numBytesWritten;
+    Engine engine;
+    Primary primary;
+    Secondary secondary;
+
+    struct Data
+    {
         uint32_t time;
         // Engine
         bool engaged;
@@ -45,16 +53,7 @@ public:
         int32_t sEnc;
         int16_t sLC;
         int16_t sPID;
-    } __attribute__((packed)) data;
-private:
-    State state = INITIALIZE;
-    int8_t numBytesWritten;
-    Engine engine;
-    Primary primary;
-    Secondary secondary;
-    volatile bool *writeFlag;
-
-
+    } data;
 };
 
 #endif

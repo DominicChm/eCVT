@@ -2,7 +2,7 @@
 
 const uint32_t FLASH_PERIOD = 500; // Milliseconds (ms)
 
-DashboardLEDs::DashboardLEDs(FSMVars fsm, int8_t UPSHIFT_LED, int8_t BKSHIFT_LED) : Task(fsm)
+DashboardLEDs::DashboardLEDs(FSMVars &fsm, int8_t UPSHIFT_LED, int8_t BKSHIFT_LED) : Task(fsm)
 {
     prevRatio = 0;
     currRatio = fsm.ePIDOutput;
