@@ -4,3 +4,4 @@
 .vscode/launch.json
 .vscode/ipch
 *.autosave
+.idea/workspace.xml
