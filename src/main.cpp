@@ -84,7 +84,7 @@ Motor sMot(S_MOT_INA, S_MOT_INB, S_MOT_PWM);
 IntervalTimer ctrlTimer;
 IntervalTimer commTimer;
 const uint32_t CTRL_PERIOD = 10000; // Microseconds (us)
-const uint32_t COMM_PERIOD = 10000; // Microseconds (us)
+const uint32_t COMM_PERIOD = 1000000; // Microseconds (us)
 
 /* ** FINITE STATE MACHINES ** */
 
@@ -258,5 +258,5 @@ void loop()
     // launchControl.run();
     // ecvtstatusLED.run();
     // dashboardLEDs.run();
-    // communication.run();
+    communication.run();
 }
